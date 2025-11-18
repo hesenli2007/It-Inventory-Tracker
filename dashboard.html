@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-key="userPanelTitle">User Paneli</title>
+    <link rel="stylesheet" href="panel-style.css"> 
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="page-container">
+        <header class="panel-header">
+            <div class="logo" id="profile-btn"> <div class="logo-icon user" id="profile-pic-header">İS</div>
+                <div class="logo-text">
+                    <span id="user-name-display" data-key="userWelcome">İstifadəçi</span>
+                    <span id="user-email-display" data-key="loading">Yüklənir...</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <div class="lang-switcher" id="lang-btn">
+                    <i class="fas fa-globe"></i>
+                    <span class="lang-btn-text">AZ</span>
+                    <div class="lang-dropdown" id="lang-dropdown">
+                        <a href="#" data-lang="az" data-key="langAzerbaijani">Azərbaycanca (AZ)</a>
+                        <a href="#" data-lang="en" data-key="langEnglish">English (EN)</a>
+                        <a href="#" data-lang="ru" data-key="langRussian">Русский (RU)</a>
+                    </div>
+                </div>
+                <button id="logout-btn" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> <span data-key="logout">Çıxış</span>
+                </button>
+            </div>
+        </header>
+
+        <main class="panel-main">
+            <section class="stat-cards">
+                <div class="card green">
+                    <div class="card-info">
+                        <span class="card-title" data-key="statMyEquipment">Mənim Avadanlıqlarım</span>
+                        <span class="card-value" id="stat-total">0</span>
+                    </div>
+                    <div class="card-icon"><i class="fas fa-box"></i></div>
+                </div>
+                <div class="card green-light">
+                    <div class="card-info">
+                        <span class="card-title" data-key="statWorking">İşlək</span>
+                        <span class="card-value" id="stat-islek">0</span>
+                    </div>
+                    <div class="card-icon"><i class="fas fa-check-circle"></i></div>
+                </div>
+                <div class="card red">
+                    <div class="card-info">
+                        <span class="card-title" data-key="statBroken">Xarab/Təmirdə</span>
+                        <span class="card-value" id="stat-xarab">0</span>
+                    </div>
+                    <div class="card-icon"><i class="fas fa-server"></i></div>
+                </div>
+            </section>
+
+            <section class="content-tabs">
+                <div class="tab-nav">
+                    <button class="tab-link active" data-tab="my-equipment-tab"><i class="fas fa-list"></i> <span data-key="tabMyEquipment">Mənim Avadanlıqlarım</span></button>
+                    <button class="tab-link" data-tab="add-equipment-tab"><i class="fas fa-plus"></i> <span data-key="tabAddEquipment">Avadanlıq Əlavə Et</span></button>
+                </div>
+
+                <div class="tab-content active" id="my-equipment-tab">
+                    <div class="list-body">
+                        <table id="my-equipment-table">
+                            <thead>
+                                <tr>
+                                    <th data-key="thType">Növü</th>
+                                    <th data-key="thNameModel">Adı / Model</th>
+                                    <th data-key="thStatus">Status</th>
+                                    <th data-key="thApprovalStatus">Təsdiq Statusu</th>
+                                    <th data-key="thOperations">Əməliyyat</th>
+                                </tr>
+                            </thead>
+                            <tbody id="my-equipment-tbody"></tbody>
+                        </table>
+                        <div id="my-empty-state" class="empty-state" style="display: none;">
+                            <i class="fas fa-laptop-medical"></i>
+                            <h3 data-key="emptyStateMyEquipment">Siz hələ avadanlıq əlavə etməmisiniz</h3>
+                            <span data-key="emptyStateMyEquipmentP">"Avadanlıq Əlavə Et" bölməsindən...</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="add-equipment-tab">
+                    <section class="form-container" style="box-shadow: none;">
+                            <div class="form-header" style="padding: 15px 0 20px 0; border-bottom: none;">
+                                <i class="fas fa-plus-circle"></i>
+                                <div class="form-header-text">
+                                    <h3 data-key="addEquipmentTitle">Yeni Avadanlıq Əlavə Et</h3>
+                                    <span data-key="addEquipmentP">Zəhmət olmadan bütün sahələri doldurun</span>
+                                </div>
+                            </div>
+                            <form id="add-equipment-form" class="equipment-form" style="padding: 0;">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="equip-type" data-key="formType">Avadanlıq növü *</label>
+                                        <select id="equip-type" required>
+                                            <option value="" disabled selected data-key="formTypeSelect">Növü seçin</option>
+                                            <option value="Kompüter" data-key="formTypeComputer">Kompüter</option>
+                                            <option value="Monitor" data-key="formTypeMonitor">Monitor</option>
+                                            <option value="Printer" data-key="formTypePrinter">Printer</option>
+                                            <option value="Digər" data-key="formTypeOther">Digər</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="equip-name" data-key="formName">Avadanlığın adı *</label>
+                                        <input type="text" id="equip-name" data-key="formNamePlaceholder" placeholder="məs: Dell Latitude Laptop" required>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="equip-model" data-key="formModel">Marka/Model *</label>
+                                        <input type="text" id="equip-model" data-key="formModelPlaceholder" placeholder="məs: Dell Latitude 5420" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="equip-serial" data-key="formSerial">Serial Nömrə</label>
+                                        <input type="text" id="equip-serial" data-key="formSerialPlaceholder" placeholder="məs: SN123456789">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="equip-mac" data-key="formMac">MAC Address</label>
+                                        <input type="text" id="equip-mac" data-key="formMacPlaceholder" placeholder="məs: 00:1A:2B:3C:4D:5E">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="equip-status" data-key="formStatus">Status *</label>
+                                        <select id="equip-status" required>
+                                            <option value="İşlək" data-key="formStatusWorking">İşlək</option>
+                                            <option value="Xarab" data-key="formStatusBroken">Xarab</option>
+                                            <option value="Təmirdə" data-key="formStatusRepair">Təmirdə</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="equip-date" data-key="formDate">Alınma Tarixi</label>
+                                        <input type="date" id="equip-date">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="equip-file" data-key="formUpload">Şəkil Yüklə</label>
+                                        <input type="file" id="equip-file" class="file-input">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group full-width">
+                                        <label for="equip-notes" data-key="formNotes">Qeyd/Şərh</label>
+                                        <textarea id="equip-notes" data-key="formNotesPlaceholder" placeholder="Əlavə məlumat..."></textarea>
+                                    </div>
+                                </div>
+                                <button type="submit" class="submit-btn"><i class="fas fa-plus"></i> <span data-key="submitSendApproval">Təsdiqə göndər</span></button>
+                            </form>
+                    </section>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="edit-equipment-modal" class="modal-overlay">
+        <div class="modal-content" style="width: 600px;">
+            <button class="modal-close-btn" id="edit-modal-close"><i class="fas fa-times"></i></button>
+            <div class="modal-header">
+                <h2 data-key="editEquipmentTitle">Avadanlığı Redaktə Et</h2>
+            </div>
+            <form id="edit-equipment-form" class="equipment-form" style="padding-top: 10px;">
+                <input type="hidden" id="edit-equip-id">
+                <input type="hidden" id="edit-equip-current-status"> <div class="form-row">
+                    <div class="form-group">
+                        <label for="edit-equip-type" data-key="formType">Avadanlıq növü *</label>
+                        <select id="edit-equip-type" required>
+                            <option value="" disabled selected data-key="formTypeSelect">Növü seçin</option>
+                            <option value="Kompüter" data-key="formTypeComputer">Kompüter</option>
+                            <option value="Monitor" data-key="formTypeMonitor">Monitor</option>
+                            <option value="Printer" data-key="formTypePrinter">Printer</option>
+                            <option value="Digər" data-key="formTypeOther">Digər</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-equip-name" data-key="formName">Avadanlığın adı *</label>
+                        <input type="text" id="edit-equip-name" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="edit-equip-model" data-key="formModel">Marka/Model *</label>
+                        <input type="text" id="edit-equip-model" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-equip-serial" data-key="formSerial">Serial Nömrə</label>
+                        <input type="text" id="edit-equip-serial">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="edit-equip-mac" data-key="formMac">MAC Address</label>
+                        <input type="text" id="edit-equip-mac">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-equip-status" data-key="formStatus">Status *</label>
+                        <select id="edit-equip-status" required>
+                            <option value="İşlək" data-key="formStatusWorking">İşlək</option>
+                            <option value="Xarab" data-key="formStatusBroken">Xarab</option>
+                            <option value="Təmirdə" data-key="formStatusRepair">Təmirdə</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="edit-equip-date" data-key="formDate">Alınma Tarixi</label>
+                        <input type="date" id="edit-equip-date">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="edit-equip-notes" data-key="formNotes">Qeyd/Şərh</label>
+                        <textarea id="edit-equip-notes"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="submit-btn btn-secondary" id="edit-cancel-btn" data-key="cancel">Ləğv et</button>
+                    <button type="submit" class="submit-btn btn-primary" data-key="saveChanges">Yadda Saxla</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="profile-modal" class="modal-overlay">
+        <div class="modal-content profile-modal">
+            <button class="modal-close-btn" id="profile-modal-close"><i class="fas fa-times"></i></button>
+            <div class="modal-header">
+                <h2 data-key="profileSettings">Profil Parametrləri</h2>
+            </div>
+            <form id="profile-settings-form">
+                <div class="modal-body">
+                    <div class="profile-pic-wrapper">
+                        <div class="profile-pic" id="profile-pic-modal">
+                            İS
+                            <label for="profile-pic-upload" class="upload-btn">
+                                <i class="fas fa-camera"></i>
+                            </label>
+                            <input type="file" id="profile-pic-upload" accept="image/*">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-name" data-key="fullNameLabel">Tam ad</label>
+                        <input type="text" id="profile-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-email" data-key="emailLabel">E-poçt ünvanı</label>
+                        <input type="email" id="profile-email" disabled>
+                    </div>
+                    
+                    <button type="button" class="submit-btn btn-secondary change-password-btn" id="change-password-btn-open">
+                        <i class="fas fa-lock"></i> <span data-key="changePassword">Şifrəni Dəyiş</span>
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="submit-btn btn-secondary" id="profile-cancel-btn" data-key="cancel">Ləğv et</button>
+                    <button type="submit" class="submit-btn btn-primary" data-key="updateProfile">Profili Yenilə</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="change-password-modal" class="modal-overlay">
+        <div class="modal-content profile-modal" style="width: 400px;">
+            <button class="modal-close-btn" id="password-modal-close"><i class="fas fa-times"></i></button>
+            <div class="modal-header">
+                <h2 data-key="changePasswordTitle">Şifrəni Dəyiş</h2>
+            </div>
+            <form id="change-password-form">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="old-password" data-key="oldPassword">Köhnə şifrə</label>
+                        <input type="password" id="old-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-password" data-key="newPassword">Yeni şifrə</label>
+                        <input type="password" id="new-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-new-password" data-key="confirmNewPassword">Yeni şifrəni təsdiqlə</label>
+                        <input type="password" id="confirm-new-password" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="submit-btn btn-secondary" id="password-cancel-btn" data-key="cancel">Ləğv et</button>
+                    <button type="submit" class="submit-btn btn-primary" data-key="changePassword">Şifrəni Dəyiş</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script src="i18n.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAI2rM3vttKrDI9C4vDD41_hcXurLvQ6gw",
+            authDomain: "it-inventory-tracker-61d2c.firebaseapp.com",
+            projectId: "it-inventory-tracker-61d2c",
+            storageBucket: "it-inventory-tracker-61d2c.firebasestorage.app",
+            messagingSenderId: "557225811726",
+            appId: "1:557225811726:web:f85c3ca033997d2f95c15f"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        let currentUserId = null; 
+        let myEquipmentCache = []; // Edit üçün məlumatları tez tapmaq üçün
+
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                currentUserId = user.uid; 
+                document.getElementById('user-email-display').innerText = user.email;
+
+                db.collection("users").doc(user.uid).onSnapshot(doc => {
+                    if (doc.exists) {
+                        const userData = doc.data();
+                        const name = userData.name || t('userWelcome');
+                        const profilePicUrl = userData.profilePicUrl;
+                        
+                        document.getElementById('user-name-display').innerText = name;
+                        document.getElementById('profile-name').value = name;
+                        document.getElementById('profile-email').value = user.email;
+
+                        const initials = name.split(' ').map(n => n[0]).join('').substring(0,2);
+                        const headerPic = document.getElementById('profile-pic-header');
+                        const modalPic = document.getElementById('profile-pic-modal');
+                        
+                        if (profilePicUrl) {
+                            headerPic.style.backgroundImage = `url(${profilePicUrl})`;
+                            headerPic.innerText = '';
+                            modalPic.style.backgroundImage = `url(${profilePicUrl})`;
+                            modalPic.innerText = '';
+                        } else {
+                            headerPic.style.backgroundImage = '';
+                            headerPic.innerText = initials;
+                            modalPic.style.backgroundImage = '';
+                            modalPic.innerText = initials;
+                        }
+                    }
+                });
+                
+                loadMyEquipment(user.uid);
+            } else {
+                window.location.href = "index.html";
+            }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            auth.signOut().then(() => {
+                window.location.href = "index.html";
+            });
+        });
+
+        const tabLinks = document.querySelectorAll('.tab-nav .tab-link');
+        const tabContents = document.querySelectorAll('.tab-content');
+        tabLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                const tabId = link.getAttribute('data-tab');
+                tabLinks.forEach(item => item.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                link.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        const addForm = document.getElementById('add-equipment-form');
+        addForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (!currentUserId) { alert(t('sessionExpired')); return; }
+            
+            const equipmentData = {
+                type: document.getElementById('equip-type').value,
+                name: document.getElementById('equip-name').value,
+                model: document.getElementById('equip-model').value,
+                serial: document.getElementById('equip-serial').value,
+                mac: document.getElementById('equip-mac').value,
+                status: document.getElementById('equip-status').value,
+                purchaseDate: document.getElementById('equip-date').value,
+                notes: document.getElementById('equip-notes').value,
+                addedAt: new Date(),
+                addedByUserId: currentUserId,
+                addedByEmail: auth.currentUser.email,
+                approvalStatus: "pending" 
+            };
+
+            db.collection("equipment").add(equipmentData)
+                .then(() => {
+                    alert(t('equipmentSentForApproval'));
+                    addForm.reset(); 
+                    document.querySelector('.tab-link[data-tab="my-equipment-tab"]').click(); 
+                })
+                .catch((error) => {
+                    console.error("Xəta baş verdi: ", error);
+                    alert(t('errorAddingEquipment'));
+                });
+        });
+
+        function loadMyEquipment(userId) {
+            db.collection("equipment")
+             .where("addedByUserId", "==", userId) 
+             .onSnapshot(snapshot => {
+                
+                myEquipmentCache = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+                const tableBody = document.getElementById('my-equipment-tbody');
+                const emptyState = document.getElementById('my-empty-state');
+                tableBody.innerHTML = ""; 
+                
+                if (myEquipmentCache.length === 0) emptyState.style.display = "block";
+                else emptyState.style.display = "none";
+
+                let total = 0;
+                let islek = 0;
+                let xarab = 0;
+
+                myEquipmentCache.forEach(equip => {
+                    let statusText = equip.approvalStatus === 'pending' ? t('statusWaiting') : t('statusApproved');
+                    let statusClass = equip.approvalStatus === 'pending' ? 'status-pending' : 'status-approved';
+
+                    // Edit button həmişə görünür, lakin funksionallıq fərqlənir
+                    const row = `
+                        <tr>
+                            <td>${equip.type}</td>
+                            <td>${equip.name} (${equip.model})</td>
+                            <td class="status-${equip.status.toLowerCase()}">${equip.status}</td>
+                            <td class="${statusClass}">${statusText}</td>
+                            <td>
+                                <div style="display: flex; gap: 5px;">
+                                    <button class="edit-btn small-btn" data-id="${equip.id}" style="background-color: #2196F3; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="delete-btn small-btn" data-id="${equip.id}" style="background-color: #f44336; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+
+                    if (equip.approvalStatus === 'approved') {
+                        total++;
+                        if (equip.status === "İşlək") islek++;
+                        else xarab++;
+                    }
+                });
+
+                document.getElementById('stat-total').innerText = total;
+                document.getElementById('stat-islek').innerText = islek;
+                document.getElementById('stat-xarab').innerText = xarab;
+            });
+        }
+        
+        // Cədvəl düymələri üçün Event Delegation
+        document.getElementById('my-equipment-tbody').addEventListener('click', (e) => {
+            // Delete logic
+            if (e.target.closest('.delete-btn')) {
+                const docId = e.target.closest('.delete-btn').getAttribute('data-id');
+                if (confirm(t('confirmDeleteApproval'))) {
+                    db.collection("equipment").doc(docId).delete();
+                }
+            }
+
+            // Edit logic
+            if (e.target.closest('.edit-btn')) {
+                const docId = e.target.closest('.edit-btn').getAttribute('data-id');
+                const equip = myEquipmentCache.find(item => item.id === docId);
+
+                if (equip) {
+                    if (equip.approvalStatus === 'approved') {
+                        // Təsdiqlənib, xəbərdarlıq et
+                        if (confirm(t('warningEditApproved'))) {
+                            openEditModal(equip);
+                        }
+                    } else {
+                        // Gözləyir, birbaşa aç
+                        openEditModal(equip);
+                    }
+                }
+            }
+        });
+
+        // --- REDAKTƏ MODALI LOGİKASI ---
+        const editModal = document.getElementById('edit-equipment-modal');
+        const editForm = document.getElementById('edit-equipment-form');
+        
+        document.getElementById('edit-modal-close').onclick = () => editModal.style.display = 'none';
+        document.getElementById('edit-cancel-btn').onclick = () => editModal.style.display = 'none';
+
+        function openEditModal(data) {
+            document.getElementById('edit-equip-id').value = data.id;
+            document.getElementById('edit-equip-current-status').value = data.approvalStatus;
+            
+            document.getElementById('edit-equip-type').value = data.type;
+            document.getElementById('edit-equip-name').value = data.name;
+            document.getElementById('edit-equip-model').value = data.model;
+            document.getElementById('edit-equip-serial').value = data.serial || '';
+            document.getElementById('edit-equip-mac').value = data.mac || '';
+            document.getElementById('edit-equip-status').value = data.status;
+            document.getElementById('edit-equip-date').value = data.purchaseDate || '';
+            document.getElementById('edit-equip-notes').value = data.notes || '';
+
+            editModal.style.display = 'flex';
+        }
+
+        editForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const docId = document.getElementById('edit-equip-id').value;
+            const updatedData = {
+                type: document.getElementById('edit-equip-type').value,
+                name: document.getElementById('edit-equip-name').value,
+                model: document.getElementById('edit-equip-model').value,
+                serial: document.getElementById('edit-equip-serial').value,
+                mac: document.getElementById('edit-equip-mac').value,
+                status: document.getElementById('edit-equip-status').value,
+                purchaseDate: document.getElementById('edit-equip-date').value,
+                notes: document.getElementById('edit-equip-notes').value,
+                // Mühüm: Hər dəfə redaktə olunanda status "pending" olur.
+                // Əgər əvvəl də pending idisə, pending qalır.
+                // Əgər approved idisə, pending-ə keçir (Admin yenidən görməlidir).
+                approvalStatus: 'pending' 
+            };
+
+            db.collection("equipment").doc(docId).update(updatedData)
+                .then(() => {
+                    alert(t('equipmentUpdated'));
+                    editModal.style.display = 'none';
+                })
+                .catch(err => {
+                    console.error("Update error:", err);
+                    alert(t('errorAddingEquipment')); // Eyni xəta mesajını istifadə edə bilərik
+                });
+        });
+        
+        
+        // --- PROFİL MODALI ---
+        const profileModal = document.getElementById('profile-modal');
+        const profileBtn = document.getElementById('profile-btn');
+        const profileCloseBtn = document.getElementById('profile-modal-close');
+        const profileCancelBtn = document.getElementById('profile-cancel-btn');
+        const profileForm = document.getElementById('profile-settings-form');
+        const profilePicUpload = document.getElementById('profile-pic-upload');
+
+        profileBtn.onclick = () => profileModal.style.display = 'flex';
+        profileCloseBtn.onclick = () => profileModal.style.display = 'none';
+        profileCancelBtn.onclick = () => profileModal.style.display = 'none';
+
+        profileForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('profile-name').value;
+            
+            db.collection("users").doc(currentUserId).update({ name: name })
+            .then(() => {
+                alert(t('profileUpdateSuccess'));
+                profileModal.style.display = 'none';
+            })
+            .catch(err => {
+                alert(t('profileUpdateError') + err.message);
+            });
+        });
+        
+        profilePicUpload.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const storageRef = storage.ref(`profile_pics/${currentUserId}/${file.name}`);
+            const uploadTask = storageRef.put(file);
+
+            uploadTask.on('state_changed', 
+                (snapshot) => {}, 
+                (error) => { alert(t('profileUpdateError') + error.message); }, 
+                () => {
+                    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                        db.collection("users").doc(currentUserId).update({
+                            profilePicUrl: downloadURL
+                        });
+                    });
+                }
+            );
+        });
+
+        // --- ŞİFRƏ DƏYİŞMƏ ---
+        const changePasswordModal = document.getElementById('change-password-modal');
+        const changePasswordBtnOpen = document.getElementById('change-password-btn-open');
+        const passwordModalClose = document.getElementById('password-modal-close');
+        const passwordCancelBtn = document.getElementById('password-cancel-btn');
+        const changePasswordForm = document.getElementById('change-password-form');
+
+        changePasswordBtnOpen.addEventListener('click', () => {
+            profileModal.style.display = 'none';
+            changePasswordModal.style.display = 'flex';
+        });
+
+        passwordModalClose.onclick = () => changePasswordModal.style.display = 'none';
+        passwordCancelBtn.onclick = () => changePasswordModal.style.display = 'none';
+        
+        changePasswordForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const oldPassword = document.getElementById('old-password').value;
+            const newPassword = document.getElementById('new-password').value;
+            const confirmNewPassword = document.getElementById('confirm-new-password').value;
+
+            if (newPassword !== confirmNewPassword) {
+                alert(t('pwMismatch'));
+                return;
+            }
+
+            const user = auth.currentUser;
+            const credential = firebase.auth.EmailAuthProvider.credential(user.email, oldPassword);
+
+            try {
+                await user.reauthenticateWithCredential(credential);
+                await user.updatePassword(newPassword);
+                
+                alert(t('passwordUpdateSuccess'));
+                changePasswordModal.style.display = 'none';
+                changePasswordForm.reset();
+
+            } catch (error) {
+                if (error.code === 'auth/wrong-password') {
+                    alert(t('reauthError'));
+                } else if (error.code === 'auth/weak-password') {
+                    alert(t('weakPassword'));
+                } else {
+                    alert(t('passwordUpdateError') + error.message);
+                }
+            }
+        });
+        
+    </script>
+</body>
+</html>

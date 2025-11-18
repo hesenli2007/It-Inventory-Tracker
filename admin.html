@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-key="adminPanelTitle">Admin Paneli</title>
+    <link rel="stylesheet" href="panel-style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="page-container">
+        <header class="panel-header">
+            <div class="logo" id="profile-btn">
+                <div class="logo-icon admin" id="profile-pic-header">AD</div>
+                <div class="logo-text">
+                    <span data-key="adminWelcome">Admin İstifadəçi</span>
+                    <span id="admin-name-display" data-key="loading">Yüklənir...</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <div class="lang-switcher" id="lang-btn">
+                    <i class="fas fa-globe"></i>
+                    <span class="lang-btn-text">AZ</span>
+                    <div class="lang-dropdown" id="lang-dropdown">
+                        <a href="#" data-lang="az" data-key="langAzerbaijani">Azərbaycanca (AZ)</a>
+                        <a href="#" data-lang="en" data-key="langEnglish">English (EN)</a>
+                        <a href="#" data-lang="ru" data-key="langRussian">Русский (RU)</a>
+                    </div>
+                </div>
+                <button class="header-icon"><i class="fas fa-bell"></i></button>
+                <button id="logout-btn" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> <span data-key="logout">Çıxış</span>
+                </button>
+            </div>
+        </header>
+
+        <main class="panel-main">
+            <div class="panel-title">
+                <h2 data-key="adminPanelTitle">Admin Paneli</h2>
+                <span data-key="appName">IT Inventory Tracker</span>
+            </div>
+
+            <section class="stat-cards">
+                 <div class="card orange">
+                    <div class="card-info">
+                        <span class="card-title" data-key="statPending">Təsdiq Gözləyən</span>
+                        <span class="card-value" id="stat-pending">0</span>
+                    </div>
+                    <div class="card-icon"><i class="fas fa-clock"></i></div>
+                </div>
+                <div class="card green">
+                    <div class="card-info">
+                        <span class="card-title" data-key="statTotalEquipment">Təsdiqlənmiş Avadanlıq</span>
+                        <span class="card-value" id="stat-total">0</span>
+                    </div>
+                    <div class="card-icon"><i class="fas fa-box"></i></div>
+                </div>
+                <div class="card green-light">
+                    <div class="card-info">
+                        <span class="card-title" data-key="statWorking">İşlək (Təsdiqlənmiş)</span>
+                        <span class="card-value" id="stat-islek">0</span>
+                    </div>
+                    <div class="card-icon"><i class="fas fa-check-circle"></i></div>
+                </div>
+                <div class="card orange"> 
+                    <div class="card-info">
+                        <span class="card-title" data-key="statTotalUsers">İstifadəçilər</span>
+                        <span class="card-value" id="stat-users">0</span>
+                    </div>
+                    <div class="card-icon"><i class="fas fa-users"></i></div>
+                </div>
+            </section>
+
+            <section class="content-tabs">
+                <div class="tab-nav">
+                    <button class="tab-link active" data-tab="inventory-tab"><i class="fas fa-tasks"></i> <span data-key="adminTabAllInventory">Bütün İnventarlar</span></button>
+                    <button class="tab-link" data-tab="pending-tab">
+                        <i class="fas fa-clock"></i> <span data-key="adminTabPending">Təsdiq Gözləyənlər</span>
+                        
+                        <span class="notification-badge" id="pending-count">0</span>
+                    
+                    </button>
+                    <button class="tab-link" data-tab="users-tab"><i class="fas fa-users-cog"></i> <span data-key="adminTabUsers">İstifadəçilər</span></button>
+                    <button class="tab-link" data-tab="add-equip-tab"><i class="fas fa-plus"></i> <span data-key="tabAddEquipment">Avadanlıq Əlavə Et</span></button> 
+                </div>
+
+                <div class="tab-content active" id="inventory-tab">
+                    <div class="list-header">
+                        <div class="search-bar">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="inventory-search" data-key="searchPlaceholder" placeholder="Ad, soyad, serial nömrə, MAC və s. ilə axtar...">
+                        </div>
+                    </div>
+                    <div class="equipment-card-list" id="all-equipment-list">
+                        </div>
+                    <div id="all-empty-state" class="empty-state" style="display: none;">
+                        <i class="fas fa-laptop-medical"></i>
+                        <h3 data-key="emptyStateAllEquipment">Hələ təsdiqlənmiş avadanlıq yoxdur.</h3>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="pending-tab">
+                    <div class="list-body">
+                        <table id="pending-equipment-table">
+                            <thead>
+                                <tr>
+                                    <th data-key="thWhoAdded">Kim Əlavə Etdi</th>
+                                    <th data-key="thNameModel">Adı / Model</th>
+                                    <th data-key="thStatus">Statusu</th>
+                                    <th data-key="thOperations">Əməliyyatlar</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pending-equipment-tbody"></tbody>
+                        </table>
+                         <div id="pending-empty-state" class="empty-state" style="display: none;">
+                            <i class="fas fa-check-double"></i>
+                            <h3 data-key="emptyStatePending">Təsdiq üçün heç bir avadanlıq yoxdur.</h3>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="add-equip-tab">
+                    <section class="form-container" style="box-shadow: none;">
+                        <form id="admin-add-equipment-form" class="equipment-form" style="padding-top: 15px;">
+                            <div class="form-row">
+                                <div class="form-group full-width">
+                                    <label for="assign-user-select" data-key="adminAssignUser">Avadanlıq Hansı İstifadəçiyə Təyin Edilir? *</label>
+                                    <select id="assign-user-select" required>
+                                        <option value="" disabled selected data-key="adminAssignUserSelect">İstifadəçi seçin...</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="admin-equip-type" data-key="formType">Avadanlıq növü *</label>
+                                    <select id="admin-equip-type" required>
+                                        <option value="" disabled selected data-key="formTypeSelect">Növü seçin</option>
+                                        <option value="Kompüter" data-key="formTypeComputer">Kompüter</option>
+                                        <option value="Monitor" data-key="formTypeMonitor">Monitor</option>
+                                        <option value="Printer" data-key="formTypePrinter">Printer</option>
+                                        <option value="Digər" data-key="formTypeOther">Digər</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="admin-equip-name" data-key="formName">Avadanlığın adı *</label>
+                                    <input type="text" id="admin-equip-name" data-key="formNamePlaceholder" placeholder="məs: Dell Latitude Laptop" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="admin-equip-model" data-key="formModel">Marka/Model *</label>
+                                    <input type="text" id="admin-equip-model" data-key="formModelPlaceholder" placeholder="məs: Dell Latitude 5420" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="admin-equip-serial" data-key="formSerial">Serial Nömrə</label>
+                                    <input type="text" id="admin-equip-serial" data-key="formSerialPlaceholder" placeholder="məs: SN123456789">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="admin-equip-mac" data-key="formMac">MAC Address</label>
+                                    <input type="text" id="admin-equip-mac" data-key="formMacPlaceholder" placeholder="məs: 00:1A:2B:3C:4D:5E">
+                                </div>
+                                <div class="form-group">
+                                    <label for="admin-equip-status" data-key="formStatus">Status *</label>
+                                    <select id="admin-equip-status" required>
+                                        <option value="İşlək" data-key="formStatusWorking">İşlək</option>
+                                        <option value="Xarab" data-key="formStatusBroken">Xarab</option>
+                                        <option value="Təmirdə" data-key="formStatusRepair">Təmirdə</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="admin-equip-date" data-key="formDate">Alınma Tarixi</label>
+                                    <input type="date" id="admin-equip-date">
+                                </div>
+                                <div class="form-group">
+                                    <label for="admin-equip-file" data-key="formUpload">Şəkil Yüklə</label>
+                                    <input type="file" id="admin-equip-file" class="file-input">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group full-width">
+                                    <label for="admin-equip-notes" data-key="formNotes">Qeyd/Şərh</label>
+                                    <textarea id="admin-equip-notes" data-key="formNotesPlaceholder" placeholder="Əlavə məlumat..."></textarea>
+                                </div>
+                            </div>
+                            <button type="submit" class="submit-btn"><i class="fas fa-plus"></i> <span data-key="submitAssignEquipment">Avadanlığı Təyin Et (Birbaşa)</span></button>
+                        </form>
+                    </section>
+                </div>
+                
+                <div class="tab-content" id="users-tab">
+                     <div class="list-header">
+                        <div class="search-bar">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="user-search" data-key="searchUsersPlaceholder" placeholder="Ad, e-poçt və ya rola görə axtar...">
+                        </div>
+                        <button class="add-user-btn" id="add-user-btn"><i class="fas fa-plus"></i> <span data-key="addUser">Yeni İstifadəçi Yarat</span></button>
+                    </div>
+                    <div class="user-card-list" id="all-users-list">
+                        </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="profile-modal" class="modal-overlay">
+        <div class="modal-content profile-modal">
+            <button class="modal-close-btn" id="profile-modal-close"><i class="fas fa-times"></i></button>
+            <div class="modal-header">
+                <h2 data-key="profileSettings">Profil Parametrləri</h2>
+            </div>
+            <form id="profile-settings-form">
+                <div class="modal-body">
+                    <div class="profile-pic-wrapper">
+                        <div class="profile-pic" id="profile-pic-modal">
+                            AD
+                            <label for="profile-pic-upload" class="upload-btn">
+                                <i class="fas fa-camera"></i>
+                            </label>
+                            <input type="file" id="profile-pic-upload" accept="image/*">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-name" data-key="fullNameLabel">Tam ad</label>
+                        <input type="text" id="profile-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-email" data-key="emailLabel">E-poçt ünvanı</label>
+                        <input type="email" id="profile-email" disabled>
+                    </div>
+                    
+                    <button type="button" class="submit-btn btn-secondary change-password-btn" id="change-password-btn-open">
+                        <i class="fas fa-lock"></i> <span data-key="changePassword">Şifrəni Dəyiş</span>
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="submit-btn btn-secondary" id="profile-cancel-btn" data-key="cancel">Ləğv et</button>
+                    <button type="submit" class="submit-btn btn-primary" data-key="updateProfile">Profili Yenilə</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div id="approval-modal" class="modal-overlay">
+        <div class="modal-content approval-modal">
+            <button class="modal-close-btn" id="approval-modal-close"><i class="fas fa-times"></i></button>
+            <div class="modal-header">
+                <h2 data-key="equipmentDetails">Avadanlıq Məlumatları</h2>
+            </div>
+            
+            <div class="modal-body">
+                <div class="info-item">
+                    <span class="info-item-label" data-key="addedBy">Əlavə edən</span>
+                    <span class="info-item-value" id="approval-email"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-item-label" data-key="sentDate">Gəndərilmə tarixi</span>
+                    <span class="info-item-value" id="approval-date"></span>
+                </div>
+                
+                <hr>
+                <div class="info-item">
+                    <span class="info-item-label" data-key="thNameModel">Adı / Model</span>
+                    <span class="info-item-value" id="approval-name" style="font-weight: 600;"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-item-label" data-key="formType">Növü</span>
+                    <span class="info-item-value" id="approval-type"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-item-label" data-key="formModel">Marka/Model</span>
+                    <span class="info-item-value" id="approval-model"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-item-label" data-key="formSerial">Serial Nömrə</span>
+                    <span class="info-item-value" id="approval-serial"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-item-label" data-key="formMac">MAC Address</span>
+                    <span class="info-item-value" id="approval-mac"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-item-label" data-key="thStatus">Statusu</span>
+                    <span class="info-item-value"><span class="tag" id="approval-status"></span></span>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="submit-btn btn-reject" id="approval-reject-btn">
+                    <i class="fas fa-times"></i> <span data-key="reject">Rədd et</span>
+                </button>
+                <button type="button" class="submit-btn btn-approve" id="approval-approve-btn">
+                    <i class="fas fa-check"></i> <span data-key="approve">Təsdiqlə</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="add-user-modal" class="modal-overlay">
+        <div class="modal-content profile-modal" style="width: 450px;">
+            <button class="modal-close-btn" id="add-user-modal-close"><i class="fas fa-times"></i></button>
+            <div class="modal-header">
+                <h2 data-key="addUserTitle">Yeni İstifadəçi Yarat</h2>
+            </div>
+            <form id="add-user-form">
+                <div class="modal-body">
+                    <p data-key="addUserP" style="font-size: 14px; color: #777; margin-top: 0; margin-bottom: 20px;">...</p>
+                    <div class="form-group">
+                        <label for="new-user-name" data-key="fullNameLabel">Tam ad</label>
+                        <input type="text" id="new-user-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-user-email" data-key="emailLabel">E-poçt ünvanı</label>
+                        <input type="email" id="new-user-email" required>
+                    </div>
+                     <div class="form-group">
+                        <label for="new-user-password" data-key="initialPassword">İlkin Şifrə *</label>
+                        <input type="password" id="new-user-password" required>
+                        <small data-key="initialPasswordP" style="font-size: 12px; color: #777; margin-top: 5px;">...</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-user-role" data-key="thRole">Rol *</label>
+                        <select id="new-user-role" required>
+                            <option value="user" data-key="roleUser">User</option>
+                            <option value="admin" data-key="roleAdmin">Admin</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="submit-btn btn-secondary" id="add-user-cancel-btn" data-key="cancel">Ləğv et</button>
+                    <button type="submit" class="submit-btn btn-primary" data-key="submitCreateUser">İstifadəçi Yarat</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div id="change-password-modal" class="modal-overlay">
+        <div class="modal-content profile-modal" style="width: 400px;">
+            <button class="modal-close-btn" id="password-modal-close"><i class="fas fa-times"></i></button>
+            <div class="modal-header">
+                <h2 data-key="changePasswordTitle">Şifrəni Dəyiş</h2>
+            </div>
+            <form id="change-password-form">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="old-password" data-key="oldPassword">Köhnə şifrə</label>
+                        <input type="password" id="old-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-password" data-key="newPassword">Yeni şifrə</label>
+                        <input type="password" id="new-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-new-password" data-key="confirmNewPassword">Yeni şifrəni təsdiqlə</label>
+                        <input type="password" id="confirm-new-password" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="submit-btn btn-secondary" id="password-cancel-btn" data-key="cancel">Ləğv et</button>
+                    <button type="submit" class="submit-btn btn-primary" data-key="changePassword">Şifrəni Dəyiş</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div id="view-equipment-modal" class="modal-overlay">
+        <div class="modal-content view-equipment-modal">
+            <button class="modal-close-btn" id="view-equipment-close-btn"><i class="fas fa-times"></i></button>
+            <div class="modal-header">
+                <h2 id="view-equipment-title" data-key="viewEquipmentTitle">İstifadəçinin Avadanlıqları</h2>
+            </div>
+            <div class="modal-body">
+                <div class="list-body">
+                    <table id="user-specific-equipment-table">
+                        <thead>
+                            <tr>
+                                <th data-key="thNameModel">Adı / Model</th>
+                                <th data-key="thStatus">Status</th>
+                                <th data-key="thSerial">Serial Nömrə</th>
+                                <th data-key="thOperations">Əməliyyat</th> </tr>
+                        </thead>
+                        <tbody id="user-specific-equipment-tbody"></tbody>
+                    </table>
+                    <div id="user-specific-empty-state" class="empty-state" style="display: none;">
+                        <i class="fas fa-laptop-medical"></i>
+                        <h3 data-key="noEquipmentFound">Bu istifadəçi üçün təsdiqlənmiş avadanlıq tapılmadı.</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="submit-btn btn-secondary" id="view-equipment-close-footer-btn" data-key="close">Bağla</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script src="i18n.js"></script>
+    
+    <script>
+        // --- ƏSAS QURAŞDIRMA ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyAI2rM3vttKrDI9C4vDD41_hcXurLvQ6gw",
+            authDomain: "it-inventory-tracker-61d2c.firebaseapp.com",
+            projectId: "it-inventory-tracker-61d2c",
+            storageBucket: "it-inventory-tracker-61d2c.firebasestorage.app",
+            messagingSenderId: "557225811726",
+            appId: "1:557225811726:web:f85c3ca033997d2f95c15f"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const secondaryApp = firebase.initializeApp(firebaseConfig, "secondary");
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+        
+        let currentAdminUID = null;
+        let allUsersCache = []; 
+        let allEquipmentCache = []; 
+        let pendingEquipmentCache = []; // DÜZƏLİŞ 2: Təsdiq gözləyənlər üçün ayrıca yaddaş
+
+        // --- AUTH YOXLAMASI ---
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                db.collection("users").doc(user.uid).onSnapshot(doc => {
+                    if (doc.exists && doc.data().role === 'admin') {
+                        currentAdminUID = user.uid; 
+                        
+                        const userData = doc.data();
+                        const name = userData.name || t('adminWelcome');
+                        const profilePicUrl = userData.profilePicUrl;
+
+                        const adminNameDisplay = document.getElementById('admin-name-display');
+                        adminNameDisplay.innerText = name;
+                        adminNameDisplay.removeAttribute('data-key');
+                        
+                        document.getElementById('profile-name').value = name;
+                        document.getElementById('profile-email').value = user.email;
+
+                        const initials = name.split(' ').map(n => n[0]).join('').substring(0,2);
+                        const headerPic = document.getElementById('profile-pic-header');
+                        const modalPic = document.getElementById('profile-pic-modal');
+                        
+                        if (profilePicUrl) {
+                            headerPic.style.backgroundImage = `url(${profilePicUrl})`;
+                            headerPic.innerText = '';
+                            modalPic.style.backgroundImage = `url(${profilePicUrl})`;
+                            modalPic.innerText = '';
+                        } else {
+                            headerPic.style.backgroundImage = '';
+                            headerPic.innerText = initials;
+                            modalPic.style.backgroundImage = '';
+                            modalPic.innerText = initials;
+                        }
+                        
+                        loadAdminData(); 
+                        
+                    } else if (doc.exists && doc.data().role !== 'admin') {
+                        alert(t('noPermission'));
+                        window.location.href = "dashboard.html";
+                    } else {
+                        alert(t('noPermission'));
+                        auth.signOut();
+                        window.location.href = "index.html";
+                    }
+                }, err => {
+                        alert(t('authErrorCheck'));
+                        window.location.href = "index.html";
+                });
+            } else {
+                window.location.href = "index.html";
+            }
+        });
+
+        // --- ÜMUMİ FUNKSİYALAR (Çıxış, Tablar) ---
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            auth.signOut().then(() => {
+                window.location.href = "index.html";
+            });
+        });
+
+        const tabLinks = document.querySelectorAll('.tab-nav .tab-link');
+        const tabContents = document.querySelectorAll('.tab-content');
+        tabLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const tabId = link.getAttribute('data-tab');
+                tabLinks.forEach(item => item.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                link.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        function updateStatCards(equipmentList) {
+            let total = equipmentList.length;
+            let islek = equipmentList.filter(e => e.status === 'İşlək').length;
+            document.getElementById('stat-total').innerText = total;
+            document.getElementById('stat-islek').innerText = islek;
+        }
+
+        function filterAndRenderInventory() {
+            const searchTerm = document.getElementById('inventory-search').value.toLowerCase();
+            let filteredList;
+
+            if (!searchTerm) {
+                filteredList = allEquipmentCache;
+            } else {
+                filteredList = allEquipmentCache.filter(equip => {
+                    const userName = allUsersCache.find(u => u.id === equip.addedByUserId)?.name || '';
+                    const searchData = [
+                        equip.name,
+                        equip.model,
+                        equip.serial,
+                        equip.mac,
+                        equip.type,
+                        equip.status,
+                        equip.addedByEmail,
+                        userName
+                    ].join(' ').toLowerCase();
+                    
+                    return searchData.includes(searchTerm);
+                });
+            }
+            
+            renderEquipmentCards(filteredList);
+            updateStatCards(filteredList);
+        }
+
+        // --- DATABAZADAN MƏLUMAT YÜKLƏMƏ ---
+        function loadAdminData() {
+            
+            // 1. Təsdiqlənmiş Avadanlıqlar
+            db.collection("equipment").where("approvalStatus", "==", "approved")
+              .onSnapshot(snapshot => {
+                allEquipmentCache = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                filterAndRenderInventory(); 
+            });
+            
+            // DÜZƏLİŞ 2: "Təsdiq Gözləyənlər" bölməsi tamamilə yenidən yazıldı
+            db.collection("equipment").where("approvalStatus", "==", "pending")
+              .onSnapshot(snapshot => {
+                  const pendingList = snapshot.docs;
+                  const tableBody = document.getElementById('pending-equipment-tbody');
+                  const emptyState = document.getElementById('pending-empty-state');
+                  const pendingCountBadge = document.getElementById('pending-count');
+                  
+                  // Məlumatları yaddaşda saxla
+                  pendingEquipmentCache = pendingList.map(doc => ({ id: doc.id, data: doc.data() }));
+                  
+                  let html = ""; 
+
+                  let pendingCount = pendingList.length;
+                  document.getElementById('stat-pending').innerText = pendingCount;
+                  pendingCountBadge.innerText = pendingCount; // Düzəliş 1 sayəsində bu təhlükəsizdir
+                  
+                  if (pendingCount > 0) pendingCountBadge.style.display = 'inline-block';
+                  else pendingCountBadge.style.display = 'none';
+                  
+                  if (pendingList.length === 0) {
+                      emptyState.style.display = "block";
+                  } else {
+                      emptyState.style.display = "none";
+                  }
+                  
+                  // 1. Bütün HTML-i bir dəfəyə yığ
+                  pendingEquipmentCache.forEach(item => {
+                      const equip = item.data;
+                      html += `
+                        <tr class="clickable-row" data-id="${item.id}">
+                            <td>${equip.addedByEmail}</td>
+                            <td>${equip.name} (${equip.model})</td>
+                            <td class="status-${equip.status.toLowerCase()}">${equip.status}</td>
+                            <td>
+                                <button class="approve-btn small-btn"><i class="fas fa-search"></i> <span data-key="viewEquipment">Bax</span></button>
+                            </td>
+                        </tr>
+                      `;
+                  });
+
+                  // 2. HTML-i Cədvələ yalnız bir dəfə əlavə et
+                  tableBody.innerHTML = html;
+
+                  // 3. Tərcüməni yenilə (i18n.js-dən)
+                  translatePage();
+              });
+
+            // DÜZƏLİŞ 2: Təsdiq cədvəlinə klik funksiyasını çöldə (event delegation) təyin et
+            document.getElementById('pending-equipment-tbody').addEventListener('click', (e) => {
+                const row = e.target.closest('tr.clickable-row');
+                if (!row) return; // Kliklənən yer sətir deyilsə, heç nə etmə
+
+                const docId = row.getAttribute('data-id');
+                if (!docId) return;
+
+                // Məlumatı yaddaşdan (cache) tap
+                const equipData = pendingEquipmentCache.find(item => item.id === docId);
+                
+                if (equipData) {
+                    openApprovalModal(equipData.id, equipData.data);
+                } else {
+                    console.error("Məlumat yaddaşda tapılmadı: ", docId);
+                }
+            });
+
+
+            // 3. Bütün İstifadəçilər
+            db.collection("users").onSnapshot(snapshot => {
+                allUsersCache = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                renderUserCards(allUsersCache); 
+                
+                const userSelect = document.getElementById('assign-user-select');
+                const currentUserSelectValue = userSelect.value;
+                
+                userSelect.innerHTML = `<option value="" disabled selected data-key="adminAssignUserSelect">İstifadəçi seçin...</option>`;
+                
+                document.getElementById('stat-users').innerText = allUsersCache.length;
+
+                allUsersCache.forEach(user => {
+                    const option = `<option value="${user.id}" data-email="${user.email}">${user.name} (${user.email})</option>`;
+                    userSelect.innerHTML += option;
+                });
+                
+                userSelect.value = currentUserSelectValue;
+                
+                filterAndRenderInventory(); 
+                translatePage();
+            });
+        }
+        
+        // --- KART YARADAN FUNKSİYALAR ---
+        function renderEquipmentCards(equipmentList) {
+            const container = document.getElementById('all-equipment-list');
+            const emptyState = document.getElementById('all-empty-state');
+            container.innerHTML = "";
+            
+            if (equipmentList.length === 0) emptyState.style.display = "block";
+            else emptyState.style.display = "none";
+            
+            equipmentList.forEach(equip => {
+                const user = allUsersCache.find(u => u.id === equip.addedByUserId);
+                const userName = user ? user.name : (equip.addedByEmail || 'Naməlum');
+
+                const searchData = [
+                    equip.name, equip.model, equip.serial, equip.mac, equip.type, equip.status, equip.addedByEmail, userName
+                ].join(' ').toLowerCase();
+
+                const card = `
+                <div class="equipment-card visible" data-userid="${equip.addedByUserId}" data-search="${searchData}">
+                    <div class="card-header">
+                        <div>
+                            <h3 class="card-title">${equip.name}</h3>
+                            <p class="card-subtitle">${equip.model}</p>
+                            <div class="card-tags">
+                                <span class="tag user-tag"><i class="fas fa-user"></i> ${userName}</span>
+                                <span class="tag status-${equip.status.toLowerCase()}">${equip.status}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div>Serial Nömrə: <span>${equip.serial || '-'}</span></div>
+                        <div>MAC Address: <span>${equip.mac || '-'}</span></div>
+                        <div>Növü: <span>${equip.type}</span></div>
+                    </div>
+                    <div class="card-footer">
+                        <span>Əlavə edən: ${equip.addedByEmail}</span>
+                        <span>${new Date(equip.addedAt.seconds * 1000).toLocaleDateString()}</span>
+                    </div>
+                </div>
+                `;
+                container.innerHTML += card;
+            });
+        }
+        
+        function renderUserCards(userList) {
+            const container = document.getElementById('all-users-list');
+            container.innerHTML = "";
+            
+            userList.forEach(user => {
+                const isAdmin = user.role === 'admin';
+                const initials = (user.name || 'User').split(' ').map(n => n[0]).join('').substring(0,2);
+                
+                const card = `
+                <div class="user-card visible" data-search="${Object.values(user).join(' ').toLowerCase()}">
+                    <div class="user-info">
+                        <div class="user-avatar ${isAdmin ? 'admin' : ''}" style="background-image: url(${user.profilePicUrl || ''})">${user.profilePicUrl ? '' : initials}</div>
+                        <div class="user-details">
+                            <span class="user-name">${user.name}</span>
+                            <span class="user-email">${user.email}</span>
+                        </div>
+                    </div>
+                    <div class="card-tags" style="margin-top: -5px; margin-bottom: 15px;">
+                         <span class="tag ${isAdmin ? 'status-islek' : 'status-pending'}">${isAdmin ? t('roleAdmin') : t('roleUser')}</span>
+                    </div>
+                    <div class="user-actions">
+                        <button class="user-action-btn role-toggle-btn ${isAdmin ? 'role-admin' : 'role-user'}" data-id="${user.id}" data-role="${user.role}">
+                            <i class="fas fa-user-shield"></i> ${isAdmin ? t('btnMakeUser') : t('btnMakeAdmin')}
+                        </button>
+                        <button class="user-action-btn view-equipment-btn" data-userid="${user.id}" data-username="${user.name}">
+                            <i class="fas fa-list"></i> <span data-key="viewEquipment">Avadanlıqlarına Bax</span>
+                        </button>
+                        <button class="user-action-btn delete delete-equipment-btn" data-userid="${user.id}" data-email="${user.email}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                `;
+                container.innerHTML += card;
+            });
+        }
+        
+        // --- AXTARIŞ VƏ FİLTR MƏNTİQİ ---
+        document.getElementById('inventory-search').addEventListener('input', filterAndRenderInventory);
+
+        document.getElementById('user-search').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            document.querySelectorAll('.user-card').forEach(card => {
+                const searchData = card.getAttribute('data-search');
+                if (searchData.includes(searchTerm)) {
+                    card.classList.add('visible');
+                } else {
+                    card.classList.remove('visible');
+                }
+            });
+        });
+        
+        // --- PROFİL MODALI JS ---
+        const profileModal = document.getElementById('profile-modal');
+        document.getElementById('profile-btn').onclick = () => profileModal.style.display = 'flex';
+        document.getElementById('profile-modal-close').onclick = () => profileModal.style.display = 'none';
+        document.getElementById('profile-cancel-btn').onclick = () => profileModal.style.display = 'none';
+
+        document.getElementById('profile-settings-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('profile-name').value;
+            
+            db.collection("users").doc(currentAdminUID).update({ name: name })
+            .then(() => {
+                alert(t('profileUpdateSuccess'));
+                profileModal.style.display = 'none';
+            })
+            .catch(err => {
+                alert(t('profileUpdateError') + err.message);
+            });
+        });
+        
+        document.getElementById('profile-pic-upload').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const storageRef = storage.ref(`profile_pics/${currentAdminUID}/${file.name}`);
+            const uploadTask = storageRef.put(file);
+            uploadTask.on('state_changed', 
+                (snapshot) => {}, 
+                (error) => { alert(t('profileUpdateError') + error.message); }, 
+                () => {
+                    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                        db.collection("users").doc(currentAdminUID).update({
+                            profilePicUrl: downloadURL
+                        });
+                    });
+                }
+            );
+        });
+        
+        // --- ŞİFRƏ DƏYİŞMƏ MODALI JS ---
+        const changePasswordModal = document.getElementById('change-password-modal');
+        const changePasswordBtnOpen = document.getElementById('change-password-btn-open');
+        const passwordModalClose = document.getElementById('password-modal-close');
+        const passwordCancelBtn = document.getElementById('password-cancel-btn');
+        const changePasswordForm = document.getElementById('change-password-form');
+
+        changePasswordBtnOpen.addEventListener('click', () => {
+            profileModal.style.display = 'none';
+            changePasswordModal.style.display = 'flex';
+        });
+
+        passwordModalClose.onclick = () => changePasswordModal.style.display = 'none';
+        passwordCancelBtn.onclick = () => changePasswordModal.style.display = 'none';
+        
+        changePasswordForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const oldPassword = document.getElementById('old-password').value;
+            const newPassword = document.getElementById('new-password').value;
+            const confirmNewPassword = document.getElementById('confirm-new-password').value;
+
+            if (newPassword !== confirmNewPassword) {
+                alert(t('pwMismatch'));
+                return;
+            }
+
+            const user = auth.currentUser;
+            const credential = firebase.auth.EmailAuthProvider.credential(user.email, oldPassword);
+
+            try {
+                await user.reauthenticateWithCredential(credential);
+                await user.updatePassword(newPassword);
+                
+                alert(t('passwordUpdateSuccess'));
+                changePasswordModal.style.display = 'none';
+                changePasswordForm.reset();
+
+            } catch (error) {
+                if (error.code === 'auth/wrong-password') {
+                    alert(t('reauthError'));
+                } else if (error.code === 'auth/weak-password') {
+                    alert(t('weakPassword'));
+                } else {
+                    alert(t('passwordUpdateError') + error.message);
+                }
+            }
+        });
+        
+        // --- TƏSDİQLƏMƏ MODALI JS ---
+        const approvalModal = document.getElementById('approval-modal');
+        document.getElementById('approval-modal-close').onclick = () => approvalModal.style.display = 'none';
+        let currentApprovalDocId = null;
+        
+        function openApprovalModal(docId, data) {
+            currentApprovalDocId = docId;
+            document.getElementById('approval-email').innerText = data.addedByEmail;
+            document.getElementById('approval-date').innerText = new Date(data.addedAt.seconds * 1000).toLocaleString();
+            document.getElementById('approval-name').innerText = data.name;
+            document.getElementById('approval-type').innerText = data.type;
+            document.getElementById('approval-model').innerText = data.model;
+            document.getElementById('approval-serial').innerText = data.serial || '-';
+            document.getElementById('approval-mac').innerText = data.mac || '-';
+            const statusTag = document.getElementById('approval-status');
+            statusTag.innerText = data.status;
+            statusTag.className = `tag status-${data.status.toLowerCase()}`;
+            approvalModal.style.display = 'flex';
+        }
+
+        document.getElementById('approval-reject-btn').onclick = () => {
+            if (currentApprovalDocId && confirm(t('confirmReject'))) {
+                db.collection("equipment").doc(currentApprovalDocId).delete()
+                    .then(() => alert(t('equipmentRejected')))
+                    .catch(err => alert(t('equipmentActionError') + err.message));
+                approvalModal.style.display = 'none';
+            }
+        };
+        document.getElementById('approval-approve-btn').onclick = () => {
+             if (currentApprovalDocId) {
+                db.collection("equipment").doc(currentApprovalDocId).update({ approvalStatus: "approved" })
+                    .then(() => alert(t('equipmentApproved')))
+                    .catch(err => alert(t('equipmentActionError') + err.message));
+                approvalModal.style.display = 'none';
+            }
+        };
+        
+        // --- İSTİFADƏÇİ ƏLAVƏ ET MODALI JS ---
+        const addUserModal = document.getElementById('add-user-modal');
+        document.getElementById('add-user-btn').onclick = () => addUserModal.style.display = 'flex';
+        document.getElementById('add-user-modal-close').onclick = () => addUserModal.style.display = 'none';
+        document.getElementById('add-user-cancel-btn').onclick = () => addUserModal.style.display = 'none';
+        
+        document.getElementById('add-user-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('new-user-name').value;
+            const email = document.getElementById('new-user-email').value;
+            const password = document.getElementById('new-user-password').value;
+            const role = document.getElementById('new-user-role').value;
+            
+            secondaryApp.auth().createUserWithEmailAndPassword(email, password)
+                .then(userCredential => {
+                    const uid = userCredential.user.uid;
+                    db.collection("users").doc(uid).set({
+                        name: name,
+                        email: email,
+                        role: role
+                    })
+                    .then(() => {
+                        alert(t('userCreateSuccess'));
+                        addUserModal.style.display = 'none';
+                        document.getElementById('add-user-form').reset();
+                        secondaryApp.auth().signOut(); 
+                    });
+                })
+                .catch(error => {
+                    alert(t('userCreateError') + error.message);
+                });
+        });
+        
+        // --- İSTİFADƏÇİ AVADANLIQLARINA BAX MODALI JS ---
+        const viewEquipmentModal = document.getElementById('view-equipment-modal');
+        document.getElementById('view-equipment-close-btn').onclick = () => viewEquipmentModal.style.display = 'none';
+        document.getElementById('view-equipment-close-footer-btn').onclick = () => viewEquipmentModal.style.display = 'none';
+
+        async function openViewEquipmentModal(userId, userName) {
+            document.getElementById('view-equipment-title').innerText = `${userName} - ${t('viewEquipmentTitle')}`;
+            const tableBody = document.getElementById('user-specific-equipment-tbody');
+            const emptyState = document.getElementById('user-specific-empty-state');
+            tableBody.innerHTML = `<tr><td colspan="4">${t('loading')}...</td></tr>`;
+            emptyState.style.display = 'none';
+            viewEquipmentModal.style.display = 'flex';
+
+            const equipmentQuery = db.collection("equipment")
+                                     .where("addedByUserId", "==", userId)
+                                     .where("approvalStatus", "==", "approved");
+            const snapshot = await equipmentQuery.get();
+
+            if (snapshot.empty) {
+                tableBody.innerHTML = '';
+                emptyState.style.display = 'block';
+            } else {
+                tableBody.innerHTML = '';
+                snapshot.forEach(doc => {
+                    const equip = doc.data();
+                    const row = `
+                        <tr>
+                            <td>${equip.name} (${equip.model})</td>
+                            <td class="status-${equip.status.toLowerCase()}">${equip.status}</td>
+                            <td>${equip.serial || '-'}</td>
+                            <td>
+                                <button class="delete-btn" data-id="${doc.id}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+                });
+            }
+        }
+        
+        document.getElementById('user-specific-equipment-tbody').addEventListener('click', (e) => {
+             if (e.target.closest('.delete-btn')) {
+                const docId = e.target.closest('.delete-btn').getAttribute('data-id');
+                if (confirm(t('confirmDeleteEquipment'))) {
+                    db.collection("equipment").doc(docId).delete();
+                }
+            }
+        });
+
+        // --- CƏDVƏL VƏ KART KLİKLƏRİ (EVENT DELEGATION) ---
+        document.getElementById('all-users-list').addEventListener('click', async (e) => {
+            const button = e.target.closest('button');
+            if (!button) return;
+
+            if (button.classList.contains('view-equipment-btn')) {
+                const userId = button.getAttribute('data-userid');
+                const userName = button.getAttribute('data-username');
+                openViewEquipmentModal(userId, userName);
+            }
+
+            if (button.classList.contains('role-toggle-btn')) {
+                const docId = button.getAttribute('data-id'); 
+                if (!docId) return;
+                if (docId === currentAdminUID) { alert(t('errorOnSelf')); return; }
+                
+                const oldRole = button.getAttribute('data-role');
+                const newRole = oldRole === 'admin' ? 'user' : 'admin';
+                if (confirm(t('confirmChangeRole'))) {
+                    db.collection("users").doc(docId).update({ role: newRole });
+                }
+            }
+
+            if (button.classList.contains('delete-equipment-btn')) { 
+                const docId = button.getAttribute('data-userid'); 
+                if (!docId) return;
+                if (docId === currentAdminUID) { alert(t('errorOnSelf')); return; }
+                
+                const email = button.getAttribute('data-email');
+                
+                if (confirm(t('confirmDeleteUserEquipment'))) {
+                    try {
+                        button.disabled = true;
+                        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+                        const equipmentQuery = db.collection("equipment").where("addedByUserId", "==", docId);
+                        const equipmentSnapshot = await equipmentQuery.get();
+
+                        if (equipmentSnapshot.empty) {
+                            alert(t('userEquipmentDeleteNone'));
+                            button.disabled = false;
+                            button.innerHTML = '<i class="fas fa-trash"></i>';
+                            return; 
+                        }
+
+                        const batch = db.batch();
+                        equipmentSnapshot.forEach(doc => {
+                            batch.delete(doc.ref);
+                        });
+                        
+                        await batch.commit();
+                        alert(`${equipmentSnapshot.size} ${t('userEquipmentDeleteSuccess')}`);
+                        
+                        button.disabled = false;
+                        button.innerHTML = '<i class="fas fa-trash"></i>';
+
+                    } catch (error) {
+                        console.error(t('errorDeleteEquipment'), error);
+                        alert(t('errorDeleteEquipment') + error.message);
+                        button.disabled = false;
+                        button.innerHTML = '<i class="fas fa-trash"></i>';
+                    }
+                }
+            }
+        });
+        
+        // Admin ilə Avadanlıq Əlavə Etmə Formu
+        document.getElementById('admin-add-equipment-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const adminAddForm = document.getElementById('admin-add-equipment-form');
+            const userSelect = document.getElementById('assign-user-select');
+            const selectedUser = userSelect.options[userSelect.selectedIndex];
+            if (userSelect.value === "") { alert(t('selectUserFirst')); return; }
+            
+            const assignedUserId = selectedUser.value;
+            const assignedUserEmail = selectedUser.getAttribute('data-email');
+
+            const equipmentData = {
+                type: adminAddForm.querySelector('#admin-equip-type').value,
+                name: adminAddForm.querySelector('#admin-equip-name').value,
+                model: adminAddForm.querySelector('#admin-equip-model').value,
+                serial: adminAddForm.querySelector('#admin-equip-serial').value,
+                mac: adminAddForm.querySelector('#admin-equip-mac').value,
+                status: adminAddForm.querySelector('#admin-equip-status').value,
+                notes: adminAddForm.querySelector('#admin-equip-notes').value, 
+                purchaseDate: adminAddForm.querySelector('#admin-equip-date').value, 
+                addedAt: new Date(),
+                addedByUserId: assignedUserId, 
+                addedByEmail: assignedUserEmail,
+                approvalStatus: "approved" 
+            };
+
+            db.collection("equipment").add(equipmentData)
+                .then(() => {
+                    alert(`${t('equipmentAddedSuccess')} (${assignedUserEmail})`);
+                    adminAddForm.reset(); 
+                    document.querySelector('.tab-link[data-tab="inventory-tab"]').click();
+                })
+                .catch((error) => {
+                    console.error("Xəta baş verdi: ", error);
+                    alert(t('errorAddingEquipment'));
+                });
+        });
+    </script>
+</body>
+</html>
