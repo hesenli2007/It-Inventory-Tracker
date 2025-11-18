@@ -1,0 +1,273 @@
+/* === STYLE.CSS (index.html üçün) === */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background-image: url('https://karabakh.edu.az/uploads/450072451_1524109088230628_9124582998417446705_n-66b4a39a151f3.jpg');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    color: #333;
+    align-items: center;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(5px);
+    z-index: 1;
+}
+
+.main-container, .lang-switcher, .help-icon {
+    position: relative;
+    z-index: 2;
+}
+.lang-switcher, .help-icon {
+    cursor: pointer;
+}
+
+.logo-container {
+    width: 80px;
+    height: 80px;
+    background-color: #00875A;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 auto 15px auto;
+    border: 4px solid #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+    text-align: center;
+    color: white;
+    font-weight: 500;
+    margin-bottom: 20px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.form-box {
+    width: 400px;
+    max-width: 90%;
+    background-color: #FFFFFF;
+    border-radius: 16px; 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.tab-nav {
+    display: flex;
+    background-color: #f0f2f5; 
+    padding: 6px;
+    margin: 20px 20px 0 20px; 
+    border-radius: 10px;
+}
+
+.tab-link {
+    width: 50%;
+    padding: 12px;
+    border: none;
+    background-color: transparent; 
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    color: #555;
+    border-radius: 8px; 
+    transition: all 0.3s ease;
+}
+
+.tab-link.active {
+    color: #00875A; 
+    background-color: #fff; 
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); 
+}
+
+.tab-content {
+    padding: 30px;
+    padding-top: 20px;
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 15px; 
+    font-weight: 500;
+    color: #333;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 14px 15px; 
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+}
+.input-group input::placeholder {
+    color: #bbb;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #00875A;
+    box-shadow: 0 0 0 3px rgba(0, 135, 90, 0.1);
+}
+
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper input {
+    padding-right: 45px;
+}
+
+.toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #999;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #00875A;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px; 
+}
+
+.submit-btn:hover {
+    background-color: #007A50;
+}
+
+/* YENİ: DİL DROPDOWN STİLLƏRİ */
+.lang-switcher {
+    position: absolute;
+    top: 25px;
+    right: 30px;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #333;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    backdrop-filter: blur(5px);
+    z-index: 101; 
+}
+.lang-switcher .lang-btn-text {
+    margin: 0 3px;
+    font-weight: bold;
+}
+.lang-dropdown {
+    display: none; 
+    position: absolute;
+    top: 110%; 
+    right: 0;
+    background-color: white;
+    min-width: 160px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    z-index: 100;
+}
+.lang-dropdown.show {
+    display: block;
+}
+.lang-dropdown a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+}
+.lang-dropdown a:hover {
+    background-color: #f1f1f1;
+}
+
+.help-icon {
+    position: absolute;
+    bottom: 25px;
+    right: 30px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 28px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Kömək Modalı */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 100; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.6); 
+    backdrop-filter: blur(5px);
+}
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; 
+    padding: 25px 30px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 10px;
+    position: relative;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+.modal-close {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+}
+.modal-close:hover,
+.modal-close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+.modal-content h2 {
+    color: #00875A;
+    margin-top: 0;
+}
+.modal-content p {
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
