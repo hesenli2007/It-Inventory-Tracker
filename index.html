@@ -14,10 +14,9 @@
         <i class="fas fa-globe"></i>
         <span class="lang-btn-text">AZ</span>
         <div class="lang-dropdown" id="lang-dropdown">
-            <!-- DÜZƏLİŞ: 'onclick' atributları silindi, 'data-lang' əlavə edildi -->
-            <a href="#" data-lang="az" data-key="langAzerbaijani">Azərbaycanca (AZ)</a>
-            <a href="#" data-lang="en" data-key="langEnglish">English (EN)</a>
-            <a href="#" data-lang="ru" data-key="langRussian">Русский (RU)</a>
+            <a href="#" onclick="setLanguage('az')" data-key="langAzerbaijani">Azərbaycanca (AZ)</a>
+            <a href="#" onclick="setLanguage('en')" data-key="langEnglish">English (EN)</a>
+            <a href="#" onclick="setLanguage('ru')" data-key="langRussian">Русский (RU)</a>
         </div>
     </div>
 
@@ -84,18 +83,17 @@
         <div class="modal-content">
             <span class="modal-close" id="help-modal-close">&times;</span>
             <h2 data-key="helpModalTitle">Layihə Haqqında</h2>
-            <p data-key="helpModalP1">...</p>
-            <p data-key="helpModalP2">...</p>
-            <p data-key="helpModalP3">...</p>
+            <p data-key="helpModalP1"><b>IT Inventory Tracker</b> - şirkət daxilindəki kompüter və digər avadanlıqların qeydiyyatını aparmaq üçün yaradılmış veb-tətbiqdir.</p>
+            <p data-key="helpModalP2">İstifadəçilər sistemə yeni avadanlıqlar əlavə edə bilər, Adminlər isə bütün avadanlıqlara nəzarət edə bilər.</p>
+            <p data-key="helpModalP3">Bütün məlumatlar təhlükəsiz şəkildə Firebase bulud sistemində saxlanılır.</p>
         </div>
     </div>
-    
+
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    
-    <!-- Bu i18n.js faylının yenilənmiş versiyasını istifadə edin -->
-    <script src="i18n.js"></script> 
+
+    <script src="i18n.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
