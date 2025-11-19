@@ -45,18 +45,17 @@ passwordToggles.forEach(toggle => {
 
 // === MODAL PƏNCƏRƏ MƏNTİQİ ===
 const helpModal = document.getElementById("help-modal");
+if(helpModal) {
+    document.getElementById("help-btn").onclick = () => { helpModal.style.display = "block"; }
+    document.getElementById("help-modal-close").onclick = () => { helpModal.style.display = "none"; }
+    window.addEventListener('click', (event) => {
+        if (event.target == helpModal) {
+            helpModal.style.display = "none";
+        }
+    });
+}
 
-document.getElementById("help-btn").onclick = () => { helpModal.style.display = "block"; }
-document.getElementById("help-modal-close").onclick = () => { helpModal.style.display = "none"; }
-
-window.addEventListener('click', (event) => {
-    if (event.target == helpModal) {
-        helpModal.style.display = "none";
-    }
-});
-
-
-// === QEYDİYYAT FUNKSİYASI ===
+// === QEYDİYYAT FUNKSİYASI (SERVERSİZ - LİNK İLƏ) ===
 const registerForm = document.getElementById('register-form');
 registerForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -70,6 +69,7 @@ registerForm.addEventListener('submit', (e) => {
         alert(t("pwMismatch")); return;
     }
 
+    // 1. İstifadəçi yaradılır
     auth.createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
             const user = userCredential.user;
@@ -79,16 +79,27 @@ registerForm.addEventListener('submit', (e) => {
                 userRole = "admin";
             }
 
-            // DƏYİŞİKLİK: "username" silindi
+            // 2. Databazaya yazılır
             db.collection("users").doc(user.uid).set({
                 name: name,
                 email: user.email,
                 role: userRole
             })
             .then(() => {
-                alert(t("registerSuccess")); 
-                registerForm.reset(); 
-                document.querySelector('.tab-link[data-tab="login"]').click();
+                // 3. Təsdiq linki göndərilir
+                user.sendEmailVerification().then(function() {
+                    // Link göndərildi
+                    alert(`Təbrik edirik, ${name}!\nHesabınız yaradıldı.\n\nZəhmət olmasa ${email} ünvanına göndərilən TƏSDİQ LİNKİNƏ daxil olun, sonra giriş edin.`);
+                    
+                    // Sistemdən çıxış veririk ki, təsdiqləmədən girə bilməsin
+                    auth.signOut();
+                    
+                    registerForm.reset(); 
+                    document.querySelector('.tab-link[data-tab="login"]').click();
+
+                }).catch(function(error) {
+                    alert("Link göndərilərkən xəta oldu: " + error.message);
+                });
             })
             .catch((dbError) => {
                  alert(t("registerErrorDB") + dbError.message);
@@ -108,7 +119,7 @@ registerForm.addEventListener('submit', (e) => {
         });
 });
 
-// === DAXİL OLMA FUNKSİYASI ===
+// === DAXİL OLMA FUNKSİYASI (EMAIL VERIFICATION YOXLAMASI İLƏ) ===
 const loginForm = document.getElementById('login-form');
 loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -119,6 +130,15 @@ loginForm.addEventListener('submit', (e) => {
     auth.signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
             const user = userCredential.user;
+
+            // 1. Yoxlayırıq: Mail təsdiqlənibmi?
+            if (!user.emailVerified) {
+                alert("Zəhmət olmasa əvvəlcə e-poçt ünvanınıza gələn təsdiq linkinə daxil olun!");
+                auth.signOut(); // Sistemə buraxmırıq
+                return;
+            }
+
+            // 2. Təsdiqlənibsə, rolu yoxla
             const userDocRef = db.collection("users").doc(user.uid);
             
             userDocRef.get().then((doc) => {
@@ -140,40 +160,3 @@ loginForm.addEventListener('submit', (e) => {
             }
         });
 });
-
-// =========================================================================
-// ***************** YENİ ƏLAVƏ: PAROLU UNUTDUM MƏNTİQİ ******************
-// =========================================================================
-
-const forgotPasswordLink = document.getElementById('forgot-password-link');
-
-if (forgotPasswordLink) {
-    forgotPasswordLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        
-        // 1. Giriş formasından e-poçt ünvanını götür
-        let email = document.getElementById('login-email').value;
-
-        // 2. Əgər sahə boşdursa, istifadəçidən soruş
-        if (!email) {
-            email = prompt(t('resetEmailPrompt'));
-            if (!email) return; // İstifadəçi ləğv etdi
-        }
-        
-        // 3. Firebase funksiyası: şifrə sıfırlama maili göndər
-        auth.sendPasswordResetEmail(email)
-            .then(() => {
-                alert(t('passwordResetEmailSent'));
-            })
-            .catch((error) => {
-                let message;
-                if (error.code === 'auth/user-not-found') {
-                    // Təhlükəsizlik üçün belə ümumi cavab daha yaxşıdır.
-                    message = t('passwordResetError') + t('wrongPassword'); 
-                } else {
-                     message = t('passwordResetError') + error.message;
-                }
-                alert(message);
-            });
-    });
-}
