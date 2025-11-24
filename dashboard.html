@@ -161,7 +161,7 @@
     </div>
 
     <div id="edit-equipment-modal" class="modal-overlay">
-        <div class="modal-content" style="width: 600px;">
+        <div class="modal-content">
             <button class="modal-close-btn" id="edit-modal-close"><i class="fas fa-times"></i></button>
             <div class="modal-header">
                 <h2 data-key="editEquipmentTitle">Avadanlığı Redaktə Et</h2>
@@ -300,8 +300,280 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
-    <script src="i18n.js"></script>
+    
     <script>
+        // === TƏRCÜMƏ SİSTEMİ (USER PANEL ÜÇÜN DAXİLİ LÜĞƏT) ===
+        const translations = {
+            az: {
+                appName: "IT Inventory Tracker",
+                userPanelTitle: "User Paneli",
+                userWelcome: "İstifadəçi",
+                loading: "Yüklənir...",
+                langAzerbaijani: "Azərbaycanca (AZ)",
+                langEnglish: "English (EN)",
+                langRussian: "Русский (RU)",
+                logout: "Çıxış",
+                statMyEquipment: "Mənim Avadanlıqlarım",
+                statWorking: "İşlək",
+                statBroken: "Xarab/Təmirdə",
+                tabMyEquipment: "Mənim Avadanlıqlarım",
+                tabAddEquipment: "Avadanlıq Əlavə Et",
+                thType: "Növü",
+                thNameModel: "Adı / Model",
+                thStatus: "Status",
+                thApprovalStatus: "Təsdiq Statusu",
+                thOperations: "Əməliyyat",
+                emptyStateMyEquipment: "Siz hələ avadanlıq əlavə etməmisiniz",
+                emptyStateMyEquipmentP: "\"Avadanlıq Əlavə Et\" bölməsindən...",
+                addEquipmentTitle: "Yeni Avadanlıq Əlavə Et",
+                addEquipmentP: "Zəhmət olmadan bütün sahələri doldurun",
+                formType: "Avadanlıq növü *",
+                formTypeSelect: "Növü seçin",
+                formTypeComputer: "Kompüter",
+                formTypeMonitor: "Monitor",
+                formTypePrinter: "Printer",
+                formTypeOther: "Digər",
+                formName: "Avadanlığın adı *",
+                formNamePlaceholder: "məs: Dell Latitude Laptop",
+                formModel: "Marka/Model *",
+                formModelPlaceholder: "məs: Dell Latitude 5420",
+                formSerial: "Serial Nömrə",
+                formSerialPlaceholder: "məs: SN123456789",
+                formMac: "MAC Address",
+                formMacPlaceholder: "məs: 00:1A:2B:3C:4D:5E",
+                formStatus: "Status *",
+                formStatusWorking: "İşlək",
+                formStatusBroken: "Xarab",
+                formStatusRepair: "Təmirdə",
+                formDate: "Alınma Tarixi",
+                formUpload: "Şəkil Yüklə",
+                formNotes: "Qeyd/Şərh",
+                formNotesPlaceholder: "Əlavə məlumat...",
+                submitSendApproval: "Təsdiqə göndər",
+                editEquipmentTitle: "Avadanlığı Redaktə Et",
+                saveChanges: "Yadda Saxla",
+                cancel: "Ləğv et",
+                profileSettings: "Profil Parametrləri",
+                fullNameLabel: "Tam ad",
+                emailLabel: "E-poçt ünvanı",
+                changePassword: "Şifrəni Dəyiş",
+                updateProfile: "Profili Yenilə",
+                changePasswordTitle: "Şifrəni Dəyiş",
+                oldPassword: "Köhnə şifrə",
+                newPassword: "Yeni şifrə",
+                confirmNewPassword: "Yeni şifrəni təsdiqlə",
+                statusWaiting: "Gözləyir",
+                statusApproved: "Təsdiqləndi",
+                confirmDeleteApproval: "Bu avadanlığı (hələ təsdiqlənməyib) silmək istədiyinizə əminsiniz?",
+                warningEditApproved: "DİQQƏT: Bu avadanlıq artıq təsdiqlənib. Əgər redaktə etsəniz, yenidən Admin təsdiqi gözləməli olacaq. Davam edilsin?",
+                equipmentUpdated: "Avadanlıq yeniləndi! Admin təsdiqinə göndərildi.",
+                equipmentSentForApproval: "Avadanlıq admin təsdiqinə göndərildi!",
+                errorAddingEquipment: "Xəta baş verdi!",
+                sessionExpired: "Sessiya bitib, yenidən daxil olun.",
+                profileUpdateSuccess: "Profil yeniləndi!",
+                profileUpdateError: "Xəta: ",
+                pwMismatch: "Şifrələr uyğun gəlmir!",
+                passwordUpdateSuccess: "Şifrə yeniləndi!",
+                reauthError: "Yenidən giriş lazımdır (Köhnə şifrə səhvdir).",
+                weakPassword: "Şifrə çox zəifdir.",
+                passwordUpdateError: "Xəta: ",
+                authErrorCheck: "İcazə xətası. Girişə yönləndirilir...",
+                noPermission: "İcazəniz yoxdur!"
+            },
+            en: {
+                appName: "IT Inventory Tracker",
+                userPanelTitle: "User Panel",
+                userWelcome: "User",
+                loading: "Loading...",
+                langAzerbaijani: "Azərbaycanca (AZ)",
+                langEnglish: "English (EN)",
+                langRussian: "Русский (RU)",
+                logout: "Logout",
+                statMyEquipment: "My Equipment",
+                statWorking: "Working",
+                statBroken: "Broken/Repair",
+                tabMyEquipment: "My Equipment",
+                tabAddEquipment: "Add Equipment",
+                thType: "Type",
+                thNameModel: "Name / Model",
+                thStatus: "Status",
+                thApprovalStatus: "Approval Status",
+                thOperations: "Operations",
+                emptyStateMyEquipment: "You haven't added any equipment yet",
+                emptyStateMyEquipmentP: "Use the \"Add Equipment\" section...",
+                addEquipmentTitle: "Add New Equipment",
+                addEquipmentP: "Please fill in all fields",
+                formType: "Equipment Type *",
+                formTypeSelect: "Select Type",
+                formTypeComputer: "Computer",
+                formTypeMonitor: "Monitor",
+                formTypePrinter: "Printer",
+                formTypeOther: "Other",
+                formName: "Equipment Name *",
+                formNamePlaceholder: "e.g. Dell Latitude Laptop",
+                formModel: "Brand/Model *",
+                formModelPlaceholder: "e.g. Dell Latitude 5420",
+                formSerial: "Serial Number",
+                formSerialPlaceholder: "e.g. SN123456789",
+                formMac: "MAC Address",
+                formMacPlaceholder: "e.g. 00:1A:2B:3C:4D:5E",
+                formStatus: "Status *",
+                formStatusWorking: "Working",
+                formStatusBroken: "Broken",
+                formStatusRepair: "In Repair",
+                formDate: "Purchase Date",
+                formUpload: "Upload Image",
+                formNotes: "Notes",
+                formNotesPlaceholder: "Additional info...",
+                submitSendApproval: "Send for Approval",
+                editEquipmentTitle: "Edit Equipment",
+                saveChanges: "Save Changes",
+                cancel: "Cancel",
+                profileSettings: "Profile Settings",
+                fullNameLabel: "Full Name",
+                emailLabel: "Email Address",
+                changePassword: "Change Password",
+                updateProfile: "Update Profile",
+                changePasswordTitle: "Change Password",
+                oldPassword: "Old Password",
+                newPassword: "New Password",
+                confirmNewPassword: "Confirm New Password",
+                statusWaiting: "Pending",
+                statusApproved: "Approved",
+                confirmDeleteApproval: "Are you sure you want to delete this equipment?",
+                warningEditApproved: "WARNING: This equipment is already approved. Editing it will require Admin approval again. Continue?",
+                equipmentUpdated: "Equipment updated! Sent for Admin approval.",
+                equipmentSentForApproval: "Equipment sent for Admin approval!",
+                errorAddingEquipment: "Error occurred!",
+                sessionExpired: "Session expired, please login again.",
+                profileUpdateSuccess: "Profile updated!",
+                profileUpdateError: "Error: ",
+                pwMismatch: "Passwords do not match!",
+                passwordUpdateSuccess: "Password updated!",
+                reauthError: "Re-authentication required.",
+                weakPassword: "Password is too weak.",
+                passwordUpdateError: "Error: ",
+                authErrorCheck: "Auth error. Redirecting...",
+                noPermission: "You do not have permission!"
+            },
+            ru: {
+                appName: "IT Inventory Tracker",
+                userPanelTitle: "Панель Пользователя",
+                userWelcome: "Пользователь",
+                loading: "Загрузка...",
+                langAzerbaijani: "Azərbaycanca (AZ)",
+                langEnglish: "English (EN)",
+                langRussian: "Русский (RU)",
+                logout: "Выход",
+                statMyEquipment: "Мое Оборудование",
+                statWorking: "Рабочее",
+                statBroken: "Сломано/Ремонт",
+                tabMyEquipment: "Мое Оборудование",
+                tabAddEquipment: "Добавить",
+                thType: "Тип",
+                thNameModel: "Название / Модель",
+                thStatus: "Статус",
+                thApprovalStatus: "Статус Подтв.",
+                thOperations: "Операции",
+                emptyStateMyEquipment: "Вы еще не добавили оборудование",
+                emptyStateMyEquipmentP: "Используйте раздел \"Добавить\"...",
+                addEquipmentTitle: "Добавить Оборудование",
+                addEquipmentP: "Заполните все поля",
+                formType: "Тип оборудования *",
+                formTypeSelect: "Выберите тип",
+                formTypeComputer: "Компьютер",
+                formTypeMonitor: "Монитор",
+                formTypePrinter: "Принтер",
+                formTypeOther: "Другое",
+                formName: "Название *",
+                formNamePlaceholder: "напр: Dell Latitude Laptop",
+                formModel: "Бренд/Модель *",
+                formModelPlaceholder: "напр: Dell Latitude 5420",
+                formSerial: "Серийный номер",
+                formSerialPlaceholder: "напр: SN123456789",
+                formMac: "MAC Адрес",
+                formMacPlaceholder: "напр: 00:1A:2B:3C:4D:5E",
+                formStatus: "Статус *",
+                formStatusWorking: "Рабочий",
+                formStatusBroken: "Сломан",
+                formStatusRepair: "В ремонте",
+                formDate: "Дата покупки",
+                formUpload: "Загрузить фото",
+                formNotes: "Заметки",
+                formNotesPlaceholder: "Доп. информация...",
+                submitSendApproval: "Отправить на проверку",
+                editEquipmentTitle: "Редактировать",
+                saveChanges: "Сохранить",
+                cancel: "Отмена",
+                profileSettings: "Настройки Профиля",
+                fullNameLabel: "Полное имя",
+                emailLabel: "Email адрес",
+                changePassword: "Сменить пароль",
+                updateProfile: "Обновить",
+                changePasswordTitle: "Смена пароля",
+                oldPassword: "Старый пароль",
+                newPassword: "Новый пароль",
+                confirmNewPassword: "Подтвердите пароль",
+                statusWaiting: "Ожидает",
+                statusApproved: "Подтверждено",
+                confirmDeleteApproval: "Вы уверены, что хотите удалить?",
+                warningEditApproved: "ВНИМАНИЕ: Оборудование уже подтверждено. Редактирование потребует повторной проверки Админом. Продолжить?",
+                equipmentUpdated: "Обновлено! Отправлено на проверку Админу.",
+                equipmentSentForApproval: "Отправлено на проверку Админу!",
+                errorAddingEquipment: "Произошла ошибка!",
+                sessionExpired: "Сессия истекла.",
+                profileUpdateSuccess: "Профиль обновлен!",
+                profileUpdateError: "Ошибка: ",
+                pwMismatch: "Пароли не совпадают!",
+                passwordUpdateSuccess: "Пароль обновлен!",
+                reauthError: "Требуется повторный вход.",
+                weakPassword: "Пароль слишком простой.",
+                passwordUpdateError: "Ошибка: ",
+                authErrorCheck: "Ошибка авторизации.",
+                noPermission: "Нет прав!"
+            }
+        };
+
+        let currentLang = localStorage.getItem('appLang') || 'az';
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('appLang', lang);
+            
+            // 1. Statik mətnləri yenilə
+            const elements = document.querySelectorAll('[data-key]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (translations[lang][key]) {
+                    if (el.tagName === 'INPUT' && el.getAttribute('placeholder')) {
+                        el.placeholder = translations[lang][key];
+                    } else {
+                        if(el.children.length > 0 && el.querySelector('i')) {
+                             const icon = el.querySelector('i').outerHTML;
+                             el.innerHTML = icon + ' ' + translations[lang][key];
+                        } else {
+                            el.textContent = translations[lang][key];
+                        }
+                    }
+                }
+            });
+
+            // 2. Dropdown başlığını yenilə
+            const langBtnText = document.querySelector('.lang-btn-text');
+            if(langBtnText) langBtnText.textContent = lang.toUpperCase();
+            
+            const dropdown = document.getElementById('lang-dropdown');
+            if(dropdown) dropdown.classList.remove('show');
+
+            // 3. Dinamik cədvəli YENİDƏN QUR (Əsas dəyişiklik budur)
+            renderMyTable();
+        }
+
+        function t(key) {
+            return translations[currentLang][key] || key;
+        }
+
+        // === ƏSAS SİSTEM KODLARI ---
         const firebaseConfig = {
             apiKey: "AIzaSyAI2rM3vttKrDI9C4vDD41_hcXurLvQ6gw",
             authDomain: "it-inventory-tracker-61d2c.firebaseapp.com",
@@ -317,12 +589,14 @@
         const storage = firebase.storage();
 
         let currentUserId = null; 
-        let myEquipmentCache = []; // Edit üçün məlumatları tez tapmaq üçün
+        let myEquipmentCache = []; 
 
         auth.onAuthStateChanged(user => {
             if (user) {
                 currentUserId = user.uid; 
-                document.getElementById('user-email-display').innerText = user.email;
+                const emailDisplay = document.getElementById('user-email-display');
+                emailDisplay.innerText = user.email;
+                emailDisplay.removeAttribute('data-key'); // Loading yazisi silinsin
 
                 db.collection("users").doc(user.uid).onSnapshot(doc => {
                     if (doc.exists) {
@@ -330,7 +604,10 @@
                         const name = userData.name || t('userWelcome');
                         const profilePicUrl = userData.profilePicUrl;
                         
-                        document.getElementById('user-name-display').innerText = name;
+                        const nameDisplay = document.getElementById('user-name-display');
+                        nameDisplay.innerText = name;
+                        nameDisplay.removeAttribute('data-key');
+                        
                         document.getElementById('profile-name').value = name;
                         document.getElementById('profile-email').value = user.email;
 
@@ -353,6 +630,7 @@
                 });
                 
                 loadMyEquipment(user.uid);
+                setLanguage(currentLang);
             } else {
                 window.location.href = "index.html";
             }
@@ -412,58 +690,71 @@
             db.collection("equipment")
              .where("addedByUserId", "==", userId) 
              .onSnapshot(snapshot => {
-                
                 myEquipmentCache = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
-                const tableBody = document.getElementById('my-equipment-tbody');
-                const emptyState = document.getElementById('my-empty-state');
-                tableBody.innerHTML = ""; 
-                
-                if (myEquipmentCache.length === 0) emptyState.style.display = "block";
-                else emptyState.style.display = "none";
-
-                let total = 0;
-                let islek = 0;
-                let xarab = 0;
-
-                myEquipmentCache.forEach(equip => {
-                    let statusText = equip.approvalStatus === 'pending' ? t('statusWaiting') : t('statusApproved');
-                    let statusClass = equip.approvalStatus === 'pending' ? 'status-pending' : 'status-approved';
-
-                    // Edit button həmişə görünür, lakin funksionallıq fərqlənir
-                    const row = `
-                        <tr>
-                            <td>${equip.type}</td>
-                            <td>${equip.name} (${equip.model})</td>
-                            <td class="status-${equip.status.toLowerCase()}">${equip.status}</td>
-                            <td class="${statusClass}">${statusText}</td>
-                            <td>
-                                <div style="display: flex; gap: 5px;">
-                                    <button class="edit-btn small-btn" data-id="${equip.id}" style="background-color: #2196F3; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="delete-btn small-btn" data-id="${equip.id}" style="background-color: #f44336; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
-                    tableBody.innerHTML += row;
-
-                    if (equip.approvalStatus === 'approved') {
-                        total++;
-                        if (equip.status === "İşlək") islek++;
-                        else xarab++;
-                    }
-                });
-
-                document.getElementById('stat-total').innerText = total;
-                document.getElementById('stat-islek').innerText = islek;
-                document.getElementById('stat-xarab').innerText = xarab;
+                renderMyTable(); // Məlumat gələndə cədvəli qur
             });
         }
+
+        // Yeni Render Funksiyası (Dil dəyişəndə də bura çağrılır)
+        function renderMyTable() {
+            const tableBody = document.getElementById('my-equipment-tbody');
+            const emptyState = document.getElementById('my-empty-state');
+            tableBody.innerHTML = ""; 
+            
+            if (myEquipmentCache.length === 0) emptyState.style.display = "block";
+            else emptyState.style.display = "none";
+
+            let total = 0;
+            let islek = 0;
+            let xarab = 0;
+
+            // Statusların Tərcümə Xəritəsi
+            const statusMap = {
+                "İşlək": "formStatusWorking",
+                "Xarab": "formStatusBroken",
+                "Təmirdə": "formStatusRepair"
+            };
+
+            myEquipmentCache.forEach(equip => {
+                // Statusların tərcüməsi
+                let statusText = equip.approvalStatus === 'pending' ? t('statusWaiting') : t('statusApproved');
+                let statusClass = equip.approvalStatus === 'pending' ? 'status-pending' : 'status-approved';
+                
+                // Avadanlıq statusunun (İşlək/Xarab) tərcüməsi
+                let equipStatusText = t(statusMap[equip.status] || equip.status);
+
+                const row = `
+                    <tr>
+                        <td>${equip.type}</td>
+                        <td>${equip.name} (${equip.model})</td>
+                        <td class="status-${equip.status.toLowerCase()}">${equipStatusText}</td>
+                        <td class="${statusClass}">${statusText}</td>
+                        <td>
+                            <div style="display: flex; gap: 5px;">
+                                <button class="edit-btn small-btn" data-id="${equip.id}" style="background-color: #2196F3; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="delete-btn small-btn" data-id="${equip.id}" style="background-color: #f44336; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+
+                if (equip.approvalStatus === 'approved') {
+                    total++;
+                    if (equip.status === "İşlək") islek++;
+                    else xarab++;
+                }
+            });
+
+            document.getElementById('stat-total').innerText = total;
+            document.getElementById('stat-islek').innerText = islek;
+            document.getElementById('stat-xarab').innerText = xarab;
+        }
         
-        // Cədvəl düymələri üçün Event Delegation
         document.getElementById('my-equipment-tbody').addEventListener('click', (e) => {
             // Delete logic
             if (e.target.closest('.delete-btn')) {
@@ -480,12 +771,10 @@
 
                 if (equip) {
                     if (equip.approvalStatus === 'approved') {
-                        // Təsdiqlənib, xəbərdarlıq et
                         if (confirm(t('warningEditApproved'))) {
                             openEditModal(equip);
                         }
                     } else {
-                        // Gözləyir, birbaşa aç
                         openEditModal(equip);
                     }
                 }
@@ -528,9 +817,6 @@
                 status: document.getElementById('edit-equip-status').value,
                 purchaseDate: document.getElementById('edit-equip-date').value,
                 notes: document.getElementById('edit-equip-notes').value,
-                // Mühüm: Hər dəfə redaktə olunanda status "pending" olur.
-                // Əgər əvvəl də pending idisə, pending qalır.
-                // Əgər approved idisə, pending-ə keçir (Admin yenidən görməlidir).
                 approvalStatus: 'pending' 
             };
 
@@ -541,10 +827,9 @@
                 })
                 .catch(err => {
                     console.error("Update error:", err);
-                    alert(t('errorAddingEquipment')); // Eyni xəta mesajını istifadə edə bilərik
+                    alert(t('errorAddingEquipment')); 
                 });
         });
-        
         
         // --- PROFİL MODALI ---
         const profileModal = document.getElementById('profile-modal');
@@ -639,6 +924,34 @@
                     alert(t('passwordUpdateError') + error.message);
                 }
             }
+        });
+
+        // === DİL DƏYİŞMƏ EVENT LISTENERS ===
+        document.addEventListener('DOMContentLoaded', () => {
+            const langBtn = document.getElementById('lang-btn');
+            const dropdown = document.getElementById('lang-dropdown');
+            
+            if(langBtn && dropdown) {
+                langBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    dropdown.classList.toggle('show');
+                });
+                
+                window.addEventListener('click', () => {
+                    if (dropdown.classList.contains('show')) dropdown.classList.remove('show');
+                });
+            }
+
+            document.querySelectorAll('.lang-dropdown a').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const selectedLang = e.target.getAttribute('data-lang');
+                    setLanguage(selectedLang);
+                    dropdown.classList.remove('show');
+                });
+            });
+
+            setLanguage(currentLang);
         });
         
     </script>
