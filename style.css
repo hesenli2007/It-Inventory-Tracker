@@ -271,23 +271,23 @@ body::before {
     line-height: 1.6;
     margin-bottom: 15px;
 }
-/* style.css faylının ən sonuna yapışdır */
+/* Bu kodu style.css-in ən aşağısına yapışdır */
 
 .forgot-pass-box {
-    text-align: right;   /* Yazını sağ tərəfə çəkir */
-    margin-bottom: 15px; /* Düymədən məsafə saxlayır */
-    margin-top: 5px;     /* Şifrə xanasından azca aşağı salır */
+    text-align: right;
+    margin-top: 5px;
+    margin-bottom: 15px;
 }
 
 .forgot-pass-box a {
-    color: #666;         /* Rəngi sadə boz edirik (istəsən #00875A edərsən) */
+    color: #666;
     font-size: 14px;
     text-decoration: none;
     font-weight: 500;
-    transition: color 0.3s;
+    cursor: pointer;
 }
 
 .forgot-pass-box a:hover {
-    color: #00875A;      /* Üstünə gələndə yaşıl olsun */
+    color: #00875A;
     text-decoration: underline;
 }
