@@ -291,7 +291,7 @@ body::before {
     text-decoration: underline;
 }
 
-/* === YENİ ƏLAVƏ: MOBİL UYĞUNLUQ KODLARI === */
+/* === YENİ ƏLAVƏ: MOBİL UYĞUNLUQ KODLARIi === */
 /* Bu hissə problemi həll edəcək */
 @media (max-width: 600px) {
     body {
