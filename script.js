@@ -66,7 +66,8 @@ registerForm.addEventListener('submit', (e) => {
     const passwordConfirm = document.getElementById('register-password-confirm').value;
 
     if (password !== passwordConfirm) {
-        alert(t("pwMismatch")); return;
+        alert(t("pwMismatch")); 
+        return;
     }
 
     // 1. İstifadəçi yaradılır
@@ -88,15 +89,10 @@ registerForm.addEventListener('submit', (e) => {
             .then(() => {
                 // 3. Təsdiq linki göndərilir
                 user.sendEmailVerification().then(function() {
-                    // Link göndərildi
                     alert(`Təbrik edirik, ${name}!\nHesabınız yaradıldı.\n\nZəhmət olmasa ${email} ünvanına göndərilən TƏSDİQ LİNKİNƏ daxil olun, sonra giriş edin.`);
-                    
-                    // Sistemdən çıxış veririk ki, təsdiqləmədən girə bilməsin
                     auth.signOut();
-                    
                     registerForm.reset(); 
                     document.querySelector('.tab-link[data-tab="login"]').click();
-
                 }).catch(function(error) {
                     alert("Link göndərilərkən xəta oldu: " + error.message);
                 });
@@ -107,56 +103,109 @@ registerForm.addEventListener('submit', (e) => {
         })
         .catch((error) => {
             console.error("Qeydiyyat xətası: ", error.code, error.message);
-            if (error.code === 'auth/operation-not-allowed') {
-                alert(t("authError"));
-            } else if (error.code === 'auth/email-already-in-use') {
-                alert(t("emailInUse"));
-            } else if (error.code === 'auth/weak-password') {
-                alert(t("weakPassword"));
-            } else {
-                alert(t("registerErrorGeneral") + error.message);
-            }
+            if (error.code === 'auth/operation-not-allowed') alert(t("authError"));
+            else if (error.code === 'auth/email-already-in-use') alert(t("emailInUse"));
+            else if (error.code === 'auth/weak-password') alert(t("weakPassword"));
+            else alert(t("registerErrorGeneral") + error.message);
         });
 });
 
-// === DAXİL OLMA FUNKSİYASI (EMAIL VERIFICATION YOXLAMASI İLƏ) ===
+// === DAXİL OLMA VƏ PAROL SIFIRLAMA FUNKSİYASI (ÇOXDİLLİ DƏSTƏYİ İLƏ) ===
 const loginForm = document.getElementById('login-form');
+const forgotLink = document.getElementById('forgot-link');
+const loginBtn = loginForm.querySelector('.submit-btn');
+
+const passwordInputEl = document.getElementById('login-password');
+const passwordGroup = passwordInputEl ? passwordInputEl.closest('.input-group') : null; 
+
+let isResetMode = false;
+
+// "Şifrəni unutmuşam" linkinə klik edəndə
+if(forgotLink && passwordGroup) {
+    forgotLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        if (!isResetMode) {
+            // --- SIFIRLAMA REJİMİNƏ KEÇİRİK ---
+            isResetMode = true;
+            passwordGroup.style.display = 'none'; 
+            
+            // VACİB: Mətni birbaşa dəyişmək əvəzinə, KEY-i dəyişirik. 
+            // Beləliklə dili dəyişəndə tərcümə də dəyişəcək.
+            loginBtn.setAttribute('data-key', 'sendResetLink');
+            forgotLink.setAttribute('data-key', 'backToLogin');
+            
+            // Dərhal mətni yeniləyirik (hazırkı dildə)
+            loginBtn.textContent = t('sendResetLink');
+            forgotLink.textContent = t('backToLogin');
+
+        } else {
+            // --- NORMAL GİRİŞ REJİMİNƏ QAYIDIRIQ ---
+            isResetMode = false;
+            passwordGroup.style.display = 'block'; 
+            
+            // Key-ləri qaytarırıq
+            loginBtn.setAttribute('data-key', 'submitLogin');
+            forgotLink.setAttribute('data-key', 'forgotPasswordLink');
+
+            // Mətnləri qaytarırıq
+            loginBtn.textContent = t('submitLogin');
+            forgotLink.textContent = t('forgotPasswordLink');
+        }
+    });
+}
+
 loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
-
     const email = document.getElementById('login-email').value;
-    const password = document.getElementById('login-password').value;
 
-    auth.signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
+    // === SENARİ 1: PAROL SIFIRLAMA MODU ===
+    if (isResetMode) {
+        if (!email) {
+            alert("Email daxil edin!"); // Bunu da istəsən i18n-ə əlavə edə bilərsən
+            return;
+        }
 
-            // 1. Yoxlayırıq: Mail təsdiqlənibmi?
-            if (!user.emailVerified) {
-                alert("Zəhmət olmasa əvvəlcə e-poçt ünvanınıza gələn təsdiq linkinə daxil olun!");
-                auth.signOut(); // Sistemə buraxmırıq
-                return;
-            }
-
-            // 2. Təsdiqlənibsə, rolu yoxla
-            const userDocRef = db.collection("users").doc(user.uid);
-            
-            userDocRef.get().then((doc) => {
-                if (doc.exists && doc.data().role === 'admin') {
-                    window.location.href = "admin.html";
-                } else {
-                    window.location.href = "dashboard.html";
-                }
-            }).catch((error) => {
-                console.error("Database rol yoxlama xətası: ", error);
-                window.location.href = "dashboard.html";
+        auth.sendPasswordResetEmail(email)
+            .then(() => {
+                alert("Sıfırlama linki göndərildi!");
+                forgotLink.click(); // Avtomatik "Geri" qayıdırıq
+            })
+            .catch((error) => {
+                if(error.code === 'auth/user-not-found') alert(t("wrongPassword")); // İstifadəçi tapılmadı
+                else alert("Xəta: " + error.message);
             });
-        })
-        .catch((error) => {
-            if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
-                alert(t("wrongPassword"));
-            } else {
-                alert(t("loginError") + error.message);
-            }
-        });
+
+    } 
+    // === SENARİ 2: NORMAL DAXİL OLMA MODU ===
+    else {
+        const password = document.getElementById('login-password').value;
+
+        auth.signInWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+
+                if (!user.emailVerified) {
+                    alert("Email təsdiqlənməyib!");
+                    auth.signOut();
+                    return;
+                }
+
+                const userDocRef = db.collection("users").doc(user.uid);
+                userDocRef.get().then((doc) => {
+                    if (doc.exists && doc.data().role === 'admin') {
+                        window.location.href = "admin.html";
+                    } else {
+                        window.location.href = "dashboard.html";
+                    }
+                });
+            })
+            .catch((error) => {
+                if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+                    alert(t("wrongPassword"));
+                } else {
+                    alert(t("loginError") + error.message);
+                }
+            });
+    }
 });
