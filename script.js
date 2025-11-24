@@ -13,6 +13,12 @@ try { firebase.initializeApp(firebaseConfig); } catch (e) { console.error(e); }
 const auth = firebase.auth();
 const db = firebase.firestore(); 
 
+// === KORPORATİV MAİL YOXLAMASI (Köməkçi Funksiya) ===
+function isKarabakhEmail(email) {
+    // Mailin sonu @karabakh.edu.az ilə bitmirsə FALSE qaytarır
+    return email.toLowerCase().endsWith('@karabakh.edu.az');
+}
+
 // === TABLAR ===
 const tabLinks = document.querySelectorAll('.tab-link');
 const tabContents = document.querySelectorAll('.tab-content');
@@ -46,7 +52,7 @@ if(helpModal) {
     window.addEventListener('click', (event) => { if (event.target == helpModal) helpModal.style.display = "none"; });
 }
 
-// === QEYDİYYAT ===
+// === QEYDİYYAT FUNKSİYASI (Qoruma ilə) ===
 const registerForm = document.getElementById('register-form');
 registerForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -54,6 +60,12 @@ registerForm.addEventListener('submit', (e) => {
     const email = document.getElementById('register-email').value;
     const password = document.getElementById('register-password').value;
     const passwordConfirm = document.getElementById('register-password-confirm').value;
+
+    // 1. MAİL YOXLAMASI (Vacib Hissə)
+    if (!isKarabakhEmail(email)) {
+        alert("Qeydiyyat qadağandır!\nYalnız @karabakh.edu.az korporativ maili ilə qeydiyyat mümkündür.");
+        return; // Kodu burada saxlayırıq, Firebase-ə getmirik
+    }
 
     if (password !== passwordConfirm) { alert(typeof t === 'function' ? t("pwMismatch") : "Şifrələr uyğun deyil"); return; }
 
@@ -76,48 +88,43 @@ registerForm.addEventListener('submit', (e) => {
 });
 
 // =======================================================
-// === 100% İŞLƏK SIFIRLAMA SİSTEMİ (İKİ AYRI DÜYMƏ) ===
+// === GİRİŞ SİSTEMİ (Qoruma ilə) ===
 // =======================================================
 
 const loginForm = document.getElementById('login-form');
 const forgotLink = document.getElementById('forgot-link');
 const loginBtn = document.getElementById('login-btn'); 
 const resetBtn = document.getElementById('reset-btn'); 
-const passwordGroup = document.getElementById('password-group');
+const passwordInputEl = document.getElementById('login-password');
+const passwordGroup = passwordInputEl ? passwordInputEl.closest('.input-group') : null; 
 
 let isResetMode = false;
 
-// 1. REJİMİ DƏYİŞƏN KOD (Şifrəni unutmuşam vs Geri qayıt)
+// 1. REJİMİ DƏYİŞƏN KOD
 if(forgotLink && loginBtn && resetBtn) {
     forgotLink.addEventListener('click', (e) => {
         e.preventDefault();
         isResetMode = !isResetMode;
 
         if (isResetMode) {
-            // --- SIFIRLAMA REJİMİ ---
-            // Şifrə və Giriş düyməsini GİZLƏT
+            // SIFIRLAMA REJİMİ
             if(passwordGroup) passwordGroup.style.display = 'none';
             loginBtn.style.display = 'none';
-            
-            // Sıfırlama düyməsini GÖSTƏR
             resetBtn.style.display = 'block';
-            
-            // Mətni dəyiş
             forgotLink.setAttribute('data-key', 'backToLogin');
             forgotLink.textContent = typeof t === 'function' ? t('backToLogin') : "Geri qayıt";
         } else {
-            // --- GİRİŞ REJİMİ ---
+            // GİRİŞ REJİMİ
             if(passwordGroup) passwordGroup.style.display = 'block';
             loginBtn.style.display = 'block';
             resetBtn.style.display = 'none';
-            
             forgotLink.setAttribute('data-key', 'forgotPasswordLink');
             forgotLink.textContent = typeof t === 'function' ? t('forgotPasswordLink') : "Şifrəni unutmuşam";
         }
     });
 }
 
-// 2. SIFIRLAMA DÜYMƏSİNİN FUNKSİYASI
+// 2. SIFIRLAMA DÜYMƏSİ (Qoruma ilə)
 resetBtn.addEventListener('click', (e) => {
     e.preventDefault(); 
     const email = document.getElementById('login-email').value;
@@ -127,11 +134,16 @@ resetBtn.addEventListener('click', (e) => {
         return;
     }
 
-    // Yalnız bu kod işləyir - LİNK GÖNDƏRİR
+    // MAİL YOXLAMASI
+    if (!isKarabakhEmail(email)) {
+        alert("Bu sistem yalnız @karabakh.edu.az istifadəçiləri üçündür.");
+        return;
+    }
+
     auth.sendPasswordResetEmail(email)
         .then(() => {
             alert("Sıfırlama linki göndərildi! Spam qovluğunu yoxlayın.");
-            forgotLink.click(); // Avtomatik Geri qayıt
+            forgotLink.click(); 
         })
         .catch((error) => {
             if(error.code === 'auth/user-not-found') alert("Bu e-poçt sistemdə yoxdur.");
@@ -139,15 +151,20 @@ resetBtn.addEventListener('click', (e) => {
         });
 });
 
-// 3. DAXİL OL DÜYMƏSİNİN FUNKSİYASI
+// 3. GİRİŞ DÜYMƏSİ (Qoruma ilə)
 loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
     
-    // Sığorta üçün: Əgər sıfırlama rejimindəyiksə, giriş etmə
     if(isResetMode) return;
 
     const email = document.getElementById('login-email').value;
     const password = document.getElementById('login-password').value;
+
+    // MAİL YOXLAMASI
+    if (!isKarabakhEmail(email)) {
+        alert("Giriş qadağandır!\nYalnız @karabakh.edu.az korporativ maili ilə giriş mümkündür.");
+        return;
+    }
 
     auth.signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
