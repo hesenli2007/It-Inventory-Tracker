@@ -13,10 +13,26 @@ try { firebase.initializeApp(firebaseConfig); } catch (e) { console.error(e); }
 const auth = firebase.auth();
 const db = firebase.firestore(); 
 
-// === KORPORATİV MAİL YOXLAMASI (Köməkçi Funksiya) ===
+// === KÖMƏKÇİ FUNKSİYALAR ===
+
+// 1. Domain Yoxlaması (@karabakh.edu.az olmalıdır)
 function isKarabakhEmail(email) {
-    // Mailin sonu @karabakh.edu.az ilə bitmirsə FALSE qaytarır
     return email.toLowerCase().endsWith('@karabakh.edu.az');
+}
+
+// 2. VIP SİYAHI YOXLAMASI (Bazada varmı?)
+// Bu funksiya gedib sənin əl ilə yaratdığın "allowed_users" qovluğuna baxır
+async function checkWhitelist(email) {
+    try {
+        const snapshot = await db.collection("allowed_users")
+                                 .where("email", "==", email.toLowerCase().trim())
+                                 .get();
+        // Əgər tapdırsa true, tapmadısa false qaytarır
+        return !snapshot.empty;
+    } catch (error) {
+        console.error("Siyahı yoxlanarkən xəta:", error);
+        return false; // Xəta olsa buraxma
+    }
 }
 
 // === TABLAR ===
@@ -52,55 +68,73 @@ if(helpModal) {
     window.addEventListener('click', (event) => { if (event.target == helpModal) helpModal.style.display = "none"; });
 }
 
-// === QEYDİYYAT FUNKSİYASI (Qoruma ilə) ===
+// =======================================================
+// === QEYDİYYAT (VIP SİYAHI YOXLAMASI İLƏ) ===
+// =======================================================
 const registerForm = document.getElementById('register-form');
-registerForm.addEventListener('submit', (e) => {
+
+registerForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const name = document.getElementById('register-name').value;
-    const email = document.getElementById('register-email').value;
+    const email = document.getElementById('register-email').value.toLowerCase().trim();
     const password = document.getElementById('register-password').value;
     const passwordConfirm = document.getElementById('register-password-confirm').value;
 
-    // 1. MAİL YOXLAMASI (Vacib Hissə)
+    // 1. Domain Yoxlaması
     if (!isKarabakhEmail(email)) {
-        alert("Qeydiyyat qadağandır!\nYalnız @karabakh.edu.az korporativ maili ilə qeydiyyat mümkündür.");
-        return; // Kodu burada saxlayırıq, Firebase-ə getmirik
+        alert("Qeydiyyat qadağandır!\nYalnız @karabakh.edu.az korporativ maili qəbul olunur.");
+        return;
     }
 
-    if (password !== passwordConfirm) { alert(typeof t === 'function' ? t("pwMismatch") : "Şifrələr uyğun deyil"); return; }
+    // 2. VIP Siyahı Yoxlaması (Buranı gözləyirik)
+    // Sən Firebase-də əl ilə əlavə etdiyin mailləri burada yoxlayır
+    const isAllowed = await checkWhitelist(email);
 
+    if (!isAllowed) {
+        alert("DİQQƏT: Sizin mailiniz sistemin icazəli siyahısında yoxdur.\n\nXahiş edirik İnzibatçı (Admin) ilə əlaqə saxlayın ki, mailinizi sistemə əlavə etsin.");
+        return; // Qeydiyyatı dayandırırıq
+    }
+
+    // 3. Şifrə uyğunluğu
+    if (password !== passwordConfirm) { 
+        alert(typeof t === 'function' ? t("pwMismatch") : "Şifrələr uyğun deyil"); 
+        return; 
+    }
+
+    // 4. Qeydiyyatı tamamla
     auth.createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
             const user = userCredential.user;
-            let userRole = (email.toLowerCase() === 'admin@karabakh.edu.az') ? "admin" : "user";
+            let userRole = (email === 'admin@karabakh.edu.az') ? "admin" : "user";
             
             db.collection("users").doc(user.uid).set({ name: name, email: user.email, role: userRole })
             .then(() => {
                 user.sendEmailVerification().then(() => {
-                    alert(`Hesab yaradıldı! ${email} ünvanına gedən TƏSDİQ linkinə daxil olun.`);
+                    alert(`Uğurlu! Hesabınız yaradıldı. ${email} ünvanına gedən TƏSDİQ linkinə daxil olun.`);
                     auth.signOut();
                     registerForm.reset();
                     document.querySelector('.tab-link[data-tab="login"]').click();
                 });
             });
         })
-        .catch((error) => { alert("Xəta: " + error.message); });
+        .catch((error) => { 
+            if (error.code === 'auth/email-already-in-use') alert("Bu mail artıq qeydiyyatdan keçib.");
+            else alert("Xəta: " + error.message); 
+        });
 });
 
 // =======================================================
-// === GİRİŞ SİSTEMİ (Qoruma ilə) ===
+// === GİRİŞ SİSTEMİ (İKİ AYRI DÜYMƏLİ) ===
 // =======================================================
 
 const loginForm = document.getElementById('login-form');
 const forgotLink = document.getElementById('forgot-link');
 const loginBtn = document.getElementById('login-btn'); 
 const resetBtn = document.getElementById('reset-btn'); 
-const passwordInputEl = document.getElementById('login-password');
-const passwordGroup = passwordInputEl ? passwordInputEl.closest('.input-group') : null; 
+const passwordGroup = document.getElementById('password-group');
 
 let isResetMode = false;
 
-// 1. REJİMİ DƏYİŞƏN KOD
 if(forgotLink && loginBtn && resetBtn) {
     forgotLink.addEventListener('click', (e) => {
         e.preventDefault();
@@ -124,47 +158,34 @@ if(forgotLink && loginBtn && resetBtn) {
     });
 }
 
-// 2. SIFIRLAMA DÜYMƏSİ (Qoruma ilə)
+// SIFIRLAMA
 resetBtn.addEventListener('click', (e) => {
     e.preventDefault(); 
     const email = document.getElementById('login-email').value;
 
-    if (!email) {
-        alert("Zəhmət olmasa e-poçt ünvanını yazın!");
-        return;
-    }
-
-    // MAİL YOXLAMASI
-    if (!isKarabakhEmail(email)) {
-        alert("Bu sistem yalnız @karabakh.edu.az istifadəçiləri üçündür.");
-        return;
-    }
+    if (!email) { alert("Mail yazın!"); return; }
+    if (!isKarabakhEmail(email)) { alert("Yalnız @karabakh.edu.az"); return; }
 
     auth.sendPasswordResetEmail(email)
         .then(() => {
-            alert("Sıfırlama linki göndərildi! Spam qovluğunu yoxlayın.");
-            forgotLink.click(); 
+            alert("Sıfırlama linki göndərildi!");
+            forgotLink.click();
         })
         .catch((error) => {
-            if(error.code === 'auth/user-not-found') alert("Bu e-poçt sistemdə yoxdur.");
+            if(error.code === 'auth/user-not-found') alert("Bu istifadəçi tapılmadı.");
             else alert("Xəta: " + error.message);
         });
 });
 
-// 3. GİRİŞ DÜYMƏSİ (Qoruma ilə)
+// GİRİŞ
 loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    
     if(isResetMode) return;
 
     const email = document.getElementById('login-email').value;
     const password = document.getElementById('login-password').value;
 
-    // MAİL YOXLAMASI
-    if (!isKarabakhEmail(email)) {
-        alert("Giriş qadağandır!\nYalnız @karabakh.edu.az korporativ maili ilə giriş mümkündür.");
-        return;
-    }
+    if (!isKarabakhEmail(email)) { alert("Yalnız @karabakh.edu.az"); return; }
 
     auth.signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
