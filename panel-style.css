@@ -272,7 +272,7 @@ body {
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    line-height: 1.5; /* Düzəliş */
+    line-height: 1.5; 
 }
 .submit-btn i { margin-right: 8px; }
 .submit-btn:hover { background-color: #007A50; border-color: #007A50; }
@@ -886,4 +886,61 @@ body {
     background: #f7f8fc;
     border-top: 1px solid #eee;
     border-radius: 0 0 12px 12px;
+}
+
+/* === DÜZƏLİŞLƏR (Mobil, Modal Simmetriyası və User Edit Modalı) === */
+
+/* 1. Admin Panel: Bax Modalının daxilindəki xəttin (HR) düzəldilməsi */
+.approval-modal .modal-body hr {
+    grid-column: 1 / -1;
+    width: 100%;
+    border: 0;
+    border-top: 1px solid #eee;
+    margin: 10px 0;
+}
+
+/* 2. User Panel: Edit Modalı (Sola sürüşməni düzəldən kod) */
+#edit-equipment-modal .modal-content {
+    width: 600px;
+    max-width: 95%;
+    margin: 5% auto; /* Yuxaridan biraz boşluq və tam mərkəz */
+}
+
+/* 3. Ümumi Mobil Uyğunluq (Responsive) */
+@media (max-width: 768px) {
+    /* Modalların enini ekrana görə tənzimləyirik */
+    .approval-modal, 
+    .profile-modal, 
+    .view-equipment-modal,
+    .modal-content,
+    #edit-equipment-modal .modal-content {
+        width: 95% !important;
+        max-width: 95% !important;
+        margin: 10px auto;
+    }
+
+    /* Modalların içini tək sütun edirik (Simmetriya üçün) */
+    .approval-modal .modal-body,
+    .form-row {
+        grid-template-columns: 1fr !important; /* Tək sütun */
+        gap: 15px;
+    }
+
+    /* Kartlar və Statistika */
+    .stat-cards {
+        grid-template-columns: 1fr; /* Kartlar alt-alta */
+    }
+
+    /* Cədvəl daşmasın deyə scroll əlavə edirik */
+    .list-body {
+        overflow-x: auto;
+    }
+
+    /* Header hissəsi mobildə */
+    .panel-header {
+        padding: 10px 15px;
+    }
+    .logo-text span:last-child {
+        display: none; /* Mobildə adı gizlət, yer tutmasın */
+    }
 }
