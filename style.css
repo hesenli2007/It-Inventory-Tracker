@@ -1,4 +1,4 @@
-/* === STYLE.CSS (index.html üçün) === */
+/* === STYLE.CSS (index.html üçün - TAM VERSİYA) === */
 
 * {
     margin: 0;
@@ -271,7 +271,6 @@ body::before {
     line-height: 1.6;
     margin-bottom: 15px;
 }
-/* Bu kodu style.css-in ən aşağısına yapışdır */
 
 .forgot-pass-box {
     text-align: right;
@@ -290,4 +289,37 @@ body::before {
 .forgot-pass-box a:hover {
     color: #00875A;
     text-decoration: underline;
+}
+
+/* === YENİ ƏLAVƏ: MOBİL UYĞUNLUQ KODLARIi === */
+/* Bu hissə problemi həll edəcək */
+@media (max-width: 600px) {
+    body {
+        padding: 0 15px; /* Ekranın kənarlarından biraz boşluq buraxırıq */
+        /* background-position: center; - artıq yuxarıda var */
+    }
+
+    .form-box {
+        width: 100%; /* Qutu ekran boyu uzansın */
+        max-width: 100%; /* 90%-i ləğv edib tam oturduruq */
+        margin: 0 auto;
+    }
+
+    .tab-content {
+        padding: 25px 20px; /* İçəridəki boşluğu azaldırıq ki, yer qazanaq */
+    }
+
+    .tab-nav {
+        margin: 15px 15px 0 15px; /* Düymələrin kənar boşluğunu azaldırıq */
+    }
+
+    /* Dil düyməsi və Sual işarəsi sürüşməsin deyə */
+    .lang-switcher {
+        top: 15px;
+        right: 15px;
+    }
+    .help-icon {
+        bottom: 15px;
+        right: 15px;
+    }
 }
