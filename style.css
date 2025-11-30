@@ -1,23 +1,29 @@
-/* === STYLE.CSS (index.html üçün - TAM VERSİYA) === */
+/* === STYLE.CSS (TechCore Dizaynı) === */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Inter', sans-serif; /* Yeni font */
 }
 
 body {
+    /* İstifadəçinin göndərdiyi arxa fon şəkli */
     background-image: url('https://karabakh.edu.az/uploads/450072451_1524109088230628_9124582998417446705_n-66b4a39a151f3.jpg');
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    color: #333;
     align-items: center;
+    color: #333;
+    position: relative;
 }
 
+/* Arxa fonu tündləşdirən qat */
 body::before {
     content: '';
     position: absolute;
@@ -25,301 +31,324 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(5px);
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(30, 41, 59, 0.9) 100%);
+    backdrop-filter: blur(3px);
     z-index: 1;
 }
 
-.main-container, .lang-switcher, .help-icon {
+.main-container {
     position: relative;
     z-index: 2;
-}
-.lang-switcher, .help-icon {
-    cursor: pointer;
+    width: 100%;
+    max-width: 420px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.logo-container {
-    width: 80px;
-    height: 80px;
-    background-color: #00875A;
-    border-radius: 50%;
+/* --- YENİ TECHCORE LOGO STİLİ --- */
+.brand-header {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
-    font-size: 28px;
-    font-weight: 700;
-    margin: 0 auto 15px auto;
-    border: 4px solid #fff;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 5px;
+    gap: 12px;
 }
 
-.title {
-    text-align: center;
-    color: white;
+.brand-icon {
+    font-size: 36px;
+    color: #34d399; /* Parlaq yaşıl/firuzəyi */
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 12px;
+    backdrop-filter: blur(5px);
+}
+
+.brand-text {
+    font-size: 32px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -1px;
+    text-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.subtitle {
+    color: #94a3b8;
+    font-size: 16px;
     font-weight: 500;
-    margin-bottom: 20px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    margin-bottom: 30px;
+    text-align: center;
 }
 
+/* --- FORM QUTUSU --- */
 .form-box {
-    width: 400px;
-    max-width: 90%;
-    background-color: #FFFFFF;
-    border-radius: 16px; 
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    background-color: rgba(255, 255, 255, 1);
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
     overflow: hidden;
+    padding-bottom: 20px;
 }
 
+/* --- TABLAR --- */
 .tab-nav {
     display: flex;
-    background-color: #f0f2f5; 
+    background-color: #f1f5f9;
     padding: 6px;
-    margin: 20px 20px 0 20px; 
-    border-radius: 10px;
+    margin: 6px;
+    border-radius: 16px;
 }
 
 .tab-link {
-    width: 50%;
+    flex: 1;
     padding: 12px;
     border: none;
-    background-color: transparent; 
+    background-color: transparent;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
-    color: #555;
-    border-radius: 8px; 
+    color: #64748b;
+    border-radius: 12px;
     transition: all 0.3s ease;
 }
 
 .tab-link.active {
-    color: #00875A; 
-    background-color: #fff; 
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); 
+    background-color: #ffffff;
+    color: #0f172a;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .tab-content {
-    padding: 30px;
-    padding-top: 20px;
+    padding: 25px;
     display: none;
+    animation: fadeIn 0.3s ease;
+}
+.tab-content.active { display: block; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-.tab-content.active {
-    display: block;
-}
-
+/* --- INPUTLAR VƏ IKONLAR --- */
 .input-group {
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
 .input-group label {
     display: block;
-    margin-bottom: 8px;
-    font-size: 15px; 
-    font-weight: 500;
-    color: #333;
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #334155;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 16px;
+    transition: color 0.3s ease;
 }
 
 .input-group input {
     width: 100%;
-    padding: 14px 15px; 
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 16px;
-}
-.input-group input::placeholder {
-    color: #bbb;
+    padding: 14px 14px 14px 42px; /* İkon üçün sol tərəfdən boşluq */
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    background-color: #f8fafc;
 }
 
 .input-group input:focus {
     outline: none;
-    border-color: #00875A;
-    box-shadow: 0 0 0 3px rgba(0, 135, 90, 0.1);
+    border-color: #34d399; /* TechCore rəngi */
+    background-color: #fff;
+    box-shadow: 0 0 0 4px rgba(52, 211, 153, 0.1);
 }
 
-.password-wrapper {
-    position: relative;
+.input-group input:focus + .input-icon,
+.input-group input:focus ~ .input-icon {
+    color: #34d399;
 }
 
-.password-wrapper input {
-    padding-right: 45px;
-}
-
+/* Şifrə göstər/gizlə gözü */
 .toggle-password {
     position: absolute;
+    right: 14px;
     top: 50%;
-    right: 15px;
     transform: translateY(-50%);
     cursor: pointer;
-    color: #999;
+    color: #94a3b8;
 }
+.toggle-password:hover { color: #334155; }
 
+/* --- DÜYMƏLƏR --- */
 .submit-btn {
     width: 100%;
-    padding: 15px;
-    background-color: #00875A;
+    padding: 16px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%); /* TechCore Yaşıl Gradient */
     color: white;
     border: none;
-    border-radius: 8px;
-    font-size: 17px;
+    border-radius: 12px;
+    font-size: 16px;
     font-weight: 700;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 10px; 
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
 }
 
 .submit-btn:hover {
-    background-color: #007A50;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.3);
 }
 
-/* YENİ: DİL DROPDOWN STİLLƏRİ */
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+.reset-btn-style {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); /* Narıncı */
+}
+.reset-btn-style:hover {
+    box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.3);
+}
+
+/* --- Linklər --- */
+.forgot-pass-box {
+    text-align: right;
+    margin-bottom: 20px;
+}
+.forgot-pass-box a {
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+.forgot-pass-box a:hover {
+    color: #059669;
+}
+
+/* --- DİL DƏYİŞDİRİCİ --- */
 .lang-switcher {
     position: absolute;
-    top: 25px;
-    right: 30px;
-    background-color: rgba(255, 255, 255, 0.9);
-    color: #333;
-    padding: 8px 12px;
-    border-radius: 20px;
-    font-size: 14px;
-    font-weight: 500;
-    backdrop-filter: blur(5px);
-    z-index: 101; 
+    top: 20px;
+    right: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 8px 14px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.2);
+    z-index: 10;
+    transition: background 0.3s;
 }
-.lang-switcher .lang-btn-text {
-    margin: 0 3px;
-    font-weight: bold;
+.lang-switcher:hover {
+    background-color: rgba(255, 255, 255, 0.2);
 }
 .lang-dropdown {
-    display: none; 
+    display: none;
     position: absolute;
-    top: 110%; 
+    top: 120%;
     right: 0;
     background-color: white;
     min-width: 160px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    border-radius: 8px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
     overflow: hidden;
     z-index: 100;
 }
-.lang-dropdown.show {
-    display: block;
-}
+.lang-dropdown.show { display: block; }
 .lang-dropdown a {
-    color: black;
+    color: #334155;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
     font-size: 14px;
+    transition: background 0.2s;
 }
 .lang-dropdown a:hover {
-    background-color: #f1f1f1;
+    background-color: #f1f5f9;
+    color: #059669;
 }
 
+/* --- HELP IKONU VƏ MODAL --- */
 .help-icon {
     position: absolute;
-    bottom: 25px;
-    right: 30px;
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 28px;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    bottom: 20px;
+    right: 20px;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 10;
+    transition: color 0.3s;
 }
+.help-icon:hover { color: rgba(255, 255, 255, 1); }
 
-/* Kömək Modalı */
 .modal {
-    display: none; 
-    position: fixed; 
-    z-index: 100; 
+    display: none;
+    position: fixed;
+    z-index: 100;
     left: 0;
     top: 0;
-    width: 100%; 
-    height: 100%; 
-    overflow: auto; 
-    background-color: rgba(0,0,0,0.6); 
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.8);
     backdrop-filter: blur(5px);
+    animation: fadeIn 0.3s;
 }
+
 .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; 
-    padding: 25px 30px;
-    border: 1px solid #888;
-    width: 80%;
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 30px;
+    border-radius: 20px;
+    width: 90%;
     max-width: 500px;
-    border-radius: 10px;
     position: relative;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
-.modal-close {
-    color: #aaa;
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    font-size: 28px;
-    font-weight: bold;
-}
-.modal-close:hover,
-.modal-close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
+
 .modal-content h2 {
-    color: #00875A;
-    margin-top: 0;
+    color: #059669;
+    font-size: 22px;
+    margin-bottom: 15px;
 }
 .modal-content p {
+    color: #475569;
     line-height: 1.6;
     margin-bottom: 15px;
 }
 
-.forgot-pass-box {
-    text-align: right;
-    margin-top: 5px;
-    margin-bottom: 15px;
-}
-
-.forgot-pass-box a {
-    color: #666;
-    font-size: 14px;
-    text-decoration: none;
-    font-weight: 500;
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    color: #94a3b8;
+    font-size: 28px;
     cursor: pointer;
 }
+.modal-close:hover { color: #0f172a; }
 
-.forgot-pass-box a:hover {
-    color: #00875A;
-    text-decoration: underline;
-}
-
-/* === YENİ ƏLAVƏ: MOBİL UYĞUNLUQ KODLARIi === */
-/* Bu hissə problemi həll edəcək */
-@media (max-width: 600px) {
-    body {
-        padding: 0 15px; /* Ekranın kənarlarından biraz boşluq buraxırıq */
-        /* background-position: center; - artıq yuxarıda var */
-    }
-
-    .form-box {
-        width: 100%; /* Qutu ekran boyu uzansın */
-        max-width: 100%; /* 90%-i ləğv edib tam oturduruq */
-        margin: 0 auto;
-    }
-
-    .tab-content {
-        padding: 25px 20px; /* İçəridəki boşluğu azaldırıq ki, yer qazanaq */
-    }
-
-    .tab-nav {
-        margin: 15px 15px 0 15px; /* Düymələrin kənar boşluğunu azaldırıq */
-    }
-
-    /* Dil düyməsi və Sual işarəsi sürüşməsin deyə */
-    .lang-switcher {
-        top: 15px;
-        right: 15px;
-    }
-    .help-icon {
-        bottom: 15px;
-        right: 15px;
-    }
+/* Mobil Uyğunluq */
+@media (max-width: 480px) {
+    .main-container { padding: 10px; }
+    .form-box { width: 100%; }
+    .brand-text { font-size: 28px; }
 }

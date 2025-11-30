@@ -3,13 +3,421 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-key="adminPanelTitle">Admin Paneli</title>
+    <title data-key="adminPanelTitle">TechCore Admin</title>
     <link rel="stylesheet" href="panel-style.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        /* === HEADER STİLİ === */
+        .panel-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000; 
+            background-color: #fff; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 25px;
+            height: 70px;
+        }
+
+        .logo {
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            gap: 15px !important;
+            cursor: pointer;
+            height: 100%;
+            text-decoration: none;
+            min-width: 200px;
+        }
+
+        .logo-text {
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            align-items: flex-start !important;
+            text-align: left !important;
+            line-height: 1.3;
+        }
+
+        .logo-text span:first-child {
+            font-weight: bold;
+            font-size: 16px;
+            color: #2d3436;
+            white-space: nowrap;
+        }
+
+        .logo-text span:last-child {
+            font-size: 13px;
+            color: #636e72;
+            white-space: nowrap;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            min-width: 42px;
+            border-radius: 50%;
+            background-color: #0984e3;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* === FORM STİLİ === */
+        .holder-info-group {
+            background: #f1faff;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #bce0fd;
+            margin-bottom: 25px;
+        }
+        .holder-info-title {
+            font-size: 15px;
+            color: #0984e3;
+            margin-bottom: 15px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* === SAHİB KARTI (HOLDER CARD) === */
+        .holder-card-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        .holder-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            padding: 20px;
+            border: 1px solid #eee;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .holder-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .holder-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .holder-icon {
+            width: 50px;
+            height: 50px;
+            background-color: #e3f2fd;
+            color: #0984e3;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-right: 15px;
+        }
+        /* Anbar ikonu fərqli rəngdə olsun */
+        .holder-card[data-name="Anbar"] .holder-icon {
+            background-color: #ffeaa7;
+            color: #d35400;
+        }
+
+        .holder-details h3 {
+            margin: 0;
+            font-size: 16px;
+            color: #2d3436;
+        }
+
+        .holder-details p {
+            margin: 3px 0 0;
+            font-size: 13px;
+            color: #636e72;
+        }
+
+        .holder-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f9f9f9;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .holder-count {
+            font-weight: bold;
+            color: #2d3436;
+        }
+
+        .holder-actions button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background-color: #0984e3;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .holder-actions button:hover {
+            background-color: #0769b5;
+        }
+
+        /* === SİSTEM PERSONALI KARTLARI (DÜZƏLİŞ EDİLDİ - ÖLÇÜLƏR KİÇİLDİLDİ) === */
+        .user-card-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* 320px-dən 280px-ə endirildi */
+            gap: 15px; /* Gap azaldıldı */
+            padding: 20px 0;
+        }
+
+        .user-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #f1f2f6;
+            padding: 15px; /* Padding azaldıldı */
+            position: relative;
+            display: none; 
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 160px;
+            height: auto;
+        }
+        
+        .user-card.visible { display: flex; }
+
+        /* Header hissəsi */
+        .user-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .user-avatar {
+            width: 45px; /* Avatar biraz kiçildi */
+            height: 45px;
+            border-radius: 50%;
+            background-color: #2d3436;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+            background-size: cover;
+            background-position: center;
+            flex-shrink: 0;
+        }
+        .user-avatar.admin { background-color: #0984e3; }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            overflow: hidden; 
+        }
+
+        .user-name {
+            font-weight: bold;
+            font-size: 15px;
+            color: #2d3436;
+            white-space: normal; 
+            line-height: 1.2;
+            margin-bottom: 3px;
+        }
+
+        .user-email {
+            font-size: 12px;
+            color: #636e72;
+            overflow-wrap: break-word; 
+            word-break: break-all;     
+            white-space: normal;
+        }
+
+        /* Badge-lər */
+        .card-tags {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+            min-width: 70px;
+            margin-left: 8px;
+        }
+
+        .tag {
+            padding: 3px 6px;
+            border-radius: 5px;
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-align: right;
+            white-space: nowrap;
+        }
+        
+        .role-badge { background-color: #e3f2fd; color: #0984e3; border: 1px solid #0984e3; }
+        .role-badge.warehouse { background-color: #e6fffa; color: #00b894; border: 1px solid #00b894; }
+
+        .status-badge { font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold; text-transform: uppercase; }
+        .badge-active { background-color: white; color: #00b894; border: 1px solid #00b894; }
+        .badge-deactive { background-color: white; color: #d63031; border: 1px solid #d63031; }
+
+        .user-card.deactivated { background-color: #fff5f5; border: 1px solid #ffcccc; opacity: 0.9; }
+        .user-card.deactivated .user-name { color: #c0392b; text-decoration: line-through; }
+
+        .user-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: auto; 
+            padding-top: 12px;
+            border-top: 1px solid #f1f2f6;
+        }
+
+        .user-action-btn {
+            flex: 1;
+            padding: 6px;
+            border: 1px solid #dfe6e9;
+            background: white;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 500;
+            color: #636e72;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            transition: all 0.2s;
+        }
+        .user-action-btn:hover { background: #f1f2f6; color: #2d3436; }
+        .user-action-btn i { font-size: 13px; }
+
+        /* === MODAL DÜZƏLİŞLƏRİ === */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5); z-index: 2000;
+            justify-content: center; align-items: center; backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: white; padding: 30px; border-radius: 16px;
+            width: 90%; max-width: 450px; position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); animation: slideIn 0.3s ease;
+            /* Scroll üçün */
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .view-equipment-modal { max-width: 900px !important; width: 95% !important; }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .modal-header { margin-bottom: 20px; padding-right: 30px; }
+        .modal-header h2 { font-size: 20px; color: #2d3436; margin: 0; }
+
+        .modal-close-btn {
+            background: none; border: none; font-size: 22px; color: #636e72;
+            cursor: pointer; position: absolute; top: 20px; right: 20px;
+            transition: color 0.2s; z-index: 10;
+        }
+        .modal-close-btn:hover { color: #d63031; }
+
+        .profile-pic-wrapper { display: flex; justify-content: center; margin-bottom: 25px; }
+        .profile-pic {
+            width: 100px; height: 100px; border-radius: 50%;
+            background-color: #0984e3; color: white; font-size: 36px;
+            font-weight: bold; display: flex; justify-content: center; align-items: center;
+            position: relative; background-size: cover; background-position: center;
+            border: 4px solid #f1f2f6; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .upload-btn {
+            position: absolute; bottom: 0; right: 0;
+            background: #2d3436; color: white; width: 32px; height: 32px;
+            border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            cursor: pointer; font-size: 14px; border: 2px solid white;
+        }
+        
+        .modal-body .form-group { margin-bottom: 15px; }
+        .modal-body label { display: block; margin-bottom: 5px; font-size: 13px; font-weight: 500; color: #636e72; }
+        .modal-body input, .modal-body select, .modal-body textarea { 
+            width: 100%; padding: 12px; border: 1px solid #dfe6e9; border-radius: 8px; font-size: 14px; background: #fcfcfc; font-family: inherit;
+        }
+        /* Qeyd hissəsi üçün xüsusi stil */
+        .modal-body textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .modal-body input:focus, .modal-body select:focus, .modal-body textarea:focus { 
+            border-color: #0984e3; outline: none; background: #fff; 
+        }
+
+        .modal-footer { margin-top: 25px; display: flex; gap: 10px; justify-content: flex-end; }
+
+        .submit-btn { padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 8px; justify-content: center; }
+        .btn-primary { background: #0984e3; color: white; }
+        .btn-secondary { background: #dfe6e9; color: #2d3436; }
+        .btn-secondary:hover { background: #b2bec3; }
+        .btn-warning { background: #f39c12; color: white; }
+        .btn-warning:hover { background: #e67e22; }
+        
+        .change-password-btn { width: 100%; margin-top: 10px; background: transparent; border: 1px dashed #b2bec3; color: #636e72; }
+        .change-password-btn:hover { border-color: #0984e3; color: #0984e3; background: #f1faff; }
+
+        /* === ƏTRAFLI MƏLUMAT MODALI === */
+        .details-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; 
+            background: #f8f9fa; padding: 10px; border-radius: 10px; border: 1px solid #eee;
+        }
+        .detail-item { background: #fff; padding: 8px; border-radius: 6px; border: 1px solid #f1f2f6; }
+        .detail-label { font-size: 11px; text-transform: uppercase; color: #a4b0be; font-weight: bold; margin-bottom: 2px; display: block; }
+        .detail-value { font-size: 14px; color: #2d3436; font-weight: 500; word-break: break-all; }
+        .full-width { grid-column: 1 / -1; }
+
+        /* Cədvəl düymələri */
+        .action-btn {
+            background: none; border: none; cursor: pointer; font-size: 16px; margin: 0 5px;
+            transition: transform 0.2s;
+        }
+        .action-btn:hover { transform: scale(1.2); }
+        .btn-view { color: #0984e3; }
+        .btn-edit { color: #f39c12; }
+        .btn-return { color: #27ae60; }
+        /* Delete button stili ləğv edildi */
+    </style>
 </head>
 <body>
     <div class="page-container">
+        <!-- HEADER -->
         <header class="panel-header">
             <div class="logo" id="profile-btn">
                 <div class="logo-icon admin" id="profile-pic-header">AD</div>
@@ -28,7 +436,6 @@
                         <a href="#" data-lang="ru" data-key="langRussian">Русский (RU)</a>
                     </div>
                 </div>
-                <button class="header-icon"><i class="fas fa-bell"></i></button>
                 <button id="logout-btn" class="logout-btn">
                     <i class="fas fa-sign-out-alt"></i> <span data-key="logout">Çıxış</span>
                 </button>
@@ -38,35 +445,29 @@
         <main class="panel-main">
             <div class="panel-title">
                 <h2 data-key="adminPanelTitle">Admin Paneli</h2>
-                <span data-key="appName">IT Inventory Tracker</span>
+                <span data-key="appName">TechCore Inventory</span>
             </div>
 
+            <!-- STATISTIKA -->
             <section class="stat-cards">
-                 <div class="card orange">
-                    <div class="card-info">
-                        <span class="card-title" data-key="statPending">Təsdiq Gözləyən</span>
-                        <span class="card-value" id="stat-pending">0</span>
-                    </div>
-                    <div class="card-icon"><i class="fas fa-clock"></i></div>
-                </div>
                 <div class="card green">
                     <div class="card-info">
-                        <span class="card-title" data-key="statTotalEquipment">Təsdiqlənmiş Avadanlıq</span>
+                        <span class="card-title" data-key="statTotalEquipment">Ümumi Avadanlıq</span>
                         <span class="card-value" id="stat-total">0</span>
                     </div>
                     <div class="card-icon"><i class="fas fa-box"></i></div>
                 </div>
                 <div class="card green-light">
                     <div class="card-info">
-                        <span class="card-title" data-key="statWorking">İşlək (Təsdiqlənmiş)</span>
+                        <span class="card-title" data-key="statWorking">İşlək Avadanlıq</span>
                         <span class="card-value" id="stat-islek">0</span>
                     </div>
                     <div class="card-icon"><i class="fas fa-check-circle"></i></div>
                 </div>
                 <div class="card orange"> 
                     <div class="card-info">
-                        <span class="card-title" data-key="statTotalUsers">İstifadəçilər</span>
-                        <span class="card-value" id="stat-users">0</span>
+                        <span class="card-title" data-key="statHolders">İstifadəçilər (Sahiblər)</span>
+                        <span class="card-value" id="stat-holders">0</span>
                     </div>
                     <div class="card-icon"><i class="fas fa-users"></i></div>
                 </div>
@@ -74,70 +475,77 @@
 
             <section class="content-tabs">
                 <div class="tab-nav">
-                    <button class="tab-link active" data-tab="inventory-tab"><i class="fas fa-tasks"></i> <span data-key="adminTabAllInventory">Bütün İnventarlar</span></button>
-                    <button class="tab-link" data-tab="pending-tab">
-                        <i class="fas fa-clock"></i> <span data-key="adminTabPending">Təsdiq Gözləyənlər</span>
-                        <span class="notification-badge" id="pending-count">0</span>
-                    </button>
-                    <button class="tab-link" data-tab="users-tab"><i class="fas fa-users-cog"></i> <span data-key="adminTabUsers">İstifadəçilər</span></button>
+                    <button class="tab-link active" data-tab="inventory-tab"><i class="fas fa-tasks"></i> <span data-key="adminTabAllInventory">İnventar Siyahısı</span></button>
+                    <button class="tab-link" data-tab="holders-tab"><i class="fas fa-user-tag"></i> <span data-key="tabHolders">İstifadəçilər (Sahiblər)</span></button>
                     <button class="tab-link" data-tab="add-equip-tab"><i class="fas fa-plus"></i> <span data-key="tabAddEquipment">Avadanlıq Əlavə Et</span></button> 
+                    <button class="tab-link" data-tab="users-tab"><i class="fas fa-users-cog"></i> <span data-key="adminTabUsers">Sistem Personalı</span></button>
                 </div>
 
+                <!-- 1. BÜTÜN İNVENTARLAR -->
                 <div class="tab-content active" id="inventory-tab">
                     <div class="list-header">
                         <div class="search-bar">
                             <i class="fas fa-search"></i>
-                            <input type="text" id="inventory-search" data-key="searchPlaceholder" placeholder="Ad, soyad, serial nömrə, MAC və s. ilə axtar...">
+                            <input type="text" id="inventory-search" data-key="searchPlaceholder" placeholder="İşçi adı, Fakültə, avadanlıq adı və s...">
                         </div>
                     </div>
-                    <div class="equipment-card-list" id="all-equipment-list">
-                        </div>
+                    <div class="equipment-card-list" id="all-equipment-list"></div>
                     <div id="all-empty-state" class="empty-state" style="display: none;">
                         <i class="fas fa-laptop-medical"></i>
-                        <h3 data-key="emptyStateAllEquipment">Hələ təsdiqlənmiş avadanlıq yoxdur.</h3>
+                        <h3 data-key="emptyStateAllEquipment">Sistemdə avadanlıq yoxdur.</h3>
                     </div>
                 </div>
 
-                <div class="tab-content" id="pending-tab">
-                    <div class="list-body">
-                        <table id="pending-equipment-table">
-                            <thead>
-                                <tr>
-                                    <th data-key="thWhoAdded">Kim Əlavə Etdi</th>
-                                    <th data-key="thNameModel">Adı / Model</th>
-                                    <th data-key="thStatus">Statusu</th>
-                                    <th data-key="thOperations">Əməliyyatlar</th>
-                                </tr>
-                            </thead>
-                            <tbody id="pending-equipment-tbody"></tbody>
-                        </table>
-                         <div id="pending-empty-state" class="empty-state" style="display: none;">
-                            <i class="fas fa-check-double"></i>
-                            <h3 data-key="emptyStatePending">Təsdiq üçün heç bir avadanlıq yoxdur.</h3>
+                <!-- 2. İSTİFADƏÇİLƏR (SAHİBLƏR) SİYAHISI -->
+                <div class="tab-content" id="holders-tab">
+                    <div class="list-header">
+                        <div class="search-bar">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="holders-search" data-key="searchHoldersPlaceholder" placeholder="İstifadəçi adı və ya fakültə axtar...">
                         </div>
+                    </div>
+                    <div class="holder-card-list" id="all-holders-list"></div>
+                     <div id="holders-empty-state" class="empty-state" style="display: none;">
+                        <i class="fas fa-users-slash"></i>
+                        <h3>Heç bir istifadəçi tapılmadı.</h3>
                     </div>
                 </div>
                 
+                <!-- 3. AVADANLIQ ƏLAVƏ ET -->
                 <div class="tab-content" id="add-equip-tab">
                     <section class="form-container" style="box-shadow: none;">
                         <form id="admin-add-equipment-form" class="equipment-form" style="padding-top: 15px;">
-                            <div class="form-row">
-                                <div class="form-group full-width">
-                                    <label for="assign-user-select" data-key="adminAssignUser">Avadanlıq Hansı İstifadəçiyə Təyin Edilir? *</label>
-                                    <select id="assign-user-select" required>
-                                        <option value="" disabled selected data-key="adminAssignUserSelect">İstifadəçi seçin...</option>
-                                    </select>
+                            <div class="holder-info-group">
+                                <span class="holder-info-title"><i class="fas fa-user-check"></i> <span data-key="lblHolderTitle">Avadanlıq Sahibinin Məlumatları</span></span>
+                                <div class="form-row">
+                                    <div class="form-group full-width">
+                                        <label for="holder-name" data-key="lblHolderName">Ad Soyad *</label>
+                                        <input type="text" id="holder-name" list="holder-suggestions" autocomplete="off" required>
+                                        <datalist id="holder-suggestions"></datalist>
+                                    </div>
+                                    <div class="form-group full-width">
+                                        <label for="holder-faculty" data-key="lblHolderFaculty">Fakültə / Şöbə *</label>
+                                        <input type="text" id="holder-faculty" placeholder="Məs: Mühəndislik" required>
+                                    </div>
                                 </div>
                             </div>
+
+                            <div class="form-row">
+                                <div class="form-group full-width">
+                                    <label for="auto-id" data-key="lblSystemID">Sistem ID (Avtomatik & Dəyişməz)</label>
+                                    <input type="text" id="auto-id" readonly style="background-color: #e9ecef; font-weight: bold; color: #2d3436; letter-spacing: 1px;">
+                                </div>
+                            </div>
+
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="admin-equip-type" data-key="formType">Avadanlıq növü *</label>
                                     <select id="admin-equip-type" required>
                                         <option value="" disabled selected data-key="formTypeSelect">Növü seçin</option>
-                                        <option value="Kompüter" data-key="formTypeComputer">Kompüter</option>
-                                        <option value="Monitor" data-key="formTypeMonitor">Monitor</option>
-                                        <option value="Printer" data-key="formTypePrinter">Printer</option>
-                                        <option value="Digər" data-key="formTypeOther">Digər</option>
+                                        <option value="Kompüter">Kompüter</option>
+                                        <option value="Monitor">Monitor</option>
+                                        <option value="Printer">Printer</option>
+                                        <option value="Digər">Digər</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -182,58 +590,45 @@
                             <div class="form-row">
                                 <div class="form-group full-width">
                                     <label for="admin-equip-notes" data-key="formNotes">Qeyd/Şərh</label>
-                                    <textarea id="admin-equip-notes" data-key="formNotesPlaceholder" placeholder="Əlavə məlumat..."></textarea>
+                                    <textarea id="admin-equip-notes" data-key="formNotesPlaceholder" placeholder="Əlavə məlumat, xüsusi qeydlər..."></textarea>
                                 </div>
                             </div>
-                            <button type="submit" class="submit-btn"><i class="fas fa-plus"></i> <span data-key="submitAssignEquipment">Avadanlığı Təyin Et (Birbaşa)</span></button>
+                            <button type="submit" class="submit-btn"><i class="fas fa-save"></i> <span data-key="submitAssignEquipment">Yadda Saxla</span></button>
                         </form>
                     </section>
                 </div>
                 
+                <!-- 4. SİSTEM PERSONALI -->
                 <div class="tab-content" id="users-tab">
-                     <div class="list-header">
+                      <div class="list-header">
                         <div class="search-bar">
                             <i class="fas fa-search"></i>
                             <input type="text" id="user-search" data-key="searchUsersPlaceholder" placeholder="Ad, e-poçt və ya rola görə axtar...">
                         </div>
-                        <button class="add-user-btn" id="add-user-btn"><i class="fas fa-plus"></i> <span data-key="addUser">Yeni İstifadəçi Yarat</span></button>
+                        <button class="add-user-btn" id="add-user-btn"><i class="fas fa-plus"></i> <span data-key="addUser">Yeni Personal Yarat</span></button>
                     </div>
-                    <div class="user-card-list" id="all-users-list">
-                        </div>
+                    <div class="user-card-list" id="all-users-list"></div>
                 </div>
             </section>
         </main>
     </div>
 
+    <!-- MODALLAR -->
     <div id="profile-modal" class="modal-overlay">
         <div class="modal-content profile-modal">
             <button class="modal-close-btn" id="profile-modal-close"><i class="fas fa-times"></i></button>
-            <div class="modal-header">
-                <h2 data-key="profileSettings">Profil Parametrləri</h2>
-            </div>
+            <div class="modal-header"><h2 data-key="profileSettings">Profil Parametrləri</h2></div>
             <form id="profile-settings-form">
                 <div class="modal-body">
                     <div class="profile-pic-wrapper">
-                        <div class="profile-pic" id="profile-pic-modal">
-                            AD
-                            <label for="profile-pic-upload" class="upload-btn">
-                                <i class="fas fa-camera"></i>
-                            </label>
+                        <div class="profile-pic" id="profile-pic-modal">AD
+                            <label for="profile-pic-upload" class="upload-btn"><i class="fas fa-camera"></i></label>
                             <input type="file" id="profile-pic-upload" accept="image/*">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="profile-name" data-key="fullNameLabel">Tam ad</label>
-                        <input type="text" id="profile-name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="profile-email" data-key="emailLabel">E-poçt ünvanı</label>
-                        <input type="email" id="profile-email" disabled>
-                    </div>
-                    
-                    <button type="button" class="submit-btn btn-secondary change-password-btn" id="change-password-btn-open">
-                        <i class="fas fa-lock"></i> <span data-key="changePassword">Şifrəni Dəyiş</span>
-                    </button>
+                    <div class="form-group"><label for="profile-name" data-key="fullNameLabel">Tam ad</label><input type="text" id="profile-name" required></div>
+                    <div class="form-group"><label for="profile-email" data-key="emailLabel">E-poçt ünvanı</label><input type="email" id="profile-email" disabled></div>
+                    <button type="button" class="submit-btn btn-secondary change-password-btn" id="change-password-btn-open"><i class="fas fa-lock"></i> <span data-key="changePassword">Şifrəni Dəyiş</span></button>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="submit-btn btn-secondary" id="profile-cancel-btn" data-key="cancel">Ləğv et</button>
@@ -242,96 +637,28 @@
             </form>
         </div>
     </div>
-    
-    <div id="approval-modal" class="modal-overlay">
-        <div class="modal-content approval-modal">
-            <button class="modal-close-btn" id="approval-modal-close"><i class="fas fa-times"></i></button>
-            <div class="modal-header">
-                <h2 data-key="equipmentDetails">Avadanlıq Məlumatları</h2>
-            </div>
-            
-            <div class="modal-body">
-                <div class="info-item">
-                    <span class="info-item-label" data-key="addedBy">Əlavə edən</span>
-                    <span class="info-item-value" id="approval-email"></span>
-                </div>
-                <div class="info-item">
-                    <span class="info-item-label" data-key="sentDate">Gəndərilmə tarixi</span>
-                    <span class="info-item-value" id="approval-date"></span>
-                </div>
-                
-                <hr style="grid-column: 1 / -1; width: 100%; border: 0; border-top: 1px solid #eee; margin: 10px 0;">
 
-                <div class="info-item">
-                    <span class="info-item-label" data-key="thNameModel">Adı / Model</span>
-                    <span class="info-item-value" id="approval-name" style="font-weight: 600;"></span>
-                </div>
-                <div class="info-item">
-                    <span class="info-item-label" data-key="formType">Növü</span>
-                    <span class="info-item-value" id="approval-type"></span>
-                </div>
-                <div class="info-item">
-                    <span class="info-item-label" data-key="formModel">Marka/Model</span>
-                    <span class="info-item-value" id="approval-model"></span>
-                </div>
-                <div class="info-item">
-                    <span class="info-item-label" data-key="formSerial">Serial Nömrə</span>
-                    <span class="info-item-value" id="approval-serial"></span>
-                </div>
-                <div class="info-item">
-                    <span class="info-item-label" data-key="formMac">MAC Address</span>
-                    <span class="info-item-value" id="approval-mac"></span>
-                </div>
-                <div class="info-item">
-                    <span class="info-item-label" data-key="thStatus">Statusu</span>
-                    <span class="info-item-value"><span class="tag" id="approval-status"></span></span>
-                </div>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="submit-btn btn-reject" id="approval-reject-btn">
-                    <i class="fas fa-times"></i> <span data-key="reject">Rədd et</span>
-                </button>
-                <button type="button" class="submit-btn btn-approve" id="approval-approve-btn">
-                    <i class="fas fa-check"></i> <span data-key="approve">Təsdiqlə</span>
-                </button>
-            </div>
-        </div>
-    </div>
-    
     <div id="add-user-modal" class="modal-overlay">
         <div class="modal-content profile-modal" style="width: 450px;">
             <button class="modal-close-btn" id="add-user-modal-close"><i class="fas fa-times"></i></button>
-            <div class="modal-header">
-                <h2 data-key="addUserTitle">Yeni İstifadəçi Yarat</h2>
-            </div>
+            <div class="modal-header"><h2 data-key="addUserTitle">Yeni Personal Yarat</h2></div>
             <form id="add-user-form">
                 <div class="modal-body">
-                    <p data-key="addUserP" style="font-size: 14px; color: #777; margin-top: 0; margin-bottom: 20px;">...</p>
-                    <div class="form-group">
-                        <label for="new-user-name" data-key="fullNameLabel">Tam ad</label>
-                        <input type="text" id="new-user-name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="new-user-email" data-key="emailLabel">E-poçt ünvanı</label>
-                        <input type="email" id="new-user-email" required>
-                    </div>
-                     <div class="form-group">
-                        <label for="new-user-password" data-key="initialPassword">İlkin Şifrə *</label>
-                        <input type="password" id="new-user-password" required>
-                        <small data-key="initialPasswordP" style="font-size: 12px; color: #777; margin-top: 5px;">...</small>
-                    </div>
+                    <p data-key="addUserP" style="font-size: 14px; color: #777; margin-top: 0; margin-bottom: 20px;">Sistemə giriş edə biləcək işçi (Admin/Anbardar)</p>
+                    <div class="form-group"><label for="new-user-name" data-key="fullNameLabel">Tam ad</label><input type="text" id="new-user-name" required></div>
+                    <div class="form-group"><label for="new-user-email" data-key="emailLabel">E-poçt ünvanı</label><input type="email" id="new-user-email" required></div>
+                     <div class="form-group"><label for="new-user-password" data-key="initialPassword">İlkin Şifrə *</label><input type="password" id="new-user-password" required><small data-key="initialPasswordP" style="font-size: 12px; color: #777; margin-top: 5px;">...</small></div>
                     <div class="form-group">
                         <label for="new-user-role" data-key="thRole">Rol *</label>
                         <select id="new-user-role" required>
-                            <option value="user" data-key="roleUser">User</option>
-                            <option value="admin" data-key="roleAdmin">Admin</option>
+                            <option value="user" data-key="roleUser">Anbar İşçisi (Baxıcı)</option>
+                            <option value="admin" data-key="roleAdmin">Admin (Tam İcazə)</option>
                         </select>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="submit-btn btn-secondary" id="add-user-cancel-btn" data-key="cancel">Ləğv et</button>
-                    <button type="submit" class="submit-btn btn-primary" data-key="submitCreateUser">İstifadəçi Yarat</button>
+                    <button type="submit" class="submit-btn btn-primary" data-key="submitCreateUser">Yarat</button>
                 </div>
             </form>
         </div>
@@ -340,23 +667,12 @@
     <div id="change-password-modal" class="modal-overlay">
         <div class="modal-content profile-modal" style="width: 400px;">
             <button class="modal-close-btn" id="password-modal-close"><i class="fas fa-times"></i></button>
-            <div class="modal-header">
-                <h2 data-key="changePasswordTitle">Şifrəni Dəyiş</h2>
-            </div>
+            <div class="modal-header"><h2 data-key="changePasswordTitle">Şifrəni Dəyiş</h2></div>
             <form id="change-password-form">
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="old-password" data-key="oldPassword">Köhnə şifrə</label>
-                        <input type="password" id="old-password" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="new-password" data-key="newPassword">Yeni şifrə</label>
-                        <input type="password" id="new-password" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="confirm-new-password" data-key="confirmNewPassword">Yeni şifrəni təsdiqlə</label>
-                        <input type="password" id="confirm-new-password" required>
-                    </div>
+                    <div class="form-group"><label for="old-password" data-key="oldPassword">Köhnə şifrə</label><input type="password" id="old-password" required></div>
+                    <div class="form-group"><label for="new-password" data-key="newPassword">Yeni şifrə</label><input type="password" id="new-password" required></div>
+                    <div class="form-group"><label for="confirm-new-password" data-key="confirmNewPassword">Yeni şifrəni təsdiqlə</label><input type="password" id="confirm-new-password" required></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="submit-btn btn-secondary" id="password-cancel-btn" data-key="cancel">Ləğv et</button>
@@ -366,12 +682,11 @@
         </div>
     </div>
     
+    <!-- İSTİFADƏÇİ AVADANLIQLARI SİYAHISI MODALI -->
     <div id="view-equipment-modal" class="modal-overlay">
         <div class="modal-content view-equipment-modal">
             <button class="modal-close-btn" id="view-equipment-close-btn"><i class="fas fa-times"></i></button>
-            <div class="modal-header">
-                <h2 id="view-equipment-title" data-key="viewEquipmentTitle">İstifadəçinin Avadanlıqları</h2>
-            </div>
+            <div class="modal-header"><h2 id="view-equipment-title" data-key="viewEquipmentTitle">İstifadəçinin Avadanlıqları</h2></div>
             <div class="modal-body">
                 <div class="list-body">
                     <table id="user-specific-equipment-table">
@@ -386,16 +701,108 @@
                     </table>
                     <div id="user-specific-empty-state" class="empty-state" style="display: none;">
                         <i class="fas fa-laptop-medical"></i>
-                        <h3 data-key="noEquipmentFound">Bu istifadəçi üçün təsdiqlənmiş avadanlıq tapılmadı.</h3>
+                        <h3 data-key="noEquipmentFound">Bu istifadəçi üçün avadanlıq tapılmadı.</h3>
                     </div>
                 </div>
             </div>
+            <div class="modal-footer"><button type="button" class="submit-btn btn-secondary" id="view-equipment-close-footer-btn" data-key="close">Bağla</button></div>
+        </div>
+    </div>
+
+    <!-- ƏTRAFLI MƏLUMAT MODALI -->
+    <div id="item-details-modal" class="modal-overlay">
+        <div class="modal-content profile-modal">
+            <button class="modal-close-btn" id="item-details-close"><i class="fas fa-times"></i></button>
+            <div class="modal-header"><h2 data-key="equipmentDetails">Avadanlıq Məlumatları</h2></div>
+            <div class="modal-body">
+                <div class="details-grid" id="item-details-content">
+                    <!-- JS ilə doldurulacaq -->
+                </div>
+            </div>
             <div class="modal-footer">
-                <button type="button" class="submit-btn btn-secondary" id="view-equipment-close-footer-btn" data-key="close">Bağla</button>
+                <button type="button" class="submit-btn btn-primary" id="item-details-ok" data-key="okBtn">Oldu</button>
             </div>
         </div>
     </div>
 
+    <!-- YENİ: AVADANLIQ REDAKTƏ MODALI -->
+    <div id="edit-equipment-modal" class="modal-overlay">
+        <div class="modal-content profile-modal" style="width: 500px; max-width: 95%;">
+            <button class="modal-close-btn" id="edit-equipment-close"><i class="fas fa-times"></i></button>
+            <div class="modal-header"><h2 data-key="editEquipmentTitle">Avadanlığı Düzəlt</h2></div>
+            <form id="edit-equipment-form">
+                <div class="modal-body">
+                    <input type="hidden" id="edit-equip-id">
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label data-key="lblHolderName">Ad Soyad</label>
+                            <input type="text" id="edit-holder-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label data-key="lblHolderFaculty">Fakültə / Şöbə</label>
+                            <input type="text" id="edit-holder-faculty" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label data-key="formType">Avadanlıq növü</label>
+                            <select id="edit-equip-type" required>
+                                <option value="Kompüter" data-key="formTypeComputer">Kompüter</option>
+                                <option value="Monitor" data-key="formTypeMonitor">Monitor</option>
+                                <option value="Printer" data-key="formTypePrinter">Printer</option>
+                                <option value="Digər" data-key="formTypeOther">Digər</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label data-key="formName">Avadanlığın adı</label>
+                            <input type="text" id="edit-equip-name" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label data-key="formModel">Marka/Model</label>
+                            <input type="text" id="edit-equip-model" required>
+                        </div>
+                        <div class="form-group">
+                            <label data-key="formSerial">Serial Nömrə</label>
+                            <input type="text" id="edit-equip-serial">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label data-key="formMac">MAC Address</label>
+                            <input type="text" id="edit-equip-mac">
+                        </div>
+                        <div class="form-group">
+                            <label data-key="formStatus">Status</label>
+                            <select id="edit-equip-status">
+                                <option value="İşlək" data-key="formStatusWorking">İşlək</option>
+                                <option value="Xarab" data-key="formStatusBroken">Xarab</option>
+                                <option value="Təmirdə" data-key="formStatusRepair">Təmirdə</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                      <!-- Qeyd hissəsi bərpa edildi, placeholder silindi -->
+                      <div class="form-group">
+                        <label data-key="formNotes">Qeyd/Şərh</label>
+                        <textarea id="edit-equip-notes" placeholder="Xüsusi qeydləri buraya yazın..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer" style="justify-content: space-between;">
+                    <button type="button" class="submit-btn btn-warning" id="btn-return-warehouse" title="Anbara Qaytar"><i class="fas fa-box-open"></i> Anbar</button>
+                    <div style="display: flex; gap: 10px;">
+                        <button type="button" class="submit-btn btn-secondary" id="edit-equipment-cancel" data-key="cancel">Ləğv</button>
+                        <button type="submit" class="submit-btn btn-primary" data-key="submitAssignEquipment">Yadda Saxla</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
@@ -403,10 +810,10 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
     
     <script>
-        // === TƏRCÜMƏ SİSTEMİ (ADMIN PANEL DAXİLİ LÜĞƏT) ===
+        // === TƏRCÜMƏ SİSTEMİ ===
         const translations = {
             az: {
-                appName: "IT Inventory Tracker",
+                appName: "TechCore Inventory",
                 adminPanelTitle: "Admin Paneli",
                 adminWelcome: "Admin İstifadəçi",
                 loading: "Yüklənir...",
@@ -414,23 +821,19 @@
                 langEnglish: "English (EN)",
                 langRussian: "Русский (RU)",
                 logout: "Çıxış",
-                statPending: "Təsdiq Gözləyən",
-                statTotalEquipment: "Təsdiqlənmiş Avadanlıq",
-                statWorking: "İşlək (Təsdiqlənmiş)",
-                statTotalUsers: "İstifadəçilər",
-                adminTabAllInventory: "Bütün İnventarlar",
-                adminTabPending: "Təsdiq Gözləyənlər",
-                adminTabUsers: "İstifadəçilər",
+                statTotalEquipment: "Ümumi Avadanlıq",
+                statWorking: "İşlək Avadanlıq",
+                statHolders: "İstifadəçilər (Sahiblər)",
+                adminTabAllInventory: "İnventar Siyahısı",
+                tabHolders: "İstifadəçilər (Sahiblər)",
+                adminTabUsers: "Sistem Personalı",
                 tabAddEquipment: "Avadanlıq Əlavə Et",
-                searchPlaceholder: "Ad, soyad, serial nömrə, MAC və s. ilə axtar...",
-                emptyStateAllEquipment: "Hələ təsdiqlənmiş avadanlıq yoxdur.",
-                thWhoAdded: "Kim Əlavə Etdi",
-                thNameModel: "Adı / Model",
-                thStatus: "Statusu",
-                thOperations: "Əməliyyatlar",
-                emptyStatePending: "Təsdiq üçün heç bir avadanlıq yoxdur.",
-                adminAssignUser: "Avadanlıq Hansı İstifadəçiyə Təyin Edilir? *",
-                adminAssignUserSelect: "İstifadəçi seçin...",
+                searchPlaceholder: "İşçi adı, Fakültə, avadanlıq adı və s...",
+                emptyStateAllEquipment: "Sistemdə avadanlıq yoxdur.",
+                lblHolderTitle: "Avadanlıq Sahibinin Məlumatları",
+                lblHolderName: "Ad Soyad *",
+                lblHolderFaculty: "Fakültə / Şöbə *",
+                lblSystemID: "Sistem ID (Avtomatik & Dəyişməz)",
                 formType: "Avadanlıq növü *",
                 formTypeSelect: "Növü seçin",
                 formTypeComputer: "Kompüter",
@@ -453,90 +856,79 @@
                 formUpload: "Şəkil Yüklə",
                 formNotes: "Qeyd/Şərh",
                 formNotesPlaceholder: "Əlavə məlumat...",
-                submitAssignEquipment: "Avadanlığı Təyin Et (Birbaşa)",
+                submitAssignEquipment: "Yadda Saxla",
                 searchUsersPlaceholder: "Ad, e-poçt və ya rola görə axtar...",
-                addUser: "Yeni İstifadəçi Yarat",
+                searchHoldersPlaceholder: "İstifadəçi adı və ya fakültə axtar...",
+                addUser: "Yeni Personal Yarat",
                 profileSettings: "Profil Parametrləri",
                 fullNameLabel: "Tam ad",
                 emailLabel: "E-poçt ünvanı",
                 changePassword: "Şifrəni Dəyiş",
                 cancel: "Ləğv et",
                 updateProfile: "Profili Yenilə",
-                equipmentDetails: "Avadanlıq Məlumatları",
-                addedBy: "Əlavə edən",
-                sentDate: "Gəndərilmə tarixi",
-                reject: "Rədd et",
-                approve: "Təsdiqlə",
-                addUserTitle: "Yeni İstifadəçi Yarat",
-                addUserP: "Yeni istifadəçi üçün məlumatları daxil edin:",
+                addUserTitle: "Yeni Personal Yarat",
+                addUserP: "Sistemə giriş edə biləcək işçi (Admin/Anbardar)",
                 initialPassword: "İlkin Şifrə *",
-                initialPasswordP: "İstifadəçi ilk girişdə bunu dəyişə bilər.",
+                initialPasswordP: "İşçi ilk girişdə bunu dəyişə bilər.",
                 thRole: "Rol *",
-                roleUser: "User",
+                roleUser: "Anbar İşçisi",
                 roleAdmin: "Admin",
-                submitCreateUser: "İstifadəçi Yarat",
+                submitCreateUser: "Yarat",
                 changePasswordTitle: "Şifrəni Dəyiş",
                 oldPassword: "Köhnə şifrə",
                 newPassword: "Yeni şifrə",
                 confirmNewPassword: "Yeni şifrəni təsdiqlə",
                 viewEquipmentTitle: "İstifadəçinin Avadanlıqları",
                 thSerial: "Serial Nömrə",
-                noEquipmentFound: "Bu istifadəçi üçün təsdiqlənmiş avadanlıq tapılmadı.",
+                thStatus: "Status",
+                thNameModel: "Adı / Model",
+                thOperations: "Əməliyyat",
+                noEquipmentFound: "Bu istifadəçi üçün avadanlıq tapılmadı.",
                 close: "Bağla",
                 viewEquipment: "Bax",
-                btnMakeUser: "User Et",
-                btnMakeAdmin: "Admin Et",
-                userEquipmentDeleteNone: "Bu istifadəçinin silinəcək avadanlığı yoxdur.",
-                userEquipmentDeleteSuccess: "avadanlıq silindi.",
-                errorDeleteEquipment: "Silinmə xətası: ",
+                btnMakeUser: "Rol: İşçi Et",
+                btnMakeAdmin: "Rol: Admin Et",
+                btnDeactivate: "Girişi Kilidlə",
+                btnActivate: "Kilidi Aç",
+                statusActive: "AKTİV",
+                statusDeactivated: "DEAKTİV",
+                confirmChangeRole: "Bu istifadəçinin rolunu dəyişmək istədiyinizə əminsiniz?",
+                confirmDeactivate: "Bu istifadəçinin sistemə girişini BLOKLAMAQ istəyirsiniz?",
+                confirmActivate: "Bu istifadəçinin kilidini açmaq istəyirsiniz?",
+                userLocked: "İstifadəçi deaktiv edildi.",
+                userUnlocked: "İstifadəçi aktiv edildi.",
+                profileUpdateSuccess: "Profil yeniləndi!",
+                profileUpdateError: "Xəta: ",
+                errorOnSelf: "Öz hesabınızı bloklaya bilməzsiniz!",
                 equipmentAddedSuccess: "Avadanlıq uğurla əlavə edildi!",
                 errorAddingEquipment: "Xəta baş verdi!",
-                pwMismatch: "Şifrələr uyğun gəlmir!",
-                passwordUpdateSuccess: "Şifrə yeniləndi!",
-                reauthError: "Yenidən giriş lazımdır (Köhnə şifrə səhvdir).",
-                weakPassword: "Şifrə çox zəifdir.",
-                passwordUpdateError: "Xəta: ",
-                equipmentRejected: "Avadanlıq rədd edildi və silindi.",
-                equipmentActionError: "Xəta: ",
-                equipmentApproved: "Avadanlıq təsdiqləndi!",
                 userCreateSuccess: "İstifadəçi yaradıldı!",
                 userCreateError: "Xəta: ",
                 confirmDeleteEquipment: "Bu avadanlığı silmək istədiyinizə əminsiniz?",
-                errorOnSelf: "Özünüz üzərində bu əməliyyatı apara bilməzsiniz!",
-                confirmChangeRole: "Bu istifadəçinin rolunu dəyişmək istədiyinizə əminsiniz?",
-                confirmDeleteUserEquipment: "DİQQƏT: Bu istifadəçini və ona təhkim olunmuş BÜTÜN avadanlıqları silmək istəyirsiniz?",
-                confirmReject: "Bu avadanlığı rədd etmək (silmək) istədiyinizə əminsiniz?",
-                profileUpdateSuccess: "Profil yeniləndi!",
-                profileUpdateError: "Xəta: ",
-                authErrorCheck: "İcazə xətası. Girişə yönləndirilir...",
-                noPermission: "İcazəniz yoxdur!"
+                viewInventory: "İnventara Bax",
+                totalItems: "Say",
+                equipmentDetails: "Avadanlıq Məlumatları",
+                okBtn: "Oldu",
+                editEquipmentTitle: "Avadanlığı Düzəlt",
+                returnToWarehouse: "Anbara Qaytar",
+                confirmReturn: "Bu avadanlığı Anbara qaytarmaq istəyirsiniz?"
             },
             en: {
-                appName: "IT Inventory Tracker",
-                adminPanelTitle: "Admin Panel",
+                appName: "TechCore Inventory",
+                adminPanelTitle: "TechCore Admin",
                 adminWelcome: "Admin User",
-                loading: "Loading...",
-                langAzerbaijani: "Azərbaycanca (AZ)",
-                langEnglish: "English (EN)",
-                langRussian: "Русский (RU)",
                 logout: "Logout",
-                statPending: "Pending Approval",
-                statTotalEquipment: "Approved Equipment",
-                statWorking: "Working (Approved)",
-                statTotalUsers: "Users",
-                adminTabAllInventory: "All Inventory",
-                adminTabPending: "Pending Approval",
-                adminTabUsers: "Users",
+                statTotalEquipment: "Total Equipment",
+                statWorking: "Working",
+                statHolders: "Equipment Holders",
+                adminTabAllInventory: "Inventory List",
+                tabHolders: "Users (Holders)",
+                adminTabUsers: "System Staff",
                 tabAddEquipment: "Add Equipment",
-                searchPlaceholder: "Search by name, serial, MAC, etc...",
-                emptyStateAllEquipment: "No approved equipment yet.",
-                thWhoAdded: "Added By",
-                thNameModel: "Name / Model",
-                thStatus: "Status",
-                thOperations: "Operations",
-                emptyStatePending: "No equipment pending approval.",
-                adminAssignUser: "Assign to User *",
-                adminAssignUserSelect: "Select User...",
+                lblHolderTitle: "Equipment Holder Info",
+                lblHolderName: "Holder Name *",
+                lblHolderFaculty: "Faculty/Dept *",
+                lblSystemID: "System ID (Auto & Immutable)",
                 formType: "Equipment Type *",
                 formTypeSelect: "Select Type",
                 formTypeComputer: "Computer",
@@ -544,119 +936,109 @@
                 formTypePrinter: "Printer",
                 formTypeOther: "Other",
                 formName: "Equipment Name *",
-                formNamePlaceholder: "e.g. Dell Latitude Laptop",
+                formNamePlaceholder: "e.g., Dell Latitude Laptop",
                 formModel: "Brand/Model *",
-                formModelPlaceholder: "e.g. Dell Latitude 5420",
+                formModelPlaceholder: "e.g., Dell Latitude 5420",
                 formSerial: "Serial Number",
-                formSerialPlaceholder: "e.g. SN123456789",
+                formSerialPlaceholder: "e.g., SN123456789",
                 formMac: "MAC Address",
-                formMacPlaceholder: "e.g. 00:1A:2B:3C:4D:5E",
+                formMacPlaceholder: "e.g., 00:1A:2B:3C:4D:5E",
                 formStatus: "Status *",
                 formStatusWorking: "Working",
                 formStatusBroken: "Broken",
-                formStatusRepair: "In Repair",
+                formStatusRepair: "Repair",
                 formDate: "Purchase Date",
                 formUpload: "Upload Image",
-                formNotes: "Notes",
+                formNotes: "Notes/Comments",
                 formNotesPlaceholder: "Additional info...",
-                submitAssignEquipment: "Assign Equipment (Direct)",
-                searchUsersPlaceholder: "Search by name, email or role...",
-                addUser: "Create New User",
+                submitAssignEquipment: "Save",
+                searchUsersPlaceholder: "Search by name, email, or role...",
+                searchHoldersPlaceholder: "Search by Holder Name or Faculty...",
+                addUser: "Create New Staff",
                 profileSettings: "Profile Settings",
                 fullNameLabel: "Full Name",
                 emailLabel: "Email Address",
                 changePassword: "Change Password",
                 cancel: "Cancel",
                 updateProfile: "Update Profile",
-                equipmentDetails: "Equipment Details",
-                addedBy: "Added By",
-                sentDate: "Sent Date",
-                reject: "Reject",
-                approve: "Approve",
-                addUserTitle: "Create New User",
-                addUserP: "Enter details for the new user:",
+                addUserTitle: "Create New Staff",
+                addUserP: "Staff who can access the system (Admin/Viewer)",
                 initialPassword: "Initial Password *",
-                initialPasswordP: "User can change this upon first login.",
+                initialPasswordP: "Staff can change this on first login.",
                 thRole: "Role *",
-                roleUser: "User",
+                roleUser: "Warehouse Staff",
                 roleAdmin: "Admin",
-                submitCreateUser: "Create User",
+                submitCreateUser: "Create",
                 changePasswordTitle: "Change Password",
                 oldPassword: "Old Password",
                 newPassword: "New Password",
                 confirmNewPassword: "Confirm New Password",
-                viewEquipmentTitle: "User's Equipment",
-                thSerial: "Serial Number",
-                noEquipmentFound: "No approved equipment found for this user.",
+                viewEquipmentTitle: "User Equipment",
+                thSerial: "Serial No",
+                thStatus: "Status",
+                thNameModel: "Name / Model",
+                thOperations: "Operations",
+                noEquipmentFound: "No equipment found for this user.",
                 close: "Close",
                 viewEquipment: "View",
-                btnMakeUser: "Make User",
-                btnMakeAdmin: "Make Admin",
-                userEquipmentDeleteNone: "No equipment to delete for this user.",
-                userEquipmentDeleteSuccess: "equipment deleted.",
-                errorDeleteEquipment: "Delete error: ",
+                btnMakeUser: "Role: Make User",
+                btnMakeAdmin: "Role: Make Admin",
+                btnDeactivate: "Block Access",
+                btnActivate: "Unblock",
+                statusActive: "ACTIVE",
+                statusDeactivated: "BLOCKED",
+                confirmChangeRole: "Are you sure you want to change this user's role?",
+                confirmDeactivate: "Do you want to BLOCK this user's access?",
+                confirmActivate: "Do you want to unblock this user?",
+                userLocked: "User deactivated.",
+                userUnlocked: "User activated.",
+                profileUpdateSuccess: "Profile updated!",
+                profileUpdateError: "Error: ",
+                errorOnSelf: "You cannot block your own account!",
                 equipmentAddedSuccess: "Equipment added successfully!",
                 errorAddingEquipment: "Error occurred!",
-                pwMismatch: "Passwords do not match!",
-                passwordUpdateSuccess: "Password updated!",
-                reauthError: "Re-authentication required (Wrong old password).",
-                weakPassword: "Password is too weak.",
-                passwordUpdateError: "Error: ",
-                equipmentRejected: "Equipment rejected and deleted.",
-                equipmentActionError: "Error: ",
-                equipmentApproved: "Equipment approved!",
                 userCreateSuccess: "User created!",
                 userCreateError: "Error: ",
                 confirmDeleteEquipment: "Are you sure you want to delete this equipment?",
-                errorOnSelf: "You cannot perform this action on yourself!",
-                confirmChangeRole: "Are you sure you want to change this user's role?",
-                confirmDeleteUserEquipment: "WARNING: Do you want to delete this user AND ALL their assigned equipment?",
-                confirmReject: "Are you sure you want to reject (delete) this equipment?",
-                profileUpdateSuccess: "Profile updated!",
-                profileUpdateError: "Error: ",
-                authErrorCheck: "Auth error. Redirecting...",
-                noPermission: "You do not have permission!"
+                viewInventory: "View Inventory",
+                totalItems: "Total",
+                searchPlaceholder: "Search by Name, Faculty, Model...",
+                equipmentDetails: "Equipment Details",
+                okBtn: "OK",
+                editEquipmentTitle: "Edit Equipment",
+                returnToWarehouse: "Return to Warehouse",
+                confirmReturn: "Return this equipment to the Warehouse?"
             },
             ru: {
-                appName: "IT Inventory Tracker",
-                adminPanelTitle: "Панель Администратора",
-                adminWelcome: "Администратор",
-                loading: "Загрузка...",
-                langAzerbaijani: "Azərbaycanca (AZ)",
-                langEnglish: "English (EN)",
-                langRussian: "Русский (RU)",
+                appName: "TechCore Inventory",
+                adminPanelTitle: "TechCore Admin",
+                adminWelcome: "Admin User",
                 logout: "Выход",
-                statPending: "Ожидают подтверждения",
-                statTotalEquipment: "Подтверждено",
-                statWorking: "Рабочие (Подтв.)",
-                statTotalUsers: "Пользователи",
-                adminTabAllInventory: "Весь Инвентарь",
-                adminTabPending: "Ожидают",
-                adminTabUsers: "Пользователи",
-                tabAddEquipment: "Добавить",
-                searchPlaceholder: "Поиск по имени, серийному номеру...",
-                emptyStateAllEquipment: "Нет подтвержденного оборудования.",
-                thWhoAdded: "Кто добавил",
-                thNameModel: "Название / Модель",
-                thStatus: "Статус",
-                thOperations: "Операции",
-                emptyStatePending: "Нет оборудования на подтверждение.",
-                adminAssignUser: "Назначить пользователю *",
-                adminAssignUserSelect: "Выберите пользователя...",
+                statTotalEquipment: "Всего",
+                statWorking: "Рабочие",
+                statHolders: "Владельцы",
+                adminTabAllInventory: "Список инвентаря",
+                tabHolders: "Пользователи (Владельцы)",
+                adminTabUsers: "Персонал системы",
+                tabAddEquipment: "Добавить оборудование",
+                lblHolderTitle: "Данные владельца",
+                lblHolderName: "ФИО Владельца *",
+                lblHolderFaculty: "Факультет/Отдел *",
+                lblSystemID: "Системный ID (Авто)",
                 formType: "Тип оборудования *",
                 formTypeSelect: "Выберите тип",
                 formTypeComputer: "Компьютер",
                 formTypeMonitor: "Монитор",
                 formTypePrinter: "Принтер",
                 formTypeOther: "Другое",
-                formName: "Название *",
-                formNamePlaceholder: "напр: Dell Latitude Laptop",
-                formModel: "Бренд/Модель *",
-                formModelPlaceholder: "напр: Dell Latitude 5420",
+                formName: "Название оборудования *",
+                formNamePlaceholder: "напр., Dell Latitude Laptop",
+                formModel: "Марка/Модель *",
+                formModelPlaceholder: "напр., Dell Latitude 5420",
                 formSerial: "Серийный номер",
-                formSerialPlaceholder: "напр: SN123456789",
-                formMac: "MAC Адрес",
-                formMacPlaceholder: "напр: 00:1A:2B:3C:4D:5E",
+                formSerialPlaceholder: "напр., SN123456789",
+                formMac: "MAC адрес",
+                formMacPlaceholder: "напр., 00:1A:2B:3C:4D:5E",
                 formStatus: "Статус *",
                 formStatusWorking: "Рабочий",
                 formStatusBroken: "Сломан",
@@ -664,64 +1046,64 @@
                 formDate: "Дата покупки",
                 formUpload: "Загрузить фото",
                 formNotes: "Заметки",
-                formNotesPlaceholder: "Доп. информация...",
-                submitAssignEquipment: "Назначить (Сразу)",
+                formNotesPlaceholder: "Дополнительная информация...",
+                submitAssignEquipment: "Сохранить",
                 searchUsersPlaceholder: "Поиск по имени, email или роли...",
-                addUser: "Новый Пользователь",
-                profileSettings: "Настройки Профиля",
+                searchHoldersPlaceholder: "Поиск по имени владельца или факультету...",
+                addUser: "Создать персонал",
+                profileSettings: "Настройки профиля",
                 fullNameLabel: "Полное имя",
                 emailLabel: "Email адрес",
                 changePassword: "Сменить пароль",
                 cancel: "Отмена",
-                updateProfile: "Обновить",
-                equipmentDetails: "Детали оборудования",
-                addedBy: "Добавил",
-                sentDate: "Дата отправки",
-                reject: "Отклонить",
-                approve: "Подтвердить",
-                addUserTitle: "Создать пользователя",
-                addUserP: "Введите данные нового пользователя:",
+                updateProfile: "Обновить профиль",
+                addUserTitle: "Создать новый персонал",
+                addUserP: "Сотрудник с доступом к системе (Админ/Смотрящий)",
                 initialPassword: "Начальный пароль *",
-                initialPasswordP: "Пользователь сменит его при входе.",
+                initialPasswordP: "Сотрудник сможет сменить его при входе.",
                 thRole: "Роль *",
-                roleUser: "User",
-                roleAdmin: "Admin",
+                roleUser: "Сотрудник склада",
+                roleAdmin: "Админ",
                 submitCreateUser: "Создать",
-                changePasswordTitle: "Смена пароля",
+                changePasswordTitle: "Сменить пароль",
                 oldPassword: "Старый пароль",
                 newPassword: "Новый пароль",
-                confirmNewPassword: "Подтвердите пароль",
+                confirmNewPassword: "Подтвердить пароль",
                 viewEquipmentTitle: "Оборудование пользователя",
-                thSerial: "Серийный номер",
+                thSerial: "Серийный №",
+                thStatus: "Статус",
+                thNameModel: "Название / Модель",
+                thOperations: "Действия",
                 noEquipmentFound: "Оборудование не найдено.",
                 close: "Закрыть",
-                viewEquipment: "Просмотр",
-                btnMakeUser: "Сделать User",
-                btnMakeAdmin: "Сделать Admin",
-                userEquipmentDeleteNone: "У этого пользователя нет оборудования.",
-                userEquipmentDeleteSuccess: "оборудование удалено.",
-                errorDeleteEquipment: "Ошибка удаления: ",
+                viewEquipment: "Смотреть",
+                btnMakeUser: "Роль: Сделать пользователем",
+                btnMakeAdmin: "Роль: Сделать админом",
+                btnDeactivate: "Блок. доступ",
+                btnActivate: "Разблок.",
+                statusActive: "АКТИВЕН",
+                statusDeactivated: "БЛОКИРОВАН",
+                confirmChangeRole: "Вы уверены, что хотите изменить роль?",
+                confirmDeactivate: "Вы хотите ЗАБЛОКИРОВАТЬ доступ?",
+                confirmActivate: "Вы хотите разблокировать?",
+                userLocked: "Пользователь деактивирован.",
+                userUnlocked: "Пользователь активирован.",
+                profileUpdateSuccess: "Профиль обновлен!",
+                profileUpdateError: "Ошибка: ",
+                errorOnSelf: "Вы не можете заблокировать себя!",
                 equipmentAddedSuccess: "Оборудование добавлено!",
                 errorAddingEquipment: "Произошла ошибка!",
-                pwMismatch: "Пароли не совпадают!",
-                passwordUpdateSuccess: "Пароль обновлен!",
-                reauthError: "Требуется повторный вход.",
-                weakPassword: "Пароль слишком простой.",
-                passwordUpdateError: "Ошибка: ",
-                equipmentRejected: "Оборудование отклонено и удалено.",
-                equipmentActionError: "Ошибка: ",
-                equipmentApproved: "Оборудование подтверждено!",
                 userCreateSuccess: "Пользователь создан!",
                 userCreateError: "Ошибка: ",
                 confirmDeleteEquipment: "Вы уверены, что хотите удалить?",
-                errorOnSelf: "Нельзя выполнить это действие над собой!",
-                confirmChangeRole: "Вы уверены, что хотите изменить роль?",
-                confirmDeleteUserEquipment: "ВНИМАНИЕ: Удалить пользователя И ВСЕ его оборудование?",
-                confirmReject: "Вы уверены, что хотите отклонить?",
-                profileUpdateSuccess: "Профиль обновлен!",
-                profileUpdateError: "Ошибка: ",
-                authErrorCheck: "Ошибка авторизации.",
-                noPermission: "Нет прав!"
+                viewInventory: "Смотреть инвентарь",
+                totalItems: "Всего",
+                searchPlaceholder: "Поиск по имени, факультету...",
+                equipmentDetails: "Детали оборудования",
+                okBtn: "ОК",
+                editEquipmentTitle: "Редактировать оборудование",
+                returnToWarehouse: "Вернуть на склад",
+                confirmReturn: "Вернуть это оборудование на склад?"
             }
         };
 
@@ -736,16 +1118,17 @@
             elements.forEach(el => {
                 const key = el.getAttribute('data-key');
                 if (translations[lang][key]) {
-                    if (el.tagName === 'INPUT' && el.getAttribute('placeholder')) {
-                        el.placeholder = translations[lang][key];
+                    if ((el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') && el.getAttribute('placeholder')) {
+                        // Placeholder-lər artıq boşaldılmalıdır, çünki user istəyib
+                        el.placeholder = ""; 
+                        // Amma Axtarış inputları üçün placeholder lazımdır
+                        if(el.id.includes('search') || el.id.includes('notes')) {
+                            el.placeholder = translations[lang][key];
+                        }
                     } else {
-                        if(el.children.length > 0) {
-                             if(el.querySelector('i')) {
-                                 const icon = el.querySelector('i').outerHTML;
-                                 el.innerHTML = icon + ' ' + translations[lang][key];
-                             } else {
-                                 el.textContent = translations[lang][key];
-                             }
+                        if(el.children.length > 0 && el.querySelector('i')) {
+                             const icon = el.querySelector('i').outerHTML;
+                             el.innerHTML = icon + ' ' + translations[lang][key];
                         } else {
                             el.textContent = translations[lang][key];
                         }
@@ -759,21 +1142,35 @@
             const dropdown = document.getElementById('lang-dropdown');
             if(dropdown) dropdown.classList.remove('show');
             
-            // Bütün dinamik siyahıları yenilə
             renderUserCards(allUsersCache);
             if (typeof filterAndRenderInventory === 'function') filterAndRenderInventory();
-            if (typeof renderPendingTable === 'function') renderPendingTable();
+            renderHoldersList();
         }
 
         function t(key) {
             return translations[currentLang][key] || key;
         }
 
-        function translatePage() {
-            setLanguage(currentLang);
-        }
+        // === MAPS FOR TRANSLATING VALUES FROM DB ===
+        const typeMap = {
+            "Kompüter": "formTypeComputer",
+            "Monitor": "formTypeMonitor",
+            "Printer": "formTypePrinter",
+            "Digər": "formTypeOther",
+            "Computer": "formTypeComputer", 
+            "Компьютер": "formTypeComputer" 
+        };
 
-        // === ƏSAS QURAŞDIRMA ---
+        const statusMap = {
+            "İşlək": "formStatusWorking",
+            "Xarab": "formStatusBroken",
+            "Təmirdə": "formStatusRepair",
+            "Working": "formStatusWorking",
+            "Broken": "formStatusBroken",
+            "Repair": "formStatusRepair"
+        };
+
+        // === FIREBASE CONFIG ===
         const firebaseConfig = {
             apiKey: "AIzaSyAI2rM3vttKrDI9C4vDD41_hcXurLvQ6gw",
             authDomain: "it-inventory-tracker-61d2c.firebaseapp.com",
@@ -792,15 +1189,20 @@
         let currentAdminUID = null;
         let allUsersCache = []; 
         let allEquipmentCache = []; 
-        let pendingEquipmentCache = []; 
+        let uniqueHoldersMap = {}; 
 
         // --- AUTH YOXLAMASI ---
         auth.onAuthStateChanged(user => {
             if (user) {
                 db.collection("users").doc(user.uid).onSnapshot(doc => {
                     if (doc.exists && doc.data().role === 'admin') {
+                        if(doc.data().status === 'deactivated') {
+                            alert("Hesabınız deaktiv edilib!");
+                            auth.signOut();
+                            return;
+                        }
+
                         currentAdminUID = user.uid; 
-                        
                         const userData = doc.data();
                         const name = userData.name || t('adminWelcome');
                         const profilePicUrl = userData.profilePicUrl;
@@ -829,18 +1231,13 @@
                         }
                         
                         loadAdminData(); 
-                        setLanguage(currentLang); // İlk yüklənmədə dili tətbiq et
+                        setLanguage(currentLang); 
+                        generateTechCoreID();
                         
-                    } else if (doc.exists && doc.data().role !== 'admin') {
-                        alert(t('noPermission'));
-                        window.location.href = "dashboard.html";
                     } else {
-                        alert(t('noPermission'));
-                        auth.signOut();
-                        window.location.href = "index.html";
+                        window.location.href = "dashboard.html";
                     }
                 }, err => {
-                        alert(t('authErrorCheck'));
                         window.location.href = "index.html";
                 });
             } else {
@@ -848,11 +1245,22 @@
             }
         });
 
-        // --- ÜMUMİ FUNKSİYALAR (Çıxış, Tablar) ---
+        function generateTechCoreID() {
+            const randomPart = Math.random().toString(36).substring(2, 8).toUpperCase();
+            const newID = `TC-${randomPart}`;
+            const idField = document.getElementById('auto-id');
+            if(idField) idField.value = newID;
+            
+            // Tarixi bugünkü tarixə ayarla
+            const dateField = document.getElementById('admin-equip-date');
+            if(dateField) {
+                dateField.valueAsDate = new Date();
+            }
+        }
+
+        // --- ÜMUMİ FUNKSİYALAR ---
         document.getElementById('logout-btn').addEventListener('click', () => {
-            auth.signOut().then(() => {
-                window.location.href = "index.html";
-            });
+            auth.signOut().then(() => { window.location.href = "index.html"; });
         });
 
         const tabLinks = document.querySelectorAll('.tab-nav .tab-link');
@@ -871,9 +1279,97 @@
         function updateStatCards(equipmentList) {
             let total = equipmentList.length;
             let islek = equipmentList.filter(e => e.status === 'İşlək').length;
+            const uniqueHolders = new Set(equipmentList.map(e => e.holderName).filter(Boolean));
+            let holderCount = uniqueHolders.size;
+
             document.getElementById('stat-total').innerText = total;
             document.getElementById('stat-islek').innerText = islek;
+            document.getElementById('stat-holders').innerText = holderCount;
         }
+
+        function updateHoldersData() {
+            uniqueHoldersMap = {}; 
+            allEquipmentCache.forEach(equip => {
+                const name = equip.holderName;
+                if(name) {
+                    if (!uniqueHoldersMap[name]) {
+                        uniqueHoldersMap[name] = {
+                            faculty: equip.holderFaculty,
+                            count: 0
+                        };
+                    }
+                    uniqueHoldersMap[name].count++;
+                }
+            });
+
+            const dataList = document.getElementById('holder-suggestions');
+            dataList.innerHTML = '';
+            Object.keys(uniqueHoldersMap).forEach(name => {
+                const option = document.createElement('option');
+                option.value = name;
+                dataList.appendChild(option);
+            });
+
+            renderHoldersList();
+        }
+        
+        function renderHoldersList() {
+            const container = document.getElementById('all-holders-list');
+            const emptyState = document.getElementById('holders-empty-state');
+            const searchTerm = document.getElementById('holders-search').value.toLowerCase();
+
+            container.innerHTML = '';
+            let hasItems = false;
+
+            // "Anbar" ən başda gəlməsi üçün sort edirik
+            const sortedNames = Object.keys(uniqueHoldersMap).sort((a, b) => {
+                if (a === 'Anbar') return -1;
+                if (b === 'Anbar') return 1;
+                return a.localeCompare(b);
+            });
+
+            sortedNames.forEach(name => {
+                const data = uniqueHoldersMap[name];
+                const searchString = (name + ' ' + data.faculty).toLowerCase();
+
+                if (searchString.includes(searchTerm)) {
+                    hasItems = true;
+                    const initials = name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
+
+                    const card = `
+                    <div class="holder-card" data-name="${name}">
+                        <div class="holder-header">
+                            <div class="holder-icon">${initials}</div>
+                            <div class="holder-details">
+                                <h3>${name}</h3>
+                                <p>${data.faculty}</p>
+                            </div>
+                        </div>
+                        <div class="holder-stats">
+                            <span>${t('totalItems')}:</span>
+                            <span class="holder-count">${data.count}</span>
+                        </div>
+                        <div class="holder-actions">
+                            <button onclick="openHolderInventory('${name}')"><i class="fas fa-list"></i> ${t('viewInventory')}</button>
+                        </div>
+                    </div>
+                    `;
+                    container.innerHTML += card;
+                }
+            });
+
+            if (!hasItems) emptyState.style.display = 'block';
+            else emptyState.style.display = 'none';
+        }
+
+        document.getElementById('holders-search').addEventListener('input', renderHoldersList);
+
+        document.getElementById('holder-name').addEventListener('input', function() {
+            const enteredName = this.value;
+            if (uniqueHoldersMap[enteredName]) {
+                document.getElementById('holder-faculty').value = uniqueHoldersMap[enteredName].faculty;
+            }
+        });
 
         function filterAndRenderInventory() {
             const searchTerm = document.getElementById('inventory-search').value.toLowerCase();
@@ -883,18 +1379,14 @@
                 filteredList = allEquipmentCache;
             } else {
                 filteredList = allEquipmentCache.filter(equip => {
-                    const userName = allUsersCache.find(u => u.id === equip.addedByUserId)?.name || '';
-                    const searchData = [
-                        equip.name,
-                        equip.model,
-                        equip.serial,
-                        equip.mac,
-                        equip.type,
-                        equip.status,
-                        equip.addedByEmail,
-                        userName
-                    ].join(' ').toLowerCase();
+                    const statusText = t(statusMap[equip.status] || equip.status).toLowerCase();
+                    const typeText = t(typeMap[equip.type] || equip.type).toLowerCase();
                     
+                    const searchData = [
+                        equip.name, equip.model, equip.serial, equip.mac, equip.type, equip.status, 
+                        equip.holderName, equip.holderFaculty, equip.systemId,
+                        statusText, typeText // Tərcümə olunmuş dəyərlər də axtarışa əlavə edildi
+                    ].join(' ').toLowerCase();
                     return searchData.includes(searchTerm);
                 });
             }
@@ -903,111 +1395,18 @@
             updateStatCards(filteredList);
         }
 
-        // --- DATABAZADAN MƏLUMAT YÜKLƏMƏ ---
         function loadAdminData() {
-            
-            // 1. Təsdiqlənmiş Avadanlıqlar
-            db.collection("equipment").where("approvalStatus", "==", "approved")
-              .onSnapshot(snapshot => {
+            db.collection("equipment").onSnapshot(snapshot => {
                 allEquipmentCache = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                updateHoldersData(); 
                 filterAndRenderInventory(); 
             });
-            
-            // 2. Təsdiq Gözləyənlər
-            db.collection("equipment").where("approvalStatus", "==", "pending")
-              .onSnapshot(snapshot => {
-                  const pendingList = snapshot.docs;
-                  
-                  pendingEquipmentCache = pendingList.map(doc => ({ id: doc.id, data: doc.data() }));
-                  renderPendingTable(); // Yeni funksiyanı çağırırıq
-              });
-
-            // 3. Bütün İstifadəçilər
             db.collection("users").onSnapshot(snapshot => {
                 allUsersCache = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 renderUserCards(allUsersCache); 
-                
-                const userSelect = document.getElementById('assign-user-select');
-                const currentUserSelectValue = userSelect.value;
-                
-                userSelect.innerHTML = `<option value="" disabled selected data-key="adminAssignUserSelect">${t('adminAssignUserSelect')}</option>`;
-                
-                document.getElementById('stat-users').innerText = allUsersCache.length;
-
-                allUsersCache.forEach(user => {
-                    const option = `<option value="${user.id}" data-email="${user.email}">${user.name} (${user.email})</option>`;
-                    userSelect.innerHTML += option;
-                });
-                
-                userSelect.value = currentUserSelectValue;
-                
-                filterAndRenderInventory(); 
             });
         }
-
-        // --- STATUS XƏRİTƏSİ ---
-        const statusMap = {
-            "İşlək": "formStatusWorking",
-            "Xarab": "formStatusBroken",
-            "Təmirdə": "formStatusRepair"
-        };
-
-        // --- YENİ FUNKSİYA: Gözləyən cədvəli (Tərcümə ilə) ---
-        function renderPendingTable() {
-            const tableBody = document.getElementById('pending-equipment-tbody');
-            const emptyState = document.getElementById('pending-empty-state');
-            const pendingCountBadge = document.getElementById('pending-count');
-
-            let html = ""; 
-            let pendingCount = pendingEquipmentCache.length;
-            
-            document.getElementById('stat-pending').innerText = pendingCount;
-            pendingCountBadge.innerText = pendingCount; 
-            
-            if (pendingCount > 0) pendingCountBadge.style.display = 'inline-block';
-            else pendingCountBadge.style.display = 'none';
-            
-            if (pendingCount === 0) {
-                emptyState.style.display = "block";
-            } else {
-                emptyState.style.display = "none";
-            }
-            
-            pendingEquipmentCache.forEach(item => {
-                const equip = item.data;
-                // Statusu tərcümə edirik
-                const translatedStatus = t(statusMap[equip.status] || equip.status);
-
-                html += `
-                <tr class="clickable-row" data-id="${item.id}">
-                    <td>${equip.addedByEmail}</td>
-                    <td>${equip.name} (${equip.model})</td>
-                    <td class="status-${equip.status.toLowerCase()}">${translatedStatus}</td>
-                    <td>
-                        <button class="approve-btn small-btn"><i class="fas fa-search"></i> <span data-key="viewEquipment">${t('viewEquipment')}</span></button>
-                    </td>
-                </tr>
-                `;
-            });
-
-            tableBody.innerHTML = html;
-        }
-
-        document.getElementById('pending-equipment-tbody').addEventListener('click', (e) => {
-            const row = e.target.closest('tr.clickable-row');
-            if (!row) return; 
-
-            const docId = row.getAttribute('data-id');
-            if (!docId) return;
-
-            const equipData = pendingEquipmentCache.find(item => item.id === docId);
-            
-            if (equipData) {
-                openApprovalModal(equipData.id, equipData.data);
-            }
-        });
         
-        // --- KART YARADAN FUNKSİYALAR ---
         function renderEquipmentCards(equipmentList) {
             const container = document.getElementById('all-equipment-list');
             const emptyState = document.getElementById('all-empty-state');
@@ -1017,24 +1416,20 @@
             else emptyState.style.display = "none";
             
             equipmentList.forEach(equip => {
-                const user = allUsersCache.find(u => u.id === equip.addedByUserId);
-                const userName = user ? user.name : (equip.addedByEmail || 'Naməlum');
-
-                const searchData = [
-                    equip.name, equip.model, equip.serial, equip.mac, equip.type, equip.status, equip.addedByEmail, userName
-                ].join(' ').toLowerCase();
-
-                // DÜZƏLİŞ: Statusu tərcümə edirik
+                const holderInfo = equip.holderName ? `${equip.holderName} (${equip.holderFaculty})` : "Təyin edilməyib";
+                const searchData = [equip.name, equip.model, equip.serial, equip.mac, equip.type, equip.status, equip.holderName].join(' ').toLowerCase();
+                
                 const translatedStatus = t(statusMap[equip.status] || equip.status);
+                const translatedType = t(typeMap[equip.type] || equip.type);
 
                 const card = `
-                <div class="equipment-card visible" data-userid="${equip.addedByUserId}" data-search="${searchData}">
+                <div class="equipment-card visible" data-search="${searchData}">
                     <div class="card-header">
                         <div>
                             <h3 class="card-title">${equip.name}</h3>
                             <p class="card-subtitle">${equip.model}</p>
                             <div class="card-tags">
-                                <span class="tag user-tag"><i class="fas fa-user"></i> ${userName}</span>
+                                <span class="tag user-tag" style="background:#e3f2fd; color:#0984e3;"><i class="fas fa-user"></i> ${holderInfo}</span>
                                 <span class="tag status-${equip.status.toLowerCase()}">${translatedStatus}</span>
                             </div>
                         </div>
@@ -1042,11 +1437,15 @@
                     <div class="card-body">
                         <div>${t('formSerial')}: <span>${equip.serial || '-'}</span></div>
                         <div>${t('formMac')}: <span>${equip.mac || '-'}</span></div>
-                        <div>${t('formType')}: <span>${equip.type}</span></div>
+                        <div>${t('formType')}: <span>${translatedType}</span></div>
                     </div>
                     <div class="card-footer">
-                        <span>${t('addedBy')}: ${equip.addedByEmail}</span>
-                        <span>${new Date(equip.addedAt.seconds * 1000).toLocaleDateString()}</span>
+                        <span><i class="fas fa-calendar-alt"></i> ${new Date(equip.addedAt.seconds * 1000).toLocaleDateString()}</span>
+                        <div style="display:flex;">
+                            <button class="action-btn btn-view" onclick="viewItemDetails('${equip.id}')" title="Ətraflı"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn btn-edit" onclick="openEditModal('${equip.id}')" title="Redaktə/Transfer"><i class="fas fa-pen"></i></button>
+                            <button class="action-btn btn-return" onclick="returnToWarehouse('${equip.id}')" title="Anbara Qaytar"><i class="fas fa-box-open"></i></button>
+                        </div>
                     </div>
                 </div>
                 `;
@@ -1054,38 +1453,179 @@
             });
         }
         
+        window.deleteEquipment = function(id) {
+            if(confirm(t('confirmDeleteEquipment'))) {
+                db.collection("equipment").doc(id).delete().catch(err => alert("Error: " + err.message));
+            }
+        }
+        
+        // --- MODAL MƏNTİQİ ---
+        window.openHolderInventory = function(holderName) {
+             const viewEquipmentModal = document.getElementById('view-equipment-modal');
+             document.getElementById('view-equipment-title').innerText = `${holderName} - ${t('viewEquipmentTitle')}`;
+             const tableBody = document.getElementById('user-specific-equipment-tbody');
+             const emptyState = document.getElementById('user-specific-empty-state');
+             tableBody.innerHTML = '';
+             emptyState.style.display = 'none';
+             viewEquipmentModal.style.display = 'flex';
+
+             const specificItems = allEquipmentCache.filter(item => item.holderName === holderName);
+
+             if (specificItems.length === 0) {
+                 emptyState.style.display = 'block';
+             } else {
+                 specificItems.forEach(equip => {
+                     const translatedStatus = t(statusMap[equip.status] || equip.status);
+                     const row = `
+                        <tr>
+                            <td>${equip.name} (${equip.model})</td>
+                            <td class="status-${equip.status.toLowerCase()}">${translatedStatus}</td>
+                            <td>${equip.serial || '-'}</td>
+                            <td style="display:flex; gap:5px; justify-content:center;">
+                                <button class="action-btn btn-view" onclick="viewItemDetails('${equip.id}')" title="Ətraflı"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn btn-edit" onclick="openEditModal('${equip.id}')" title="Redaktə/Transfer"><i class="fas fa-pen"></i></button>
+                                <button class="action-btn btn-return" onclick="returnToWarehouse('${equip.id}')" title="Anbara Qaytar"><i class="fas fa-box-open"></i></button>
+                            </td>
+                        </tr>
+                      `;
+                      tableBody.innerHTML += row;
+                 });
+             }
+        }
+
+        window.viewItemDetails = function(id) {
+            const item = allEquipmentCache.find(e => e.id === id);
+            if(!item) return;
+
+            const content = document.getElementById('item-details-content');
+            const statusText = t(statusMap[item.status] || item.status);
+            const typeText = t(typeMap[item.type] || item.type);
+            
+            content.innerHTML = `
+                <div class="detail-item full-width"><span class="detail-label" style="color: #0984e3;">SYSTEM ID</span><span class="detail-value" style="font-weight: bold; font-size: 16px;">${item.systemId || 'N/A'}</span></div>
+                <div class="detail-item full-width"><span class="detail-label">${t('lblHolderName')}</span><span class="detail-value">${item.holderName}</span></div>
+                <div class="detail-item full-width"><span class="detail-label">${t('lblHolderFaculty')}</span><span class="detail-value">${item.holderFaculty}</span></div>
+                <div class="detail-item"><span class="detail-label">${t('formName')}</span><span class="detail-value">${item.name}</span></div>
+                <div class="detail-item"><span class="detail-label">${t('formModel')}</span><span class="detail-value">${item.model}</span></div>
+                <div class="detail-item"><span class="detail-label">${t('formType')}</span><span class="detail-value">${typeText}</span></div>
+                <div class="detail-item"><span class="detail-label">${t('formStatus')}</span><span class="detail-value">${statusText}</span></div>
+                <div class="detail-item"><span class="detail-label">${t('formSerial')}</span><span class="detail-value">${item.serial || '-'}</span></div>
+                <div class="detail-item"><span class="detail-label">${t('formMac')}</span><span class="detail-value">${item.mac || '-'}</span></div>
+                <div class="detail-item"><span class="detail-label">${t('formDate')}</span><span class="detail-value">${item.purchaseDate || '-'}</span></div>
+                <div class="detail-item full-width"><span class="detail-label">${t('formNotes')}</span><span class="detail-value">${item.notes || '-'}</span></div>
+            `;
+            document.getElementById('item-details-modal').style.display = 'flex';
+        }
+
+        // --- YENİ: DÜZƏLİŞ VƏ ANBAR FUNKSİYALARI ---
+        const editModal = document.getElementById('edit-equipment-modal');
+        
+        window.openEditModal = function(id) {
+            const item = allEquipmentCache.find(e => e.id === id);
+            if(!item) return;
+            
+            document.getElementById('edit-equip-id').value = id;
+            document.getElementById('edit-holder-name').value = item.holderName;
+            document.getElementById('edit-holder-faculty').value = item.holderFaculty;
+            document.getElementById('edit-equip-name').value = item.name;
+            document.getElementById('edit-equip-model').value = item.model;
+            document.getElementById('edit-equip-serial').value = item.serial || '';
+            document.getElementById('edit-equip-mac').value = item.mac || '';
+            document.getElementById('edit-equip-type').value = item.type;
+            document.getElementById('edit-equip-status').value = item.status;
+            document.getElementById('edit-equip-notes').value = item.notes || '';
+            
+            document.getElementById('btn-return-warehouse').setAttribute('data-id', id);
+            
+            editModal.style.display = 'flex';
+        }
+
+        document.getElementById('edit-equipment-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = document.getElementById('edit-equip-id').value;
+            const updates = {
+                holderName: document.getElementById('edit-holder-name').value,
+                holderFaculty: document.getElementById('edit-holder-faculty').value,
+                name: document.getElementById('edit-equip-name').value,
+                model: document.getElementById('edit-equip-model').value,
+                serial: document.getElementById('edit-equip-serial').value,
+                mac: document.getElementById('edit-equip-mac').value,
+                type: document.getElementById('edit-equip-type').value,
+                status: document.getElementById('edit-equip-status').value,
+                notes: document.getElementById('edit-equip-notes').value
+            };
+            
+            db.collection("equipment").doc(id).update(updates).then(() => {
+                alert("Məlumat yeniləndi!");
+                editModal.style.display = 'none';
+                document.getElementById('view-equipment-modal').style.display = 'none'; 
+            });
+        });
+
+        document.getElementById('btn-return-warehouse').addEventListener('click', function() {
+            const id = this.getAttribute('data-id');
+            returnToWarehouse(id);
+        });
+
+        window.returnToWarehouse = function(id) {
+            if(confirm(t('confirmReturn'))) {
+                db.collection("equipment").doc(id).update({
+                    holderName: "Anbar",
+                    holderFaculty: "Anbar"
+                }).then(() => {
+                    alert("Avadanlıq Anbara qaytarıldı!");
+                    editModal.style.display = 'none';
+                    document.getElementById('view-equipment-modal').style.display = 'none';
+                });
+            }
+        }
+
+        document.getElementById('edit-equipment-close').onclick = () => editModal.style.display = 'none';
+        document.getElementById('edit-equipment-cancel').onclick = () => editModal.style.display = 'none';
+        document.getElementById('item-details-close').onclick = () => document.getElementById('item-details-modal').style.display = 'none';
+        document.getElementById('item-details-ok').onclick = () => document.getElementById('item-details-modal').style.display = 'none';
+        document.getElementById('view-equipment-close-btn').onclick = () => document.getElementById('view-equipment-modal').style.display = 'none';
+        document.getElementById('view-equipment-close-footer-btn').onclick = () => document.getElementById('view-equipment-modal').style.display = 'none';
+
         function renderUserCards(userList) {
             const container = document.getElementById('all-users-list');
             container.innerHTML = "";
             
             userList.forEach(user => {
                 const isAdmin = user.role === 'admin';
+                const isDeactivated = user.status === 'deactivated';
                 const initials = (user.name || 'User').split(' ').map(n => n[0]).join('').substring(0,2);
                 
-                const buttonText = isAdmin ? t('btnMakeUser') : t('btnMakeAdmin');
                 const roleText = isAdmin ? t('roleAdmin') : t('roleUser');
+                const buttonRoleText = isAdmin ? t('btnMakeUser') : t('btnMakeAdmin');
+                const lockBtnText = isDeactivated ? t('btnActivate') : t('btnDeactivate');
+                const lockBtnIcon = isDeactivated ? 'fa-lock-open' : 'fa-lock';
+                const lockBtnClass = isDeactivated ? 'btn-approve' : 'btn-reject'; 
+                const statusBadge = isDeactivated ? `<span class="status-badge badge-deactive">${t('statusDeactivated')}</span>` : `<span class="status-badge badge-active">${t('statusActive')}</span>`;
+                const roleBadgeClass = isAdmin ? 'role-badge' : 'role-badge warehouse';
 
                 const card = `
-                <div class="user-card visible" data-search="${Object.values(user).join(' ').toLowerCase()}">
-                    <div class="user-info">
-                        <div class="user-avatar ${isAdmin ? 'admin' : ''}" style="background-image: url(${user.profilePicUrl || ''})">${user.profilePicUrl ? '' : initials}</div>
-                        <div class="user-details">
-                            <span class="user-name">${user.name}</span>
-                            <span class="user-email">${user.email}</span>
+                <div class="user-card visible ${isDeactivated ? 'deactivated' : ''}" data-search="${(user.name || '').toLowerCase()} ${(user.email || '').toLowerCase()} ${(user.role || '').toLowerCase()}">
+                    <div class="user-card-top">
+                        <div class="user-info">
+                            <div class="user-avatar ${isAdmin ? 'admin' : ''}" style="background-image: url(${user.profilePicUrl || ''})">${user.profilePicUrl ? '' : initials}</div>
+                            <div class="user-details">
+                                <span class="user-name">${user.name}</span>
+                                <span class="user-email">${user.email}</span>
+                            </div>
+                        </div>
+                        <div class="card-tags">
+                             <span class="tag ${roleBadgeClass}">${roleText}</span>
+                             ${statusBadge}
                         </div>
                     </div>
-                    <div class="card-tags" style="margin-top: -5px; margin-bottom: 15px;">
-                         <span class="tag ${isAdmin ? 'status-islek' : 'status-pending'}">${roleText}</span>
-                    </div>
+
                     <div class="user-actions">
                         <button class="user-action-btn role-toggle-btn ${isAdmin ? 'role-admin' : 'role-user'}" data-id="${user.id}" data-role="${user.role}">
-                            <i class="fas fa-user-shield"></i> ${buttonText}
+                            <i class="fas fa-user-shield"></i> ${buttonRoleText}
                         </button>
-                        <button class="user-action-btn view-equipment-btn" data-userid="${user.id}" data-username="${user.name}">
-                            <i class="fas fa-list"></i> <span data-key="viewEquipment">${t('viewEquipment')}</span>
-                        </button>
-                        <button class="user-action-btn delete delete-equipment-btn" data-userid="${user.id}" data-email="${user.email}">
-                            <i class="fas fa-trash"></i>
+                        <button class="user-action-btn ${lockBtnClass} status-toggle-btn" data-id="${user.id}" data-status="${user.status || 'active'}">
+                            <i class="fas ${lockBtnIcon}"></i> ${lockBtnText}
                         </button>
                     </div>
                 </div>
@@ -1094,22 +1634,52 @@
             });
         }
         
-        // --- AXTARIŞ VƏ FİLTR MƏNTİQİ ---
         document.getElementById('inventory-search').addEventListener('input', filterAndRenderInventory);
-
         document.getElementById('user-search').addEventListener('input', (e) => {
             const searchTerm = e.target.value.toLowerCase();
             document.querySelectorAll('.user-card').forEach(card => {
                 const searchData = card.getAttribute('data-search');
-                if (searchData.includes(searchTerm)) {
-                    card.classList.add('visible');
-                } else {
-                    card.classList.remove('visible');
-                }
+                if (searchData.includes(searchTerm)) card.classList.add('visible');
+                else card.classList.remove('visible');
             });
         });
         
-        // --- PROFİL MODALI JS ---
+        document.getElementById('all-users-list').addEventListener('click', async (e) => {
+            const button = e.target.closest('button');
+            if (!button) return;
+
+            if (button.classList.contains('role-toggle-btn')) {
+                const docId = button.getAttribute('data-id'); 
+                if (!docId) return;
+                if (docId === currentAdminUID) { alert(t('errorOnSelf')); return; }
+                
+                const oldRole = button.getAttribute('data-role');
+                const newRole = oldRole === 'admin' ? 'user' : 'admin';
+                if (confirm(t('confirmChangeRole'))) {
+                    db.collection("users").doc(docId).update({ role: newRole });
+                }
+            }
+
+            if (button.classList.contains('status-toggle-btn')) {
+                const docId = button.getAttribute('data-id');
+                const currentStatus = button.getAttribute('data-status');
+                
+                if (docId === currentAdminUID) { alert(t('errorOnSelf')); return; }
+
+                const newStatus = (currentStatus === 'deactivated') ? 'active' : 'deactivated';
+                const confirmMsg = (newStatus === 'deactivated') ? t('confirmDeactivate') : t('confirmActivate');
+
+                if (confirm(confirmMsg)) {
+                    db.collection("users").doc(docId).update({ status: newStatus })
+                        .then(() => {
+                            const msg = (newStatus === 'deactivated') ? t('userLocked') : t('userUnlocked');
+                            alert(msg);
+                        })
+                        .catch(err => alert("Xəta: " + err.message));
+                }
+            }
+        });
+        
         const profileModal = document.getElementById('profile-modal');
         document.getElementById('profile-btn').onclick = () => profileModal.style.display = 'flex';
         document.getElementById('profile-modal-close').onclick = () => profileModal.style.display = 'none';
@@ -1118,15 +1688,9 @@
         document.getElementById('profile-settings-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const name = document.getElementById('profile-name').value;
-            
             db.collection("users").doc(currentAdminUID).update({ name: name })
-            .then(() => {
-                alert(t('profileUpdateSuccess'));
-                profileModal.style.display = 'none';
-            })
-            .catch(err => {
-                alert(t('profileUpdateError') + err.message);
-            });
+            .then(() => { alert(t('profileUpdateSuccess')); profileModal.style.display = 'none'; })
+            .catch(err => { alert(t('profileUpdateError') + err.message); });
         });
         
         document.getElementById('profile-pic-upload').addEventListener('change', (e) => {
@@ -1139,104 +1703,20 @@
                 (error) => { alert(t('profileUpdateError') + error.message); }, 
                 () => {
                     uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-                        db.collection("users").doc(currentAdminUID).update({
-                            profilePicUrl: downloadURL
-                        });
+                        db.collection("users").doc(currentAdminUID).update({ profilePicUrl: downloadURL });
                     });
                 }
             );
         });
         
-        // --- ŞİFRƏ DƏYİŞMƏ MODALI JS ---
         const changePasswordModal = document.getElementById('change-password-modal');
-        const changePasswordBtnOpen = document.getElementById('change-password-btn-open');
-        const passwordModalClose = document.getElementById('password-modal-close');
-        const passwordCancelBtn = document.getElementById('password-cancel-btn');
-        const changePasswordForm = document.getElementById('change-password-form');
-
-        changePasswordBtnOpen.addEventListener('click', () => {
+        document.getElementById('change-password-btn-open').addEventListener('click', () => {
             profileModal.style.display = 'none';
             changePasswordModal.style.display = 'flex';
         });
-
-        passwordModalClose.onclick = () => changePasswordModal.style.display = 'none';
-        passwordCancelBtn.onclick = () => changePasswordModal.style.display = 'none';
+        document.getElementById('password-modal-close').onclick = () => changePasswordModal.style.display = 'none';
+        document.getElementById('password-cancel-btn').onclick = () => changePasswordModal.style.display = 'none';
         
-        changePasswordForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const oldPassword = document.getElementById('old-password').value;
-            const newPassword = document.getElementById('new-password').value;
-            const confirmNewPassword = document.getElementById('confirm-new-password').value;
-
-            if (newPassword !== confirmNewPassword) {
-                alert(t('pwMismatch'));
-                return;
-            }
-
-            const user = auth.currentUser;
-            const credential = firebase.auth.EmailAuthProvider.credential(user.email, oldPassword);
-
-            try {
-                await user.reauthenticateWithCredential(credential);
-                await user.updatePassword(newPassword);
-                
-                alert(t('passwordUpdateSuccess'));
-                changePasswordModal.style.display = 'none';
-                changePasswordForm.reset();
-
-            } catch (error) {
-                if (error.code === 'auth/wrong-password') {
-                    alert(t('reauthError'));
-                } else if (error.code === 'auth/weak-password') {
-                    alert(t('weakPassword'));
-                } else {
-                    alert(t('passwordUpdateError') + error.message);
-                }
-            }
-        });
-        
-        // --- TƏSDİQLƏMƏ MODALI JS ---
-        const approvalModal = document.getElementById('approval-modal');
-        document.getElementById('approval-modal-close').onclick = () => approvalModal.style.display = 'none';
-        let currentApprovalDocId = null;
-        
-        function openApprovalModal(docId, data) {
-            currentApprovalDocId = docId;
-            document.getElementById('approval-email').innerText = data.addedByEmail;
-            document.getElementById('approval-date').innerText = new Date(data.addedAt.seconds * 1000).toLocaleString();
-            document.getElementById('approval-name').innerText = data.name;
-            document.getElementById('approval-type').innerText = data.type;
-            document.getElementById('approval-model').innerText = data.model;
-            document.getElementById('approval-serial').innerText = data.serial || '-';
-            document.getElementById('approval-mac').innerText = data.mac || '-';
-            const statusTag = document.getElementById('approval-status');
-            
-            // DÜZƏLİŞ: Modalın içindəki statusu da tərcümə edirik
-            statusTag.innerText = t(statusMap[data.status] || data.status);
-            
-            statusTag.className = `tag status-${data.status.toLowerCase()}`;
-            approvalModal.style.display = 'flex';
-        }
-
-        document.getElementById('approval-reject-btn').onclick = () => {
-            if (currentApprovalDocId && confirm(t('confirmReject'))) {
-                db.collection("equipment").doc(currentApprovalDocId).delete()
-                    .then(() => alert(t('equipmentRejected')))
-                    .catch(err => alert(t('equipmentActionError') + err.message));
-                approvalModal.style.display = 'none';
-            }
-        };
-        document.getElementById('approval-approve-btn').onclick = () => {
-             if (currentApprovalDocId) {
-                db.collection("equipment").doc(currentApprovalDocId).update({ approvalStatus: "approved" })
-                    .then(() => alert(t('equipmentApproved')))
-                    .catch(err => alert(t('equipmentActionError') + err.message));
-                approvalModal.style.display = 'none';
-            }
-        };
-        
-        // --- İSTİFADƏÇİ ƏLAVƏ ET MODALI JS ---
         const addUserModal = document.getElementById('add-user-modal');
         document.getElementById('add-user-btn').onclick = () => addUserModal.style.display = 'flex';
         document.getElementById('add-user-modal-close').onclick = () => addUserModal.style.display = 'none';
@@ -1252,11 +1732,7 @@
             secondaryApp.auth().createUserWithEmailAndPassword(email, password)
                 .then(userCredential => {
                     const uid = userCredential.user.uid;
-                    db.collection("users").doc(uid).set({
-                        name: name,
-                        email: email,
-                        role: role
-                    })
+                    db.collection("users").doc(uid).set({ name: name, email: email, role: role, status: 'active' })
                     .then(() => {
                         alert(t('userCreateSuccess'));
                         addUserModal.style.display = 'none';
@@ -1264,139 +1740,17 @@
                         secondaryApp.auth().signOut(); 
                     });
                 })
-                .catch(error => {
-                    alert(t('userCreateError') + error.message);
-                });
+                .catch(error => { alert(t('userCreateError') + error.message); });
         });
         
-        // --- İSTİFADƏÇİ AVADANLIQLARINA BAX MODALI JS ---
-        const viewEquipmentModal = document.getElementById('view-equipment-modal');
-        document.getElementById('view-equipment-close-btn').onclick = () => viewEquipmentModal.style.display = 'none';
-        document.getElementById('view-equipment-close-footer-btn').onclick = () => viewEquipmentModal.style.display = 'none';
-
-        async function openViewEquipmentModal(userId, userName) {
-            document.getElementById('view-equipment-title').innerText = `${userName} - ${t('viewEquipmentTitle')}`;
-            const tableBody = document.getElementById('user-specific-equipment-tbody');
-            const emptyState = document.getElementById('user-specific-empty-state');
-            tableBody.innerHTML = `<tr><td colspan="4">${t('loading')}...</td></tr>`;
-            emptyState.style.display = 'none';
-            viewEquipmentModal.style.display = 'flex';
-
-            const equipmentQuery = db.collection("equipment")
-                                     .where("addedByUserId", "==", userId)
-                                     .where("approvalStatus", "==", "approved");
-            const snapshot = await equipmentQuery.get();
-
-            if (snapshot.empty) {
-                tableBody.innerHTML = '';
-                emptyState.style.display = 'block';
-            } else {
-                tableBody.innerHTML = '';
-                snapshot.forEach(doc => {
-                    const equip = doc.data();
-                    const row = `
-                        <tr>
-                            <td>${equip.name} (${equip.model})</td>
-                            <td class="status-${equip.status.toLowerCase()}">${equip.status}</td>
-                            <td>${equip.serial || '-'}</td>
-                            <td>
-                                <button class="delete-btn" data-id="${doc.id}">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    `;
-                    tableBody.innerHTML += row;
-                });
-            }
-        }
-        
-        document.getElementById('user-specific-equipment-tbody').addEventListener('click', (e) => {
-             if (e.target.closest('.delete-btn')) {
-                const docId = e.target.closest('.delete-btn').getAttribute('data-id');
-                if (confirm(t('confirmDeleteEquipment'))) {
-                    db.collection("equipment").doc(docId).delete();
-                }
-            }
-        });
-
-        // --- CƏDVƏL VƏ KART KLİKLƏRİ (EVENT DELEGATION) ---
-        document.getElementById('all-users-list').addEventListener('click', async (e) => {
-            const button = e.target.closest('button');
-            if (!button) return;
-
-            if (button.classList.contains('view-equipment-btn')) {
-                const userId = button.getAttribute('data-userid');
-                const userName = button.getAttribute('data-username');
-                openViewEquipmentModal(userId, userName);
-            }
-
-            if (button.classList.contains('role-toggle-btn')) {
-                const docId = button.getAttribute('data-id'); 
-                if (!docId) return;
-                if (docId === currentAdminUID) { alert(t('errorOnSelf')); return; }
-                
-                const oldRole = button.getAttribute('data-role');
-                const newRole = oldRole === 'admin' ? 'user' : 'admin';
-                if (confirm(t('confirmChangeRole'))) {
-                    db.collection("users").doc(docId).update({ role: newRole });
-                }
-            }
-
-            if (button.classList.contains('delete-equipment-btn')) { 
-                const docId = button.getAttribute('data-userid'); 
-                if (!docId) return;
-                if (docId === currentAdminUID) { alert(t('errorOnSelf')); return; }
-                
-                const email = button.getAttribute('data-email');
-                
-                if (confirm(t('confirmDeleteUserEquipment'))) {
-                    try {
-                        button.disabled = true;
-                        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-
-                        const equipmentQuery = db.collection("equipment").where("addedByUserId", "==", docId);
-                        const equipmentSnapshot = await equipmentQuery.get();
-
-                        if (equipmentSnapshot.empty) {
-                            alert(t('userEquipmentDeleteNone'));
-                            button.disabled = false;
-                            button.innerHTML = '<i class="fas fa-trash"></i>';
-                            return; 
-                        }
-
-                        const batch = db.batch();
-                        equipmentSnapshot.forEach(doc => {
-                            batch.delete(doc.ref);
-                        });
-                        
-                        await batch.commit();
-                        alert(`${equipmentSnapshot.size} ${t('userEquipmentDeleteSuccess')}`);
-                        
-                        button.disabled = false;
-                        button.innerHTML = '<i class="fas fa-trash"></i>';
-
-                    } catch (error) {
-                        console.error(t('errorDeleteEquipment'), error);
-                        alert(t('errorDeleteEquipment') + error.message);
-                        button.disabled = false;
-                        button.innerHTML = '<i class="fas fa-trash"></i>';
-                    }
-                }
-            }
-        });
-        
-        // Admin ilə Avadanlıq Əlavə Etmə Formu
+        // --- AVADANLIQ ƏLAVƏ ETMƏ ---
         document.getElementById('admin-add-equipment-form').addEventListener('submit', (e) => {
             e.preventDefault();
-            
             const adminAddForm = document.getElementById('admin-add-equipment-form');
-            const userSelect = document.getElementById('assign-user-select');
-            const selectedUser = userSelect.options[userSelect.selectedIndex];
-            if (userSelect.value === "") { alert(t('selectUserFirst')); return; }
             
-            const assignedUserId = selectedUser.value;
-            const assignedUserEmail = selectedUser.getAttribute('data-email');
+            const holderName = document.getElementById('holder-name').value;
+            const holderFaculty = document.getElementById('holder-faculty').value;
+            const systemId = document.getElementById('auto-id').value; 
 
             const equipmentData = {
                 type: adminAddForm.querySelector('#admin-equip-type').value,
@@ -1408,24 +1762,23 @@
                 notes: adminAddForm.querySelector('#admin-equip-notes').value, 
                 purchaseDate: adminAddForm.querySelector('#admin-equip-date').value, 
                 addedAt: new Date(),
-                addedByUserId: assignedUserId, 
-                addedByEmail: assignedUserEmail,
-                approvalStatus: "approved" 
+                holderName: holderName,
+                holderFaculty: holderFaculty,
+                addedByAdminId: currentAdminUID, 
+                approvalStatus: "approved",
+                systemId: systemId 
             };
 
             db.collection("equipment").add(equipmentData)
                 .then(() => {
-                    alert(`${t('equipmentAddedSuccess')} (${assignedUserEmail})`);
+                    alert(t('equipmentAddedSuccess'));
                     adminAddForm.reset(); 
+                    generateTechCoreID(); 
                     document.querySelector('.tab-link[data-tab="inventory-tab"]').click();
                 })
-                .catch((error) => {
-                    console.error("Xəta baş verdi: ", error);
-                    alert(t('errorAddingEquipment'));
-                });
+                .catch((error) => { alert(t('errorAddingEquipment')); });
         });
 
-        // === DİL DƏYİŞMƏ EVENT LISTENERS ===
         document.addEventListener('DOMContentLoaded', () => {
             const langBtn = document.getElementById('lang-btn');
             const dropdown = document.getElementById('lang-dropdown');
@@ -1435,21 +1788,16 @@
                     e.stopPropagation();
                     dropdown.classList.toggle('show');
                 });
-                
                 window.addEventListener('click', () => {
                     if (dropdown.classList.contains('show')) dropdown.classList.remove('show');
                 });
             }
-
             document.querySelectorAll('.lang-dropdown a').forEach(item => {
                 item.addEventListener('click', (e) => {
                     e.preventDefault();
-                    const selectedLang = e.target.getAttribute('data-lang');
-                    setLanguage(selectedLang);
-                    dropdown.classList.remove('show');
+                    setLanguage(e.target.getAttribute('data-lang'));
                 });
             });
-
             setLanguage(currentLang);
         });
 

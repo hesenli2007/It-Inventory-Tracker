@@ -11,7 +11,7 @@ const firebaseConfig = {
 
 try { firebase.initializeApp(firebaseConfig); } catch (e) { console.error(e); }
 const auth = firebase.auth();
-const db = firebase.firestore(); 
+const db = firebase.firestore();
 
 // === KÖMƏKÇİ FUNKSİYALAR ===
 
@@ -21,17 +21,15 @@ function isKarabakhEmail(email) {
 }
 
 // 2. VIP SİYAHI YOXLAMASI (Bazada varmı?)
-// Bu funksiya gedib sənin əl ilə yaratdığın "allowed_users" qovluğuna baxır
 async function checkWhitelist(email) {
     try {
         const snapshot = await db.collection("allowed_users")
                                  .where("email", "==", email.toLowerCase().trim())
                                  .get();
-        // Əgər tapdırsa true, tapmadısa false qaytarır
         return !snapshot.empty;
     } catch (error) {
         console.error("Siyahı yoxlanarkən xəta:", error);
-        return false; // Xəta olsa buraxma
+        return false;
     }
 }
 
@@ -73,64 +71,70 @@ if(helpModal) {
 // =======================================================
 const registerForm = document.getElementById('register-form');
 
-registerForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const name = document.getElementById('register-name').value;
-    const email = document.getElementById('register-email').value.toLowerCase().trim();
-    const password = document.getElementById('register-password').value;
-    const passwordConfirm = document.getElementById('register-password-confirm').value;
+if (registerForm) {
+    registerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('register-name').value;
+        const email = document.getElementById('register-email').value.toLowerCase().trim();
+        const password = document.getElementById('register-password').value;
+        const passwordConfirm = document.getElementById('register-password-confirm').value;
 
-    // 1. Domain Yoxlaması
-    if (!isKarabakhEmail(email)) {
-        alert("Qeydiyyat qadağandır!\nYalnız @karabakh.edu.az korporativ maili qəbul olunur.");
-        return;
-    }
+        // 1. Domain Yoxlaması
+        if (!isKarabakhEmail(email)) {
+            alert("Qeydiyyat qadağandır!\nYalnız @karabakh.edu.az korporativ maili qəbul olunur.");
+            return;
+        }
 
-    // 2. VIP Siyahı Yoxlaması (Buranı gözləyirik)
-    // Sən Firebase-də əl ilə əlavə etdiyin mailləri burada yoxlayır
-    const isAllowed = await checkWhitelist(email);
+        // 2. VIP Siyahı Yoxlaması
+        const isAllowed = await checkWhitelist(email);
+        if (!isAllowed) {
+            alert("DİQQƏT: Sizin mailiniz sistemin icazəli siyahısında yoxdur.\n\nXahiş edirik İnzibatçı (Admin) ilə əlaqə saxlayın ki, mailinizi sistemə əlavə etsin.");
+            return;
+        }
 
-    if (!isAllowed) {
-        alert("DİQQƏT: Sizin mailiniz sistemin icazəli siyahısında yoxdur.\n\nXahiş edirik İnzibatçı (Admin) ilə əlaqə saxlayın ki, mailinizi sistemə əlavə etsin.");
-        return; // Qeydiyyatı dayandırırıq
-    }
+        // 3. Şifrə uyğunluğu
+        if (password !== passwordConfirm) {
+            alert("Şifrələr uyğun deyil");
+            return;
+        }
 
-    // 3. Şifrə uyğunluğu
-    if (password !== passwordConfirm) { 
-        alert(typeof t === 'function' ? t("pwMismatch") : "Şifrələr uyğun deyil"); 
-        return; 
-    }
+        // 4. Qeydiyyatı tamamla
+        auth.createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                // Admin mailini yoxlayırıq, əks halda adi user (amma statusu active)
+                let userRole = (email === 'admin@karabakh.edu.az') ? "admin" : "user";
 
-    // 4. Qeydiyyatı tamamla
-    auth.createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            let userRole = (email === 'admin@karabakh.edu.az') ? "admin" : "user";
-            
-            db.collection("users").doc(user.uid).set({ name: name, email: user.email, role: userRole })
-            .then(() => {
-                user.sendEmailVerification().then(() => {
-                    alert(`Uğurlu! Hesabınız yaradıldı. ${email} ünvanına gedən TƏSDİQ linkinə daxil olun.`);
-                    auth.signOut();
-                    registerForm.reset();
-                    document.querySelector('.tab-link[data-tab="login"]').click();
+                db.collection("users").doc(user.uid).set({
+                    name: name,
+                    email: user.email,
+                    role: userRole,
+                    status: 'active' // YENİ: Qeydiyyat zamanı status aktiv olur
+                })
+                .then(() => {
+                    user.sendEmailVerification().then(() => {
+                        alert(`Uğurlu! Hesabınız yaradıldı. ${email} ünvanına gedən TƏSDİQ linkinə daxil olun.`);
+                        auth.signOut();
+                        registerForm.reset();
+                        document.querySelector('.tab-link[data-tab="login"]').click();
+                    });
                 });
+            })
+            .catch((error) => {
+                if (error.code === 'auth/email-already-in-use') alert("Bu mail artıq qeydiyyatdan keçib.");
+                else alert("Xəta: " + error.message);
             });
-        })
-        .catch((error) => { 
-            if (error.code === 'auth/email-already-in-use') alert("Bu mail artıq qeydiyyatdan keçib.");
-            else alert("Xəta: " + error.message); 
-        });
-});
+    });
+}
 
 // =======================================================
-// === GİRİŞ SİSTEMİ (İKİ AYRI DÜYMƏLİ) ===
+// === GİRİŞ SİSTEMİ (TechCore Məntiqi ilə) ===
 // =======================================================
 
 const loginForm = document.getElementById('login-form');
 const forgotLink = document.getElementById('forgot-link');
-const loginBtn = document.getElementById('login-btn'); 
-const resetBtn = document.getElementById('reset-btn'); 
+const loginBtn = document.getElementById('login-btn');
+const resetBtn = document.getElementById('reset-btn');
 const passwordGroup = document.getElementById('password-group');
 
 let isResetMode = false;
@@ -145,62 +149,89 @@ if(forgotLink && loginBtn && resetBtn) {
             if(passwordGroup) passwordGroup.style.display = 'none';
             loginBtn.style.display = 'none';
             resetBtn.style.display = 'block';
-            forgotLink.setAttribute('data-key', 'backToLogin');
-            forgotLink.textContent = typeof t === 'function' ? t('backToLogin') : "Geri qayıt";
+            forgotLink.textContent = "Geri qayıt";
         } else {
             // GİRİŞ REJİMİ
             if(passwordGroup) passwordGroup.style.display = 'block';
             loginBtn.style.display = 'block';
             resetBtn.style.display = 'none';
-            forgotLink.setAttribute('data-key', 'forgotPasswordLink');
-            forgotLink.textContent = typeof t === 'function' ? t('forgotPasswordLink') : "Şifrəni unutmuşam";
+            forgotLink.textContent = "Şifrəni unutmuşam";
         }
     });
 }
 
 // SIFIRLAMA
-resetBtn.addEventListener('click', (e) => {
-    e.preventDefault(); 
-    const email = document.getElementById('login-email').value;
+if (resetBtn) {
+    resetBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const email = document.getElementById('login-email').value;
 
-    if (!email) { alert("Mail yazın!"); return; }
-    if (!isKarabakhEmail(email)) { alert("Yalnız @karabakh.edu.az"); return; }
+        if (!email) { alert("Mail yazın!"); return; }
+        if (!isKarabakhEmail(email)) { alert("Yalnız @karabakh.edu.az"); return; }
 
-    auth.sendPasswordResetEmail(email)
-        .then(() => {
-            alert("Sıfırlama linki göndərildi!");
-            forgotLink.click();
-        })
-        .catch((error) => {
-            if(error.code === 'auth/user-not-found') alert("Bu istifadəçi tapılmadı.");
-            else alert("Xəta: " + error.message);
-        });
-});
+        auth.sendPasswordResetEmail(email)
+            .then(() => {
+                alert("Sıfırlama linki göndərildi!");
+                forgotLink.click();
+            })
+            .catch((error) => {
+                if(error.code === 'auth/user-not-found') alert("Bu istifadəçi tapılmadı.");
+                else alert("Xəta: " + error.message);
+            });
+    });
+}
 
 // GİRİŞ
-loginForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    if(isResetMode) return;
+if (loginForm) {
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if(isResetMode) return;
 
-    const email = document.getElementById('login-email').value;
-    const password = document.getElementById('login-password').value;
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
 
-    if (!isKarabakhEmail(email)) { alert("Yalnız @karabakh.edu.az"); return; }
+        if (!isKarabakhEmail(email)) { alert("Yalnız @karabakh.edu.az"); return; }
 
-    auth.signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            if (!user.emailVerified) {
-                alert("Zəhmət olmasa mailinizi təsdiqləyin!");
-                auth.signOut();
-                return;
-            }
-            const userDocRef = db.collection("users").doc(user.uid);
-            userDocRef.get().then((doc) => {
-                window.location.href = (doc.exists && doc.data().role === 'admin') ? "admin.html" : "dashboard.html";
+        auth.signInWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                
+                // Mail təsdiqi yoxlanışı
+                if (!user.emailVerified) {
+                    alert("Zəhmət olmasa mailinizi təsdiqləyin!");
+                    auth.signOut();
+                    return;
+                }
+
+                // İstifadəçi məlumatlarını və STATUSUNU yoxlayırıq
+                const userDocRef = db.collection("users").doc(user.uid);
+                userDocRef.get().then((doc) => {
+                    if (doc.exists) {
+                        const userData = doc.data();
+
+                        // YENİ: Deaktiv status yoxlanışı
+                        if (userData.status === 'deactivated') {
+                            alert("Sizin hesabınız Admin tərəfindən deaktiv edilib. Giriş qadağandır.");
+                            auth.signOut();
+                            return;
+                        }
+
+                        // Roluna görə yönləndirmə
+                        if (userData.role === 'admin') {
+                            window.location.href = "admin.html";
+                        } else {
+                            // Userlər (Köməkçi Adminlər) dashboard-a gedir
+                            window.location.href = "dashboard.html";
+                        }
+                    } else {
+                        alert("İstifadəçi məlumatları tapılmadı.");
+                        auth.signOut();
+                    }
+                });
+            })
+            .catch((error) => {
+                console.error(error);
+                alert("Giriş xətası: Şifrə və ya mail səhvdir.");
             });
-        })
-        .catch((error) => {
-             alert(typeof t === 'function' ? t("wrongPassword") : "Giriş xətası");
-        });
-});
+    });
+}

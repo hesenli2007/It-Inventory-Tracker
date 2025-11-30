@@ -1,4 +1,4 @@
-/* === PANEL-STYLE.CSS (dashboard.html və admin.html üçün) === */
+/* === PANEL-STYLE.CSS (Tam Yenilənmiş Versiya) === */
 body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
@@ -12,7 +12,7 @@ body {
     min-height: 100vh;
 }
 
-/* --- Panel Header --- */
+/* --- Panel Header (SABİT/STICKY) --- */
 .panel-header {
     display: flex;
     justify-content: space-between;
@@ -20,12 +20,18 @@ body {
     padding: 15px 30px;
     background-color: #fff;
     border-bottom: 1px solid #e0e0e0;
+    
+    /* YENİ: Sabit qalması üçün kodlar */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
 .logo {
     display: flex;
     align-items: center;
-    cursor: pointer; /* Profil panelini açmaq üçün */
+    cursor: pointer; 
 }
 
 .logo-icon {
@@ -41,8 +47,8 @@ body {
     background-size: cover;
     background-position: center;
 }
-.logo-icon.user { background-color: #00875A; }
-.logo-icon.admin { background-color: #2a3f54; }
+.logo-icon.user { background-color: #00875A; } /* User - Yaşıl */
+.logo-icon.admin { background-color: #3498db; } /* Admin - Mavi (TechCore rəngi) */
 
 .logo-text {
     display: flex;
@@ -114,7 +120,6 @@ body {
     background-color: #f1f1f1;
 }
 
-
 .logout-btn {
     border: none;
     background-color: #d9534f;
@@ -124,6 +129,8 @@ body {
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
+    display: flex;
+    align-items: center;
 }
 .logout-btn i { margin-right: 5px; }
 
@@ -141,6 +148,7 @@ body {
 }
 .panel-title h2 {
     margin: 0 0 5px 0;
+    color: #2c3e50;
 }
 .panel-title span {
     font-size: 16px;
@@ -162,6 +170,7 @@ body {
     justify-content: space-between;
     align-items: center;
     border-left: 5px solid;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 .card-info .card-title {
     font-size: 14px;
@@ -198,14 +207,6 @@ body {
     padding: 20px;
     border-bottom: 1px solid #f0f0f0;
 }
-.form-header i {
-    font-size: 24px;
-    color: #00875A;
-    margin-right: 15px;
-}
-.form-header h3 { margin: 0 0 3px 0; }
-.form-header span { font-size: 14px; color: #777; }
-
 .equipment-form {
     padding: 30px;
 }
@@ -241,14 +242,12 @@ body {
     font-family: 'Roboto', sans-serif;
     box-sizing: border-box; 
     background-color: #f9f9f9; 
+    transition: 0.3s;
 }
 .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
     background-color: #fff;
     border-color: #00875A;
     outline: none;
-}
-.form-group input::placeholder, .form-group textarea::placeholder {
-    color: #bbb;
 }
 .form-group .file-input {
     padding: 9px 15px;
@@ -268,14 +267,11 @@ body {
     font-size: 16px;
     font-weight: 700;
     cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    transition: 0.3s;
     text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    line-height: 1.5; 
 }
 .submit-btn i { margin-right: 8px; }
-.submit-btn:hover { background-color: #007A50; border-color: #007A50; }
+.submit-btn:hover { background-color: #007A50; }
 
 .btn-secondary {
     background-color: #fff;
@@ -284,12 +280,9 @@ body {
 }
 .btn-secondary:hover {
     background-color: #f7f7f7;
-    border-color: #ccc;
-    color: #333;
 }
 
-
-/* --- Admin & User Panel Content Tabs --- */
+/* --- Tabs --- */
 .content-tabs {
     background: #fff;
     border-radius: 10px;
@@ -312,11 +305,13 @@ body {
     color: #555;
     border-bottom: 3px solid transparent;
     position: relative;
+    transition: 0.3s;
 }
 .tab-nav .tab-link i { margin-right: 8px; }
 .tab-nav .tab-link.active {
     color: #00875A;
     border-bottom-color: #00875A;
+    background-color: #fff;
 }
 
 .notification-badge {
@@ -340,6 +335,7 @@ body {
     display: block;
 }
 
+/* --- List Header & Search --- */
 .list-header {
     padding: 0 0 20px 0; 
     border-bottom: 1px solid #e0e0e0;
@@ -350,11 +346,11 @@ body {
     gap: 15px;
 }
 
-/* Axtarış Xanası Stili */
 .search-bar {
     display: flex;
     align-items: center;
-    background-color: #f7f8fc;
+    background-color: #fff;
+    border: 1px solid #ddd; /* Sərhəd əlavə etdim */
     border-radius: 8px;
     padding: 0 15px;
     flex-grow: 1;
@@ -372,66 +368,16 @@ body {
     width: 100%;
 }
 .add-user-btn {
-    background-color: #00875A;
+    background-color: #3498db; /* TechCore Blue */
     color: white;
     border: none;
     padding: 10px 15px;
     border-radius: 8px;
     font-weight: 500;
     cursor: pointer;
-    white-space: nowrap;
-}
-.add-user-btn i { margin-right: 8px; }
-
-/* İstifadəçi Filter Düymələri Stili */
-.user-filter-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    padding: 20px 0;
-}
-.filter-btn {
-    border: none;
-    background: #f0f2f5;
-    color: #555;
-    padding: 8px 15px;
-    border-radius: 20px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-.filter-btn:hover {
-    background: #e0e3e8;
-}
-.filter-btn.active {
-    background: #00875A;
-    color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 135, 90, 0.2);
 }
 
-.empty-state {
-    text-align: center;
-    padding: 80px 40px;
-    color: #888;
-}
-.empty-state i {
-    font-size: 60px;
-    margin-bottom: 20px;
-    opacity: 0.5;
-}
-.empty-state h3 {
-    font-size: 20px;
-    font-weight: 500;
-    margin-bottom: 10px;
-}
-
-.list-body {
-    padding: 0;
-    overflow-x: auto;
-}
-
-/* Avadanlıq Kartı Stili */
+/* --- Equipment Card --- */
 .equipment-card-list {
     padding-top: 20px;
 }
@@ -479,8 +425,8 @@ body {
     color: #555;
     white-space: nowrap;
 }
-.tag.status-islek { background-color: #e6f7eb; color: #28a745; }
-.tag.status-xarab, .tag.status-təmirdə { background-color: #fdeaea; color: #dc3545; }
+.tag.status-islek, .tag.status-working { background-color: #e6f7eb; color: #28a745; }
+.tag.status-xarab, .tag.status-broken, .tag.status-təmirdə, .tag.status-repair { background-color: #fdeaea; color: #dc3545; }
 .tag.user-tag { background-color: #e6f2ff; color: #007bff; }
 
 .equipment-card .card-body {
@@ -492,15 +438,9 @@ body {
     padding-bottom: 15px;
     margin-bottom: 15px;
 }
-.equipment-card .card-body div {
-    color: #555;
-    word-break: break-all;
-}
 .equipment-card .card-body span {
     font-weight: 700;
     color: #000;
-    display: inline-block;
-    margin-left: 5px;
 }
 .equipment-card .card-footer {
     display: flex;
@@ -508,11 +448,9 @@ body {
     align-items: center;
     font-size: 13px;
     color: #888;
-    flex-wrap: wrap;
-    gap: 10px;
 }
 
-/* İstifadəçi Kartı Stili */
+/* --- User Card (YENİLƏNMİŞ) --- */
 .user-card-list {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -525,11 +463,49 @@ body {
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.03);
     padding: 20px;
-    display: none; /* Axtarış üçün */
+    display: none;
+    position: relative;
+    overflow: hidden;
 }
 .user-card.visible {
     display: block;
 }
+
+/* YENİ: DEAKTİV İSTİFADƏÇİ STİLİ */
+.user-card.deactivated {
+    background-color: #fff5f5; /* Açıq qırmızı fon */
+    border: 1px solid #feb2b2;
+    opacity: 0.9;
+}
+.user-card.deactivated .user-name {
+    text-decoration: line-through;
+    color: #c53030;
+}
+.user-card.deactivated .user-avatar {
+    background-color: #9b2c2c !important; /* Tünd qırmızı */
+    opacity: 0.5;
+}
+
+/* YENİ: STATUS BADGES */
+.status-badge {
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.badge-active {
+    background-color: #e6fffa;
+    color: #047857;
+    border: 1px solid #047857;
+}
+.badge-deactive {
+    background-color: #fff5f5;
+    color: #c53030;
+    border: 1px solid #c53030;
+}
+
 .user-card .user-info {
     display: flex;
     align-items: center;
@@ -549,26 +525,20 @@ body {
     margin-right: 15px;
     background-size: cover;
     background-position: center;
-    flex-shrink: 0;
 }
 .user-card .user-avatar.admin {
     background-color: #2a3f54;
-}
-.user-card .user-details {
-    line-height: 1.4;
-    overflow: hidden; 
 }
 .user-card .user-name {
     font-weight: 700;
     font-size: 16px;
     color: #000;
+    display: block;
 }
 .user-card .user-email {
     font-size: 14px;
     color: #777;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 .user-card .user-actions {
     display: flex;
@@ -577,36 +547,25 @@ body {
 }
 .user-action-btn {
     border: 1px solid #ddd;
-    background-color: #f9f9f9;
+    background-color: #fff;
     color: #555;
     font-size: 13px;
     padding: 8px 12px;
     border-radius: 6px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: 0.2s;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 .user-action-btn:hover {
-    background-color: #eee;
-    border-color: #ccc;
+    background-color: #f7f7f7;
 }
 .user-action-btn i {
     margin-right: 6px;
 }
-.user-action-btn.delete {
-    border-color: #fdeaea;
-    background-color: #fdeaea;
-    color: #dc3545;
-}
-.user-action-btn.delete:hover {
-    background-color: #fbd0d0;
-    border-color: #f9b3b3;
-}
 
-
-/* Cədvəl Stilləri (Köhnə tablar üçün) */
+/* --- Table Styles --- */
 .list-body table {
     width: 100%;
     border-collapse: collapse;
@@ -625,51 +584,17 @@ body {
 .list-body td {
     color: #555;
 }
-.list-body th:last-child, .list-body td:last-child {
+.empty-state {
     text-align: center;
+    padding: 50px;
+    color: #999;
+}
+.empty-state i {
+    font-size: 50px;
+    margin-bottom: 15px;
 }
 
-/* Status Rəngləri */
-.status-islek { color: #28a745; font-weight: 500; }
-.status-xarab, .status-təmirdə { color: #dc3545; font-weight: 500; }
-.status-pending { color: #fd7e14; font-weight: 500; }
-.status-approved { color: #28a745; font-weight: 500; }
-
-/* Əməliyyat Düymələri */
-.delete-btn {
-    background: none;
-    border: none;
-    color: #dc3545;
-    cursor: pointer;
-    font-size: 16px;
-    padding: 5px;
-}
-.delete-btn:hover { color: #a71d2a; }
-
-.approve-btn, .reject-btn, .role-toggle-btn {
-    border: none;
-    padding: 6px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: 500;
-    margin: 0 3px;
-    transition: opacity 0.2s;
-}
-.approve-btn:hover, .reject-btn:hover, .role-toggle-btn:hover {
-    opacity: 0.8;
-}
-.approve-btn { background-color: #28a745; color: white; }
-.reject-btn { background-color: #dc3545; color: white; }
-.role-toggle-btn.role-user { background-color: #007bff; color: white; }
-.role-toggle-btn.role-admin { background-color: #6c757d; color: white; }
-.approve-btn.small-btn {
-    padding: 8px 12px;
-    font-size: 13px;
-}
-
-
-/* Bütün Modallar üçün Ümumi Stil */
+/* --- Modals --- */
 .modal-overlay {
     display: none; 
     position: fixed;
@@ -678,24 +603,19 @@ body {
     width: 100%;
     height: 100%;
     background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(5px);
-    z-index: 1000;
+    backdrop-filter: blur(3px);
+    z-index: 2000;
     justify-content: center;
     align-items: center;
     overflow-y: auto; 
-    padding: 20px;
-    box-sizing: border-box;
-}
-.modal-overlay.show {
-    display: flex;
 }
 .modal-content {
     background: #fff;
     border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    max-width: 90%;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    max-width: 95%;
     position: relative;
-    margin: auto; 
+    margin: 20px; 
 }
 .modal-close-btn {
     position: absolute;
@@ -707,240 +627,43 @@ body {
     height: 30px;
     border-radius: 50%;
     cursor: pointer;
-    font-size: 16px;
-    color: #777;
-    z-index: 10;
-}
-.modal-close-btn:hover {
-    background-color: #e0e3e8;
 }
 
-/* Profil Paneli Stili */
-.profile-modal {
-    width: 400px;
-}
-.profile-modal .modal-header {
-    padding: 20px;
-    border-bottom: 1px solid #eee;
-}
-.profile-modal .modal-header h2 {
-    margin: 0;
-    font-size: 20px;
-}
-.profile-modal .modal-body {
-    padding: 30px;
-}
-.profile-pic-wrapper {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 25px;
-}
-.profile-pic {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background-color: #00875A;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 40px;
-    font-weight: 700;
-    position: relative;
-    background-size: cover;
-    background-position: center;
-}
-.profile-pic .upload-btn {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 32px;
-    height: 32px;
-    background: #2a3f54;
-    border: 2px solid white;
-    border-radius: 50%;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-.profile-pic input[type="file"] {
-    display: none;
-}
-.profile-modal .form-group input {
-    background-color: #f7f8fc;
-}
-.profile-modal .form-group input:disabled {
-    background-color: #eee;
-    color: #888;
-}
-/* DÜZƏLİŞ: Şifrə düyməsi */
-.change-password-btn {
-    margin-bottom: 20px;
-}
-.profile-modal .modal-footer {
-    display: flex;
-    gap: 10px;
-    padding: 20px 30px;
-    background: #f7f8fc;
-    border-top: 1px solid #eee;
-    border-radius: 0 0 12px 12px;
-}
-.profile-modal .btn-secondary {
-    flex: 1;
-}
-.profile-modal .btn-primary {
-    flex: 1;
-}
+/* Profil Modal */
+.profile-modal { width: 400px; }
+.profile-pic-wrapper { display: flex; justify-content: center; margin-bottom: 20px; }
+.profile-pic { width: 100px; height: 100px; border-radius: 50%; background: #3498db; color: white; display: flex; justify-content: center; align-items: center; font-size: 40px; position: relative; }
+.profile-pic .upload-btn { position: absolute; bottom: 0; right: 0; width: 32px; height: 32px; background: #2a3f54; border-radius: 50%; color: white; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+.profile-pic input { display: none; }
 
-/* Təsdiqləmə Paneli Stili */
-.approval-modal {
-    width: 600px;
-}
-.approval-modal .modal-header {
-    padding: 20px 25px;
-    border-bottom: 1px solid #eee;
-}
-.approval-modal .modal-header h2 {
-    margin: 0;
-    font-size: 20px;
-}
-.approval-modal .modal-body {
-    padding: 25px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px 30px;
-}
-.approval-modal .info-item {
-    font-size: 14px;
-}
-.approval-modal .info-item-label {
-    color: #777;
-    margin-bottom: 5px;
-    display: block;
-}
-.approval-modal .info-item-value {
-    font-weight: 500;
-    color: #000;
-    font-size: 16px;
-    word-break: break-all;
-}
-.approval-modal .info-item-value .tag {
-    font-size: 14px;
-}
-.approval-modal .modal-footer {
+/* Approval Modal */
+.approval-modal { width: 600px; }
+.approval-modal .modal-body { padding: 25px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.approval-modal hr { grid-column: 1/-1; border: 0; border-top: 1px solid #eee; width: 100%; margin: 5px 0; }
+
+/* View Equipment Modal */
+.view-equipment-modal { width: 800px; }
+.view-equipment-modal .modal-body { padding: 0; max-height: 500px; overflow-y: auto; }
+
+/* Modal Footer */
+.modal-footer {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
-    padding: 20px 25px;
+    padding: 15px 25px;
     background: #f7f8fc;
     border-top: 1px solid #eee;
     border-radius: 0 0 12px 12px;
 }
-.approval-modal .btn-reject {
-    background-color: #fff;
-    color: #dc3545;
-    border: 1px solid #dc3545;
-    padding: 10px 18px;
-}
-.approval-modal .btn-approve {
-    background-color: #00875A;
-    border: none;
-    color: white;
-    padding: 11px 18px;
-}
+.btn-reject { background: #fff; color: #dc3545; border: 1px solid #dc3545; padding: 8px 15px; border-radius: 6px; cursor: pointer; }
+.btn-approve { background: #28a745; color: #fff; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; }
 
-/* YENİ: İstifadəçi Avadanlıqlarına Bax Modalı */
-.view-equipment-modal {
-    width: 800px; /* Genişləndirildi */
-}
-.view-equipment-modal .modal-header {
-    padding: 20px 25px;
-    border-bottom: 1px solid #eee;
-}
-.view-equipment-modal .modal-header h2 {
-    margin: 0;
-    font-size: 20px;
-}
-.view-equipment-modal .modal-body {
-    padding: 0; 
-    max-height: 500px; /* Hündür edildi */
-    overflow-y: auto;
-}
-.view-equipment-modal .list-body {
-    padding: 0;
-}
-/* Modal daxilindəki cədvəl üçün xüsusi stillər */
-.view-equipment-modal .list-body table th,
-.view-equipment-modal .list-body table td {
-    padding: 12px 20px; /* Daha yığcam */
-}
-.view-equipment-modal .empty-state {
-    padding: 40px; /* Daha yığcam */
-}
-.view-equipment-modal .modal-footer {
-    display: flex;
-    justify-content: flex-end;
-    padding: 20px 25px;
-    background: #f7f8fc;
-    border-top: 1px solid #eee;
-    border-radius: 0 0 12px 12px;
-}
-
-/* === DÜZƏLİŞLƏR (Mobil, Modal Simmetriyası və User Edit Modalı) === */
-
-/* 1. Admin Panel: Bax Modalının daxilindəki xəttin (HR) düzəldilməsi */
-.approval-modal .modal-body hr {
-    grid-column: 1 / -1;
-    width: 100%;
-    border: 0;
-    border-top: 1px solid #eee;
-    margin: 10px 0;
-}
-
-/* 2. User Panel: Edit Modalı (Sola sürüşməni düzəldən kod) */
-#edit-equipment-modal .modal-content {
-    width: 600px;
-    max-width: 95%;
-    margin: 5% auto; /* Yuxaridan biraz boşluq və tam mərkəz */
-}
-
-/* 3. Ümumi Mobil Uyğunluq (Responsive) */
+/* Responsive */
 @media (max-width: 768px) {
-    /* Modalların enini ekrana görə tənzimləyirik */
-    .approval-modal, 
-    .profile-modal, 
-    .view-equipment-modal,
-    .modal-content,
-    #edit-equipment-modal .modal-content {
-        width: 95% !important;
-        max-width: 95% !important;
-        margin: 10px auto;
-    }
-
-    /* Modalların içini tək sütun edirik (Simmetriya üçün) */
-    .approval-modal .modal-body,
-    .form-row {
-        grid-template-columns: 1fr !important; /* Tək sütun */
-        gap: 15px;
-    }
-
-    /* Kartlar və Statistika */
-    .stat-cards {
-        grid-template-columns: 1fr; /* Kartlar alt-alta */
-    }
-
-    /* Cədvəl daşmasın deyə scroll əlavə edirik */
-    .list-body {
-        overflow-x: auto;
-    }
-
-    /* Header hissəsi mobildə */
-    .panel-header {
-        padding: 10px 15px;
-    }
-    .logo-text span:last-child {
-        display: none; /* Mobildə adı gizlət, yer tutmasın */
-    }
+    .panel-header { padding: 10px 15px; }
+    .logo-text span:last-child { display: none; }
+    .stat-cards { grid-template-columns: 1fr; }
+    .approval-modal, .profile-modal, .view-equipment-modal, .form-container { width: 95% !important; margin: 10px auto; }
+    .approval-modal .modal-body, .form-row { grid-template-columns: 1fr !important; }
+    .list-body { overflow-x: auto; }
 }
