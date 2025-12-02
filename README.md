@@ -1,6 +1,6 @@
 # 🏫 TechCore - Universitet İnventar İdarəetmə Sistemi
 
-**Canlı Demo:** [https://hesenli2007.github.io/TechCore/](https://hesenli2007.github.io/TechCore/)
+**Canlı Demo:** [https://hesenli2007.github.io/TechCore/](https://yusifhasanlii.github.io/TechCore/)
 
 **TechCore**, universitet daxilindəki texniki avadanlıqların və inventarların (kompüterlər, proyektorlar, laboratoriya avadanlıqları və s.) qeydiyyatını, statusunu və yerləşməsini izləmək üçün hazırlanmış rəqəmsal idarəetmə platformasıdır.
 
