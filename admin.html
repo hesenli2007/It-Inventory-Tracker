@@ -1467,11 +1467,9 @@
             const qrContainer = document.getElementById('qrcode');
             qrContainer.innerHTML = ""; 
             
-            // DÜZƏLİŞ BURADADIR:
-            // Admin panelində QR yaradarkən linki 'dashboard.html'-ə yönləndiririk.
-            // Bu linkə görə həm admin, həm də işçi QR-i oxudanda dashboard-a gedəcək.
+            // --- QR KOD LINKINI DƏYİŞDİK (dashboard.html -> index.html) ---
             const path = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
-            const qrUrl = `${path}dashboard.html?viewId=${item.id}`;
+            const qrUrl = `${path}index.html?viewId=${item.id}`;
             
             document.getElementById('qr-link-text').innerText = qrUrl;
             
