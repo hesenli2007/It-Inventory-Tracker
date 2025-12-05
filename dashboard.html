@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="panel-style.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
     <style>
         /* === HEADER STİLİ === */
         .panel-header {
@@ -258,6 +260,12 @@
         }
         .back-btn:hover { text-decoration: underline; }
 
+        /* QR Modal */
+        .qr-code-section { display: flex; flex-direction: column; align-items: center; justify-content: center; background: white; padding: 20px; border-radius: 12px; border: 2px dashed #0984e3; }
+        .btn-success { background: #27ae60; color: white; }
+        .btn-qr { background: none; border: none; cursor: pointer; font-size: 15px; margin-right: 5px; color: #2d3436; transition: 0.2s; }
+        .btn-qr:hover { transform: scale(1.2); }
+
     </style>
 </head>
 <body>
@@ -287,7 +295,6 @@
         </header>
 
         <main class="panel-main">
-            <!-- ÜMUMİ STATİSTİKA (Yuxarı) -->
             <section class="stat-cards">
                 <div class="card green">
                     <div class="card-info">
@@ -312,7 +319,6 @@
                 </div>
             </section>
 
-            <!-- TAB NAVİQASİYA -->
             <section class="content-tabs">
                 <div class="tab-nav">
                     <button class="tab-link active" data-tab="inventory-tab">
@@ -326,7 +332,6 @@
                     </button>
                 </div>
 
-                <!-- 1. ÜMUMİ İNVENTAR -->
                 <div class="tab-content active" id="inventory-tab">
                     <div class="filter-container">
                         <div class="filter-group">
@@ -371,7 +376,6 @@
                     </div>
                 </div>
 
-                <!-- 2. ANBAR SİYAHISI (YENİ TAB) -->
                 <div class="tab-content" id="warehouse-tab">
                     <div class="filter-container">
                         <div class="filter-group">
@@ -416,7 +420,6 @@
                     </div>
                 </div>
 
-                <!-- 3. STATİSTİKA PANELI -->
                 <div class="tab-content" id="stats-tab">
                     <div class="stats-container-grid">
                         <div class="stat-category-card" onclick="openTypeBreakdown('Kompüter')">
@@ -453,7 +456,6 @@
         </main>
     </div>
 
-    <!-- STATISTIKA DETAL MODALI (Drill-down) -->
     <div id="type-breakdown-modal" class="modal-overlay">
         <div class="modal-content">
             <button class="modal-close-btn" id="type-breakdown-close"><i class="fas fa-times"></i></button>
@@ -462,7 +464,6 @@
         </div>
     </div>
 
-    <!-- SİYAHI MODALI (Statistikadan basanda açılan) -->
     <div id="filtered-list-modal" class="modal-overlay">
         <div class="modal-content modal-large">
             <button class="modal-close-btn" id="filtered-list-close"><i class="fas fa-times"></i></button>
@@ -488,13 +489,13 @@
         </div>
     </div>
 
-    <!-- ƏTRAFLI MƏLUMAT MODALI (SON MƏRHƏLƏ) -->
     <div id="item-details-modal" class="modal-overlay" style="z-index: 2200;">
         <div class="modal-content profile-modal">
             <button class="modal-close-btn" id="item-details-close"><i class="fas fa-times"></i></button>
             <div class="modal-header"><h2 data-key="equipmentDetails">Avadanlıq Məlumatları</h2></div>
             <div class="modal-body">
                 <div class="details-grid" id="item-details-content"></div>
+                <div id="item-image-container"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="submit-btn btn-primary" id="item-details-ok" data-key="okBtn">Oldu</button>
@@ -502,7 +503,20 @@
         </div>
     </div>
 
-    <!-- STANDART MODALLAR (Profil, Şifrə) -->
+    <div id="qr-modal" class="modal-overlay">
+        <div class="modal-content profile-modal" style="width: 350px;">
+            <button class="modal-close-btn" onclick="document.getElementById('qr-modal').style.display='none'"><i class="fas fa-times"></i></button>
+            <div class="modal-header"><h2>QR Kod</h2></div>
+            <div class="modal-body" style="display: flex; flex-direction: column; align-items: center;">
+                <div id="qrcode" class="qr-code-section"></div>
+                <button type="button" class="submit-btn btn-success" onclick="downloadQR()" style="margin-top: 20px; width: 100%;">
+                    <i class="fas fa-download"></i> QR Kodu Yüklə
+                </button>
+                <p id="qr-link-text" style="font-size:10px; word-break:break-all; color:grey; margin-top:5px; text-align:center;"></p>
+            </div>
+        </div>
+    </div>
+
     <div id="profile-modal" class="modal-overlay">
         <div class="modal-content profile-modal">
             <button class="modal-close-btn" id="profile-modal-close"><i class="fas fa-times"></i></button>
@@ -616,7 +630,8 @@
                 formTypePrinter: "Printer",
                 formTypeOther: "Digər",
                 filterAllTypes: "Bütün Növlər",
-                filterAllStatuses: "Bütün Statuslar"
+                filterAllStatuses: "Bütün Statuslar",
+                viewImage: "Şəkilə Bax"
             },
             en: {
                 userPanelTitle: "TechCore Staff",
@@ -660,7 +675,8 @@
                 formTypePrinter: "Printer",
                 formTypeOther: "Other",
                 filterAllTypes: "All Types",
-                filterAllStatuses: "All Statuses"
+                filterAllStatuses: "All Statuses",
+                viewImage: "View Image"
             },
             ru: {
                 userPanelTitle: "TechCore Склад",
@@ -704,7 +720,8 @@
                 formTypePrinter: "Принтер",
                 formTypeOther: "Другое",
                 filterAllTypes: "Все типы",
-                filterAllStatuses: "Все статусы"
+                filterAllStatuses: "Все статусы",
+                viewImage: "Посмотреть фото"
             }
         };
 
@@ -805,6 +822,7 @@
                     }
 
                     loadAllInventory();
+                    checkUrlForQR();
                     setLanguage(currentLang);
                 });
             } else {
@@ -851,6 +869,7 @@
                 
                 // Statistika tabı üçün countlar
                 updateStatsCounts();
+                checkUrlForQR(); // URL-də QR varsa yoxla
             });
         }
 
@@ -906,7 +925,6 @@
             if (filteredList.length === 0) emptyState.style.display = "block";
             else emptyState.style.display = "none";
 
-            // Əgər aktiv tab budursa, yuxarı statistikanı buna uyğun yenilə
             if (activeTabId === 'inventory-tab') {
                 updateTopCards(filteredList);
             }
@@ -920,7 +938,8 @@
                         <td>${equip.name} <br> <span style="font-size:12px; color:#777;">${equip.model}</span></td>
                         <td class="status-${equip.status.toLowerCase()}">${equipStatusText}</td>
                         <td style="color: #636e72; font-family: monospace;">${equip.systemId || 'N/A'}</td>
-                        <td style="text-align: center;">
+                        <td style="text-align: center; display:flex; justify-content:center; gap:5px;">
+                            <button class="btn-qr" onclick="openQRModal('${equip.id}')" title="QR Kod"><i class="fas fa-qrcode"></i></button>
                             <button class="btn-view" onclick="viewItemDetails('${equip.id}')" title="${t('equipmentDetails')}">
                                 <i class="fas fa-eye"></i>
                             </button>
@@ -968,7 +987,6 @@
             if (filteredList.length === 0) emptyState.style.display = "block";
             else emptyState.style.display = "none";
 
-            // Əgər aktiv tab Anbardırsa, yuxarı statistikanı buna uyğun yenilə
             if (activeTabId === 'warehouse-tab') {
                 updateTopCards(filteredList);
             }
@@ -982,7 +1000,8 @@
                         <td>${equip.name} <br> <span style="font-size:12px; color:#777;">${equip.model}</span></td>
                         <td class="status-${equip.status.toLowerCase()}">${equipStatusText}</td>
                         <td style="color: #636e72; font-family: monospace;">${equip.systemId || 'N/A'}</td>
-                        <td style="text-align: center;">
+                        <td style="text-align: center; display:flex; justify-content:center; gap:5px;">
+                            <button class="btn-qr" onclick="openQRModal('${equip.id}')" title="QR Kod"><i class="fas fa-qrcode"></i></button>
                             <button class="btn-view" onclick="viewItemDetails('${equip.id}')" title="${t('equipmentDetails')}">
                                 <i class="fas fa-eye"></i>
                             </button>
@@ -1112,7 +1131,8 @@
                             <td style="font-weight:bold;">${equip.holderName || "Anbar"} <br> <span style="font-size:11px; color:#777;">${equip.holderFaculty || ""}</span></td>
                             <td>${equip.name}</td>
                             <td style="font-family:monospace;">${equip.systemId || 'N/A'}</td>
-                            <td>
+                            <td style="display:flex; justify-content:center; gap:5px;">
+                                <button class="btn-qr" onclick="openQRModal('${equip.id}')" title="QR Kod"><i class="fas fa-qrcode"></i></button>
                                 <button class="btn-view" onclick="viewItemDetails('${equip.id}')"><i class="fas fa-eye"></i></button>
                             </td>
                         </tr>
@@ -1153,12 +1173,79 @@
                 <div class="detail-item"><span class="detail-label">${t('formDate')}</span><span class="detail-value">${item.purchaseDate || '-'}</span></div>
                 <div class="detail-item full-width"><span class="detail-label">${t('formNotes')}</span><span class="detail-value">${item.notes || '-'}</span></div>
             `;
+            
+            const imageContainer = document.getElementById('item-image-container');
+            if (item.imageUrl) {
+                imageContainer.innerHTML = `<button class="btn-view-image" onclick="window.open('${item.imageUrl}', '_blank')"><i class="fas fa-image"></i> ${t('viewImage')}</button>`;
+            } else {
+                imageContainer.innerHTML = "";
+            }
+            
             document.getElementById('item-details-modal').style.display = 'flex';
         }
 
-        document.getElementById('item-details-close').onclick = () => document.getElementById('item-details-modal').style.display = 'none';
-        document.getElementById('item-details-ok').onclick = () => document.getElementById('item-details-modal').style.display = 'none';
+        // --- QR KOD (Yeni) ---
+        window.openQRModal = function(id) {
+            if (window.event) window.event.stopPropagation();
+            const item = inventoryCache.find(e => e.id === id);
+            if(!item) return;
+
+            document.getElementById('qr-modal').style.display = 'flex';
+            
+            const qrContainer = document.getElementById('qrcode');
+            qrContainer.innerHTML = ""; 
+            
+            // --- QR KOD LINKI (index.html-ə yönləndirmə) ---
+            const path = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+            const qrUrl = `${path}index.html?viewId=${item.id}`;
+            
+            document.getElementById('qr-link-text').innerText = qrUrl;
+            
+            new QRCode(qrContainer, {
+                text: qrUrl,
+                width: 200,
+                height: 200,
+                colorDark : "#000000",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        }
         
+        window.downloadQR = function() {
+            const qrContainer = document.getElementById('qrcode');
+            const img = qrContainer.querySelector('img');
+            
+            if(img && img.src) {
+                const link = document.createElement('a');
+                link.href = img.src;
+                link.download = 'QR_Code.png';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } else {
+                alert("QR kod hələ yaranmayıb, bir az gözləyin.");
+            }
+        }
+
+        // QR oxudanda avtomatik açılma funksiyası
+        function checkUrlForQR() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const viewId = urlParams.get('viewId');
+            if (viewId && inventoryCache.length > 0) {
+                // viewId-ni təmizləmədən birbaşa açır
+                viewItemDetails(viewId);
+            }
+        }
+
+        document.getElementById('item-details-close').onclick = () => {
+             document.getElementById('item-details-modal').style.display = 'none';
+             history.pushState({}, document.title, window.location.pathname); // URL-i təmizlə
+        }
+        document.getElementById('item-details-ok').onclick = () => {
+            document.getElementById('item-details-modal').style.display = 'none';
+            history.pushState({}, document.title, window.location.pathname); // URL-i təmizlə
+        }
+
         // --- PROFİL & ŞİFRƏ (Standard) ---
         const profileModal = document.getElementById('profile-modal');
         document.getElementById('profile-btn').onclick = () => profileModal.style.display = 'flex';
@@ -1216,6 +1303,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const langBtn = document.getElementById('lang-btn');
             const dropdown = document.getElementById('lang-dropdown');
+            
             if(langBtn) {
                 langBtn.addEventListener('click', (e) => { e.stopPropagation(); dropdown.classList.toggle('show'); });
                 window.addEventListener('click', () => { if (dropdown.classList.contains('show')) dropdown.classList.remove('show'); });
