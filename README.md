@@ -1,35 +1,38 @@
-# 🎓 University IT Inventory Tracker
+# 🏫 TechCore - Universitet İnventar İdarəetmə Sistemi
 
-Bu layihə, universitet daxilindəki texnoloji avadanlıqların mərkəzləşdirilmiş qaydada izlənməsi üçün hazırlanmış veb tətbiqdir. Sistem "Sorğu və Təsdiq" (Request-Approval) məntiqi ilə işləyir, yəni məlumatların doğruluğuna admin nəzarət edir.
+**Canlı Demo:** [https://yusifhasanlii.github.io/TechCore/](https://yusifhasanlii.github.io/TechCore/)
 
-## 🚀 İşləmə Prinsipi və Funksionallıqlar
+**TechCore**, universitet daxilindəki texniki avadanlıqların və inventarların (kompüterlər, proyektorlar, laboratoriya avadanlıqları və s.) qeydiyyatını, statusunu və yerləşməsini izləmək üçün hazırlanmış rəqəmsal idarəetmə platformasıdır.
 
-Sistem iki fərqli rol üzərində qurulub: **İstifadəçi** və **Admin**.
+Bu sistem kağız üzərində aparılan qeydiyyatı əvəz edərək, məlumatların itməməsini və sürətli əlçatanlığını təmin edir.
 
-### 1. İstifadəçi Paneli (User Panel) 👤
-İstifadəçilər (tələbələr və ya işçilər) sistemə daxil olaraq aşağıdakıları edə bilər:
-* **Yeni Avadanlıq Sorğusu:** İstifadəçi özündə olan və ya yeni gələn avadanlığı sistemə əlavə etmək üçün form doldurur və Adminə sorğu göndərir.
-* **Sorğu Statusu:** Göndərdiyi sorğunun "Gözləmədə", "Təsdiqləndi" və ya "Rədd edildi" olduğunu izləyə bilir.
-* **Şəxsi İnventar:** Öz adına təsdiqlənmiş avadanlıqların siyahısını görür.
+---
 
-### 2. Admin Paneli (Admin Panel) 🛠
-Admin, sistemin idarəedicisi olaraq bütün səlahiyyətlərə sahibdir:
-* **Sorğuların İdarə Edilməsi (Approval System):** İstifadəçilərdən gələn "Avadanlıq əlavə etmə" sorğularını nəzərdən keçirir. Məlumatlar düzgündürsə sorğanı **qəbul edir** (bazaya əlavə olunur), yanlışdırsa **imtina edir**.
-* **Tam İnventar Nəzarəti:** Admin sorğu gözləmədən birbaşa özü də yeni avadanlıq əlavə edə bilər.
-* **Redaktə və Silmə:** Bazada olan istənilən avadanlığın məlumatlarını dəyişə (edit) və ya sistemdən silə (delete) bilər.
-* **Hesabatlıq:** Ümumi universitet inventarını siyahı şəklində görür.
+## 🎯 Layihənin Məqsədi
 
-## 💻 İstifadə Olunan Texnologiyalar
+* **Mərkəzləşdirilmiş Sistem:** Bütün universitet inventarının vahid bazada toplanması.
+* **Status Nəzarəti:** Avadanlıqların işlək, xarab və ya təmirə ehtiyacı olduğunu izləmək.
+* **Şəffaflıq:** Hansı avadanlığın hansı otaqda və kimin məsuliyyətində olduğunu təyin etmək.
 
-* **Front-end:** HTML5, CSS3, JavaScript (Vanilla ES6+)
-* **Back-end (BaaS):** Google Firebase
-* **Verilənlər Bazası:** Firebase Realtime Database / Firestore
-* **Authentication:** Firebase Auth
+---
 
-## 📦 Quraşdırma (Installation)
+## 🌟 Əsas Özəlliklər
 
-Layihəni işə salmaq üçün:
+* **📦 İnventar Qeydiyyatı:** Yeni avadanlıqların (adı, modeli, seriya nömrəsi, otaq nömrəsi) sistemə əlavə edilməsi.
+* **📊 Canlı Status:** Avadanlıqların vəziyyətini (Məs: *İşlək*, *Təmirdə*, *Yararsız*) real vaxt rejimində dəyişmək imkanı.
+* **🔍 Axtarış və Filtrləmə:** İnventarları seriya nömrəsinə, kateqoriyasına və ya otaq nömrəsinə görə sürətli axtarış.
+* **🛡️ Admin Paneli:** Yalnız səlahiyyətli şəxslərin (Adminlərin) məlumatları dəyişdirə bilməsi üçün Firebase Authentication ilə qorunan giriş.
+* **📱 Responsive Dizayn:** Planşet və mobil cihazlardan rahat idarəetmə imkanı.
 
-1. Repozitoriyanı klonlayın:
-   ```bash
-   git clone [https://github.com/hesenli2007/It-Inventory-Tracker.git](https://github.com/hesenli2007/It-Inventory-Tracker.git)
+---
+
+## 🛠 İstifadı Olunan Texnologiyalar
+
+| Sahə | Texnologiya | Təsvir |
+| :--- | :--- | :--- |
+| **Frontend** | HTML5, JavaScript (ES6) | İnterfeys və məntiq |
+| **Dizayn** | CSS / Tailwind CSS | Müasir və responsiv görünüş |
+| **Backend** | Firebase Firestore | Məlumatların buludda saxlanması (NoSQL) |
+| **Auth** | Firebase Auth | Təhlükəsiz giriş sistemi |
+| **Hosting** | GitHub Pages | Saytın yayımlanması |
+
