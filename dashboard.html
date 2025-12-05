@@ -1169,7 +1169,7 @@
         document.getElementById('type-breakdown-close').onclick = () => document.getElementById('type-breakdown-modal').style.display = 'none';
         document.getElementById('filtered-list-close').onclick = () => document.getElementById('filtered-list-modal').style.display = 'none';
 
-        // YENİ: QR KOD MODAL FUNKSIYALARI
+        
         window.openQRModal = function(id) {
             if (window.event) window.event.stopPropagation();
             const item = inventoryCache.find(e => e.id === id);
@@ -1180,7 +1180,7 @@
             const qrContainer = document.getElementById('qrcode');
             qrContainer.innerHTML = ""; 
             
-            // --- QR KOD DÜZƏLİŞİ EDİLDİ ---
+            
             // İşçinin yaratdığı QR kod da "index.html"-ə yönləndirməlidir.
             const path = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
             const qrUrl = `${path}index.html?viewId=${item.id}`;

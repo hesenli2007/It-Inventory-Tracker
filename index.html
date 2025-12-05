@@ -4,52 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TechCore - Giriş</title>
-    <link rel="stylesheet" href="style.css"> <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        /* Əgər style.css faylınız yoxdursa, əsas dizaynı burada saxlayıram ki, səhifə dağılmasın */
-        :root { --primary: #0984e3; --secondary: #6c5ce7; --bg: #f4f7fc; --text: #2d3436; }
-        body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background-color: var(--bg); height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
-        .lang-switcher { position: absolute; top: 20px; right: 20px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: 600; color: #636e72; background: white; padding: 8px 15px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: 0.3s; z-index: 100; }
-        .lang-switcher:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); color: var(--primary); }
-        .lang-dropdown { display: none; position: absolute; top: 110%; right: 0; background: white; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); overflow: hidden; width: 160px; flex-direction: column; }
-        .lang-switcher.active .lang-dropdown { display: flex; animation: fadeIn 0.3s ease; }
-        .lang-dropdown a { text-decoration: none; color: var(--text); padding: 12px 15px; font-size: 14px; transition: 0.2s; }
-        .lang-dropdown a:hover { background: #f1f2f6; color: var(--primary); }
-        .main-container { background: white; padding: 40px; border-radius: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.08); width: 100%; max-width: 420px; text-align: center; position: relative; z-index: 1; }
-        .brand-header { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 10px; }
-        .brand-icon { font-size: 32px; color: var(--primary); }
-        .brand-text { font-size: 28px; font-weight: 800; color: var(--text); letter-spacing: -1px; }
-        .subtitle { color: #b2bec3; font-size: 14px; margin-bottom: 30px; font-weight: 500; }
-        .tab-nav { display: flex; background: #f1f2f6; padding: 5px; border-radius: 12px; margin-bottom: 25px; }
-        .tab-link { flex: 1; border: none; background: transparent; padding: 10px; border-radius: 8px; font-weight: 600; color: #636e72; cursor: pointer; transition: 0.3s; }
-        .tab-link.active { background: white; color: var(--primary); box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .tab-content { display: none; animation: slideUp 0.4s ease; }
-        .tab-content.active { display: block; }
-        .input-group { margin-bottom: 20px; text-align: left; }
-        .input-group label { display: block; font-size: 12px; font-weight: 600; color: #636e72; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .input-wrapper { position: relative; }
-        .input-wrapper input { width: 100%; padding: 14px 14px 14px 45px; border: 2px solid #dfe6e9; border-radius: 12px; font-size: 15px; transition: 0.3s; outline: none; font-family: inherit; box-sizing: border-box; }
-        .input-wrapper input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(9, 132, 227, 0.1); }
-        .input-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #b2bec3; transition: 0.3s; }
-        .input-wrapper input:focus + .input-icon { color: var(--primary); }
-        .toggle-password { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #b2bec3; cursor: pointer; }
-        .forgot-pass-box { text-align: right; margin-bottom: 25px; }
-        .forgot-pass-box a { font-size: 13px; color: var(--primary); text-decoration: none; font-weight: 600; }
-        .submit-btn { width: 100%; padding: 16px; border: none; border-radius: 12px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 10px 20px rgba(9, 132, 227, 0.2); }
-        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(9, 132, 227, 0.3); }
-        .help-icon { position: absolute; bottom: 20px; right: 20px; width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1); color: var(--primary); cursor: pointer; transition: 0.3s; }
-        .help-icon:hover { transform: scale(1.1); }
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); backdrop-filter: blur(5px); }
-        .modal-content { background-color: #fff; margin: 15% auto; padding: 30px; border: 1px solid #888; width: 90%; max-width: 500px; border-radius: 16px; position: relative; animation: fadeIn 0.3s; }
-        .modal-close { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    </style>
 </head>
 <body>
-
+    // --- QR KOD DÜZƏLİŞİ EDİLDİ ---
     <div class="lang-switcher" id="lang-btn">
         <i class="fas fa-globe"></i>
         <span class="lang-btn-text">AZ</span>
@@ -61,6 +21,7 @@
     </div>
 
     <div class="main-container">
+        
         <div class="brand-header">
             <i class="fas fa-microchip brand-icon"></i>
             <span class="brand-text">TechCore</span>
@@ -79,7 +40,7 @@
                     <label for="login-email" data-key="emailLabel">E-poçt ünvanı</label>
                     <div class="input-wrapper">
                         <i class="fas fa-envelope input-icon"></i>
-                        <input type="email" id="login-email" required>
+                        <input type="email" id="login-email" required placeholder="">
                     </div>
                 </div>
                 
@@ -100,7 +61,7 @@
                     Daxil ol <i class="fas fa-arrow-right"></i>
                 </button>
 
-                <button type="button" id="reset-btn" class="submit-btn reset-btn-style" style="display: none; background: #636e72;" data-key="sendResetLink">
+                <button type="button" id="reset-btn" class="submit-btn reset-btn-style" style="display: none;" data-key="sendResetLink">
                     Sıfırlama linkini göndər <i class="fas fa-paper-plane"></i>
                 </button>
             </form>
@@ -117,7 +78,7 @@
                     <label for="register-email" data-key="emailLabel">E-poçt ünvanı</label>
                     <div class="input-wrapper">
                         <i class="fas fa-envelope input-icon"></i>
-                        <input type="email" id="register-email" required>
+                        <input type="email" id="register-email" required placeholder="">
                     </div>
                 </div>
                 <div class="input-group">
@@ -157,213 +118,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-
-    <script>
-        // === KONFİQURASİYA VƏ LOGIC ===
-        const firebaseConfig = {
-            apiKey: "AIzaSyAI2rM3vttKrDI9C4vDD41_hcXurLvQ6gw",
-            authDomain: "it-inventory-tracker-61d2c.firebaseapp.com",
-            projectId: "it-inventory-tracker-61d2c",
-            storageBucket: "it-inventory-tracker-61d2c.firebasestorage.app",
-            messagingSenderId: "557225811726",
-            appId: "1:557225811726:web:f85c3ca033997d2f95c15f"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-
-        // === TƏRCÜMƏ SİSTEMİ ===
-        const translations = {
-            az: {
-                langAzerbaijani: "Azərbaycanca (AZ)", langEnglish: "English (EN)", langRussian: "Русский (RU)",
-                appSubtitle: "İnventar İdarəetmə Sistemi", login: "Daxil ol", register: "Qeydiyyat",
-                emailLabel: "E-poçt ünvanı", passwordLabel: "Şifrə", forgotPasswordLink: "Şifrəni unutmuşam?",
-                submitLogin: "Daxil ol", sendResetLink: "Sıfırlama linkini göndər", fullNameLabel: "Tam ad",
-                confirmPasswordLabel: "Şifrəni təsdiqlə", submitRegister: "Hesab Yarat",
-                helpModalTitle: "TechCore Haqqında",
-                helpModalP1: "<b>TechCore</b> - Müəssisə daxili IT resurslarının izlənməsi və idarə edilməsi üçün nəzərdə tutulmuş platformadır.",
-                helpModalP2: "Sistemdə iki növ istifadəçi mövcuddur: <b>Adminlər</b> (Tam idarəetmə) və <b>İşçilər</b> (Köməkçi Admin/İzləyici).",
-                helpModalP3: "İşçilər anbarın vəziyyətini görə bilər, lakin dəyişiklik edə bilməzlər."
-            },
-            en: {
-                langAzerbaijani: "Azerbaijani (AZ)", langEnglish: "English (EN)", langRussian: "Russian (RU)",
-                appSubtitle: "Inventory Management System", login: "Login", register: "Register",
-                emailLabel: "Email Address", passwordLabel: "Password", forgotPasswordLink: "Forgot Password?",
-                submitLogin: "Login", sendResetLink: "Send Reset Link", fullNameLabel: "Full Name",
-                confirmPasswordLabel: "Confirm Password", submitRegister: "Create Account",
-                helpModalTitle: "About TechCore",
-                helpModalP1: "<b>TechCore</b> is a platform designed for tracking and managing internal IT resources.",
-                helpModalP2: "There are two types of users: <b>Admins</b> (Full control) and <b>Staff</b> (Viewer).",
-                helpModalP3: "Staff can view inventory status but cannot make changes."
-            },
-            ru: {
-                langAzerbaijani: "Азербайджанский (AZ)", langEnglish: "Английский (EN)", langRussian: "Русский (RU)",
-                appSubtitle: "Система Управления Инвентарем", login: "Вход", register: "Регистрация",
-                emailLabel: "Email адрес", passwordLabel: "Пароль", forgotPasswordLink: "Забыли пароль?",
-                submitLogin: "Войти", sendResetLink: "Отправить ссылку сброса", fullNameLabel: "Полное имя",
-                confirmPasswordLabel: "Подтвердите пароль", submitRegister: "Создать аккаунт",
-                helpModalTitle: "О TechCore",
-                helpModalP1: "<b>TechCore</b> - платформа для отслеживания и управления ИТ-ресурсами предприятия.",
-                helpModalP2: "В системе два типа пользователей: <b>Админы</b> (Полный доступ) и <b>Сотрудники</b> (Просмотр).",
-                helpModalP3: "Сотрудники могут видеть статус, но не могут вносить изменения."
-            }
-        };
-
-        let currentLang = localStorage.getItem('appLang') || 'az';
-
-        function setLanguage(lang) {
-            currentLang = lang;
-            localStorage.setItem('appLang', lang);
-            document.querySelector('.lang-btn-text').textContent = lang.toUpperCase();
-            document.querySelectorAll('[data-key]').forEach(el => {
-                const key = el.getAttribute('data-key');
-                if (translations[lang][key]) el.innerHTML = translations[lang][key];
-            });
-            document.getElementById('lang-dropdown').classList.remove('active');
-        }
-
-        // === ƏSAS LOGIC (GİRİŞ & YÖNLƏNDİRMƏ) ===
-        
-        // 1. İstifadəçi daxil olubsa və ya indi daxil olursa
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                // QR Koddan gələn 'viewId' parametrini götür
-                const urlParams = new URLSearchParams(window.location.search);
-                const viewId = urlParams.get('viewId');
-
-                db.collection("users").doc(user.uid).get().then(doc => {
-                    if (doc.exists) {
-                        const userData = doc.data();
-                        
-                        if (userData.status === 'deactivated') {
-                            alert("Sizin hesabınız deaktiv edilib! Adminlə əlaqə saxlayın.");
-                            auth.signOut();
-                            return;
-                        }
-
-                        // Roluna uyğun səhifəni təyin et
-                        let targetPage = (userData.role === 'admin') ? 'admin.html' : 'dashboard.html';
-
-                        // Əgər QR kodla gəlibsə, ID-ni də yönləndir
-                        if (viewId) {
-                            window.location.href = `${targetPage}?viewId=${viewId}`;
-                        } else {
-                            window.location.href = targetPage;
-                        }
-                    } else {
-                        // İstifadəçi bazada yoxdursa (nadir hal)
-                        alert("İstifadəçi məlumatları tapılmadı.");
-                        auth.signOut();
-                    }
-                });
-            }
-        });
-
-        // 2. Giriş Formu Submit
-        document.getElementById('login-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
-            auth.signInWithEmailAndPassword(email, password)
-                .catch(error => alert("Giriş xətası: " + error.message));
-        });
-
-        // 3. Qeydiyyat Formu Submit
-        document.getElementById('register-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = document.getElementById('register-name').value;
-            const email = document.getElementById('register-email').value;
-            const password = document.getElementById('register-password').value;
-            const confirm = document.getElementById('register-password-confirm').value;
-
-            if (password !== confirm) {
-                alert("Şifrələr uyğun gəlmir!");
-                return;
-            }
-
-            auth.createUserWithEmailAndPassword(email, password).then(cred => {
-                return db.collection('users').doc(cred.user.uid).set({
-                    name: name,
-                    email: email,
-                    role: 'user', // Default olaraq işçi
-                    status: 'active',
-                    createdAt: new Date(),
-                    profilePicUrl: ""
-                });
-            }).then(() => {
-                alert("Qeydiyyat uğurludur! Yönləndirilirsiniz...");
-                // onAuthStateChanged avtomatik işə düşəcək
-            }).catch(err => alert("Xəta: " + err.message));
-        });
-
-        // 4. Şifrə Sıfırlama
-        const forgotLink = document.getElementById('forgot-link');
-        const passGroup = document.getElementById('password-group');
-        const loginBtn = document.getElementById('login-btn');
-        const resetBtn = document.getElementById('reset-btn');
-        let isResetMode = false;
-
-        forgotLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            isResetMode = !isResetMode;
-            if (isResetMode) {
-                passGroup.style.display = 'none';
-                loginBtn.style.display = 'none';
-                resetBtn.style.display = 'flex';
-                forgotLink.textContent = "Girişə qayıt";
-            } else {
-                passGroup.style.display = 'block';
-                loginBtn.style.display = 'flex';
-                resetBtn.style.display = 'none';
-                forgotLink.textContent = translations[currentLang].forgotPasswordLink;
-            }
-        });
-
-        resetBtn.addEventListener('click', () => {
-            const email = document.getElementById('login-email').value;
-            if (!email) { alert("Zəhmət olmasa e-poçtunuzu daxil edin."); return; }
-            auth.sendPasswordResetEmail(email)
-                .then(() => alert("Sıfırlama linki e-poçtunuza göndərildi."))
-                .catch(err => alert("Xəta: " + err.message));
-        });
-
-        // UI: Tablar və Dil
-        document.querySelectorAll('.tab-link').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.tab-link').forEach(b => b.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                btn.classList.add('active');
-                document.getElementById(`${btn.dataset.tab}-form`).classList.add('active');
-            });
-        });
-
-        document.getElementById('lang-btn').addEventListener('click', () => {
-            document.getElementById('lang-btn').classList.toggle('active');
-        });
-
-        document.querySelectorAll('.toggle-password').forEach(icon => {
-            icon.addEventListener('click', function() {
-                const input = this.previousElementSibling;
-                if (input.type === "password") {
-                    input.type = "text";
-                    this.classList.remove('fa-eye-slash');
-                    this.classList.add('fa-eye');
-                } else {
-                    input.type = "password";
-                    this.classList.remove('fa-eye');
-                    this.classList.add('fa-eye-slash');
-                }
-            });
-        });
-
-        // Modal Help
-        const modal = document.getElementById("help-modal");
-        document.getElementById("help-btn").onclick = () => modal.style.display = "block";
-        document.getElementById("help-modal-close").onclick = () => modal.style.display = "none";
-        window.onclick = (event) => { if (event.target == modal) modal.style.display = "none"; };
-
-        setLanguage(currentLang);
-    </script>
+    <script src="i18n.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
