@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechCore Admin</title>
+    <title>TechCore</title>
     <link rel="icon" href="data:,"> 
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
@@ -370,7 +370,7 @@
                         </div>
                     </div>
                     <div class="holder-card-list" id="all-holders-list"></div>
-                      <div id="holders-empty-state" class="empty-state" style="display: none;">
+                     <div id="holders-empty-state" class="empty-state" style="display: none;">
                         <i class="fas fa-users-slash"></i>
                         <h3>Heç bir istifadəçi tapılmadı.</h3>
                     </div>
@@ -1291,7 +1291,7 @@
                 }
                 
                 if(found) {
-                       otherInput.style.display = 'none';
+                      otherInput.style.display = 'none';
                 } else {
                     select.value = 'Digər';
                     otherInput.style.display = 'block';
@@ -1467,11 +1467,11 @@
             const qrContainer = document.getElementById('qrcode');
             qrContainer.innerHTML = ""; 
             
-            // --- QR KOD DÜZƏLİŞİ EDİLDİ ---
-            // İndi QR kod "index.html"-ə (Giriş səhifəsinə) yönləndirir.
-            // Giriş səhifəsi istifadəçinin rolunu yoxlayıb, onu düzgün səhifəyə atacaq.
+            // DÜZƏLİŞ BURADADIR:
+            // Admin panelində QR yaradarkən linki 'dashboard.html'-ə yönləndiririk.
+            // Bu linkə görə həm admin, həm də işçi QR-i oxudanda dashboard-a gedəcək.
             const path = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
-            const qrUrl = `${path}index.html?viewId=${item.id}`;
+            const qrUrl = `${path}dashboard.html?viewId=${item.id}`;
             
             document.getElementById('qr-link-text').innerText = qrUrl;
             
@@ -1853,7 +1853,7 @@
                     .catch((error) => { alert(t('errorAddingEquipment') + ": " + error.message); });
             });
         });
-// --- QR KOD DÜZƏLİŞİ EDİLDİ ---
+
         document.addEventListener('DOMContentLoaded', () => {
             const langBtn = document.getElementById('lang-btn');
             const dropdown = document.getElementById('lang-dropdown');
