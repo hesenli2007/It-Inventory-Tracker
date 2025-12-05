@@ -1467,8 +1467,11 @@
             const qrContainer = document.getElementById('qrcode');
             qrContainer.innerHTML = ""; 
             
-            const currentUrl = window.location.href.split('?')[0]; 
-            const qrUrl = `${currentUrl}?viewId=${item.id}`;
+            // DÜZƏLİŞ BURADADIR:
+            // Admin panelində QR yaradarkən linki 'dashboard.html'-ə yönləndiririk.
+            // Bu linkə görə həm admin, həm də işçi QR-i oxudanda dashboard-a gedəcək.
+            const path = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+            const qrUrl = `${path}dashboard.html?viewId=${item.id}`;
             
             document.getElementById('qr-link-text').innerText = qrUrl;
             
